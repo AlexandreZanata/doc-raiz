@@ -17,9 +17,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.0-alpha.1] - 2026-06-21
+
+First implementation release — CNPJ validator across library, CLI, and playground.
+
+### Added
+
+- `packages/br-validators` — CNPJ numeric + alphanumeric (RFB Q14 golden vector `12ABC34501DE35`)
+- `apps/cli` — `br-validators cnpj validate|format|strip` with `--json`, `--quiet`, `--source`
+- `apps/playground` — Next.js client-side tester at `/cnpj`
+- Monorepo (pnpm workspaces) + GitHub Actions CI
+- 100% test coverage on library and CLI core
+
+### Security
+
+- Validation algorithms aligned to [RFB CNPJ alfanumérico PDF](https://www.gov.br/receitafederal/pt-br/centrais-de-conteudo/publicacoes/perguntas-e-respostas/cnpj/cnpj-alfanumerico.pdf)
+
+---
+
 ## [0.1.0-alpha.0] - 2026-06-21
 
-First repository release — documentation, governance, and agent harness. No npm package yet.
+Documentation, governance, and agent harness bootstrap (no npm code yet).
 
 ### Added
 
@@ -38,20 +56,17 @@ First repository release — documentation, governance, and agent harness. No np
 - Agent harness (`agent-rules/`, `agent-harness/`, `.cursor/rules/`)
 - Root [VERSION](VERSION) file
 
-### Security
-
-- n/a
-
 ---
 
 ## Version history
 
 | Version | Date | Notes |
 |---------|------|-------|
+| [0.1.0-alpha.1](https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.1) | 2026-06-21 | CNPJ library + CLI + playground |
 | [0.1.0-alpha.0](https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.0) | 2026-06-21 | Docs + harness bootstrap |
-| — | — | First npm/library code planned in `0.1.0-alpha.1` |
 
 See [docs/VERSIONING.md](docs/VERSIONING.md) for versioning rules.
 
-[Unreleased]: https://github.com/AlexandreZanata/doc-raiz/compare/v0.1.0-alpha.0...HEAD
+[Unreleased]: https://github.com/AlexandreZanata/doc-raiz/compare/v0.1.0-alpha.1...HEAD
+[0.1.0-alpha.1]: https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.1
 [0.1.0-alpha.0]: https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.0

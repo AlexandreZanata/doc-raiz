@@ -75,15 +75,36 @@ https://br-validators.vercel.app/cnpj   # TBD
 
 ---
 
-## Quick start (agents)
+## Quick start
 
 ```bash
-pip install -r agent-harness/requirements.txt
-./agent-harness/resolve-rules.sh validation domain layer
+pnpm install
+pnpm test:coverage          # library + CLI — 100% coverage gate
+pnpm --filter br-validators build
+pnpm --filter @br-validators/cli build
+pnpm --filter @br-validators/playground dev   # http://localhost:3000/cnpj
 ```
 
-1. Read [docs/NEW-PROJECT-CHECKLIST.md](docs/NEW-PROJECT-CHECKLIST.md)
-2. Implement only algorithms with entries in [docs/OFFICIAL-SOURCES.md](docs/OFFICIAL-SOURCES.md)
+### Library
+
+```typescript
+import { validateCnpj, formatCnpj, stripCnpj } from 'br-validators';
+
+validateCnpj('12ABC34501DE35'); // RFB Q14 golden vector
+formatCnpj('12ABC34501DE35');   // 12.ABC.345/01DE-35
+```
+
+### CLI
+
+```bash
+pnpm --filter @br-validators/cli build
+node apps/cli/dist/index.js cnpj validate 12ABC34501DE35
+node apps/cli/dist/index.js cnpj validate 12ABC34501DE35 --json --source
+```
+
+### Playground (Vercel)
+
+Client-side only — no PII sent to server. Deploy `apps/playground` to Vercel.
 
 ---
 

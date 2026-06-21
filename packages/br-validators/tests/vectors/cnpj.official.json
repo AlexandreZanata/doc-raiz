@@ -1,0 +1,15 @@
+{
+  "source": "RFB CNPJ alfanumérico FAQ Q14",
+  "url": "https://www.gov.br/receitafederal/pt-br/centrais-de-conteudo/publicacoes/perguntas-e-respostas/cnpj/cnpj-alfanumerico.pdf",
+  "alphanumeric": {
+    "canonical": "12ABC34501DE35",
+    "formatted": "12.ABC.345/01DE-35",
+    "base": "12ABC34501DE",
+    "dv1": "3",
+    "dv2": "5"
+  },
+  "numeric": {
+    "canonical": "11222333000181",
+    "formatted": "11.222.333/0001-81"
+  }
+}

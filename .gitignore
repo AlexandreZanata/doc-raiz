@@ -16,3 +16,11 @@
 __pycache__/
 .venv/
 venv/
+
+# Node / monorepo
+node_modules/
+dist/
+coverage/
+.turbo/
+.next/
+*.tsbuildinfo
