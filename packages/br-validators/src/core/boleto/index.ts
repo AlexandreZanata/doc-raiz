@@ -11,14 +11,19 @@ import {
 } from './convert.js';
 import { detectBoletoInputKind } from './detect.js';
 import { validateLinhaDigitavel } from './linha-digitavel.js';
+import { validateSemanticFields } from './semantic.js';
 
 export {
   BOLETO_CODIGO_BARRAS_LENGTH,
+  BOLETO_CODE_ISPB_HOLDER,
+  BOLETO_CURRENCY_ISPB,
   BOLETO_CURRENCY_REAL,
   BOLETO_GOLDEN_CODIGO_BARRAS,
   BOLETO_GOLDEN_CODIGO_BARRAS_BB,
+  BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2,
   BOLETO_GOLDEN_LINHA_BB_STRIPPED,
   BOLETO_GOLDEN_LINHA_MASKED,
+  BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED,
   BOLETO_GOLDEN_LINHA_STRIPPED,
   BOLETO_LAYOUTS_PORTAL_URL,
   BOLETO_LINHA_LENGTH,
@@ -27,6 +32,12 @@ export {
 export { computeModulo10FieldDv } from './modulo10.js';
 export { computeModulo11BarcodeDv } from './modulo11.js';
 export { detectBoletoInputKind, type DetectedBoletoInputKind } from './detect.js';
+export {
+  detectBoletoSituacao,
+  toBoletoSituacaoCode,
+  type BoletoSituacaoCode,
+  type BoletoSituacaoKind,
+} from './detect-situacao.js';
 export {
   convertCodigoBarrasToLinhaDigits,
   convertLinhaToCodigoBarrasDigits,
@@ -38,9 +49,14 @@ export {
 } from './linha-digitavel.js';
 export { applyLinhaDigitavelMask } from './mask.js';
 export { stripCodigoBarras, validateCodigoBarras } from './codigo-barras.js';
+export { validateFatorVencimento, type FatorVencimentoValidationResult } from './fator-vencimento.js';
+export { validateValorDocumento, type ValorDocumentoValidationResult } from './valor-documento.js';
+export { validateSemanticFields } from './semantic.js';
 
 export type ValidateBoletoOptions = {
   kind?: BoletoInputKind;
+  validateDueFactor?: boolean;
+  validateAmount?: boolean;
 };
 
 type FailedResult = Extract<BoletoValidationResult, { ok: false }>;
@@ -49,13 +65,23 @@ function failure(code: FailedResult['code'], message: string, inputKind?: Boleto
   return { ok: false, code, message, ...(inputKind ? { inputKind } : {}) };
 }
 
-function isArrecadacao48(input: string): boolean {
-  const digits = input.replace(/\D/g, '');
-  return digits.length === 48 && digits.startsWith('8');
-}
+function validateByKind(input: string, kind: BoletoInputKind, options?: ValidateBoletoOptions): BoletoValidationResult {
+  const result = kind === 'linha-digitavel' ? validateLinhaDigitavel(input) : validateCodigoBarras(input);
+  if (!result.ok) {
+    return result;
+  }
 
-function validateByKind(input: string, kind: BoletoInputKind): BoletoValidationResult {
-  return kind === 'linha-digitavel' ? validateLinhaDigitavel(input) : validateCodigoBarras(input);
+  const barcode =
+    kind === 'linha-digitavel'
+      ? convertLinhaToCodigoBarrasDigits(result.value)
+      : result.value;
+
+  const semanticError = validateSemanticFields(barcode, options ?? {}, kind);
+  if (semanticError) {
+    return semanticError;
+  }
+
+  return result;
 }
 
 export function isValidBoleto(input: string, options?: ValidateBoletoOptions): boolean {
@@ -68,11 +94,11 @@ export function validateBoleto(input: string, options?: ValidateBoletoOptions): 
     return failure('EMPTY_INPUT', 'Boleto input is empty');
   }
 
-  if (isArrecadacao48(trimmed)) {
-    return failure('UNSUPPORTED_FORMAT', '48-digit arrecadação slips are not supported in v1');
-  }
-
   const detected = detectBoletoInputKind(trimmed);
+
+  if (detected === 'arrecadacao') {
+    return failure('UNSUPPORTED_FORMAT', '48-digit arrecadação slips are not supported');
+  }
 
   if (options?.kind !== undefined) {
     if (detected !== 'unknown' && detected !== options.kind) {
@@ -82,14 +108,14 @@ export function validateBoleto(input: string, options?: ValidateBoletoOptions): 
         options.kind,
       );
     }
-    return validateByKind(trimmed, options.kind);
+    return validateByKind(trimmed, options.kind, options);
   }
 
   if (detected === 'unknown') {
     return failure('UNSUPPORTED_FORMAT', 'Boleto input kind could not be determined');
   }
 
-  return validateByKind(trimmed, detected);
+  return validateByKind(trimmed, detected, options);
 }
 
 export function convertLinhaToCodigoBarras(input: string): BoletoValidationResult {
@@ -103,6 +129,7 @@ export function convertLinhaToCodigoBarras(input: string): BoletoValidationResul
     value: brandCodigoBarras(barcode),
     inputKind: 'codigo-barras',
     format: 'codigo-barras',
+    situacao: result.situacao,
   };
 }
 
@@ -117,5 +144,6 @@ export function convertCodigoBarrasToLinhaDigitavel(input: string): BoletoValida
     value: brandLinhaDigitavel(linha),
     inputKind: 'linha-digitavel',
     format: 'linha-digitavel',
+    situacao: result.situacao,
   };
 }

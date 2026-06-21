@@ -1,0 +1,33 @@
+{
+  "source": "FEBRABAN Convenção da Cobrança FB-0061/2021 — Anexos IX, X",
+  "url": "https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf",
+  "modulo10": [
+    {
+      "digits": "000000000",
+      "expectedDv": 0,
+      "note": "Anexo IX — remainder zero yields DV 0"
+    },
+    {
+      "digits": "900000000",
+      "expectedDv": 1,
+      "note": "Anexo IX — product 18 digit-sum path (9×2)"
+    }
+  ],
+  "modulo11": [
+    {
+      "digits43": "0000000000000000000000000000000000000000000",
+      "expectedDv": 1,
+      "note": "Anexo X — remainder 0 maps to DV 1"
+    },
+    {
+      "digits43": "0000000000000000000000000000000900000000000",
+      "expectedDv": 1,
+      "note": "Anexo X — remainder 1 maps to DV 1"
+    },
+    {
+      "digits43": "0000000000000000000000000000000000600000000",
+      "expectedDv": 1,
+      "note": "Anexo X — alternate remainder 1 path maps to DV 1"
+    }
+  ]
+}

@@ -50,8 +50,16 @@ export type PixValidationResult =
   | { ok: true; value: PixKey; keyType: PixKeyType; format: DocumentFormat }
   | { ok: false; code: ValidationErrorCode; message: string; keyType?: PixKeyType };
 
+export type BoletoSituacao = '1' | '2';
+
 export type BoletoValidationResult =
-  | { ok: true; value: LinhaDigitavel | CodigoBarras; inputKind: BoletoInputKind; format: DocumentFormat }
+  | {
+      ok: true;
+      value: LinhaDigitavel | CodigoBarras;
+      inputKind: BoletoInputKind;
+      format: DocumentFormat;
+      situacao: BoletoSituacao;
+    }
   | { ok: false; code: ValidationErrorCode; message: string; inputKind?: BoletoInputKind };
 
 export function brandCnpj(value: string): Cnpj {

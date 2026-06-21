@@ -139,9 +139,10 @@
 
 ## Inscrição Estadual (IE)
 
-**Definition:** State tax registration number — **27 different validation algorithms** (one per state + DF).
-**Not the same as:** CNPJ (federal) or IM (municipal).
-**Code name:** `InscricaoEstadual`, `IE`
+**Definition:** State tax registration number — **27 different validation algorithms** (one per state + DF).  
+**Not the same as:** CNPJ (federal) or IM (municipal).  
+**Code name:** `InscricaoEstadual`, `IE`  
+**Algorithm index:** [IE-STATE-ALGORITHMS.md](IE-STATE-ALGORITHMS.md) — **v1 implements SP, MT, DF.**
 
 ---
 

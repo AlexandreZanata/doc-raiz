@@ -1,0 +1,28 @@
+{
+  "source": "FEBRABAN fator de vencimento base date 1997-10-07",
+  "url": "https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf",
+  "pairs": [
+    {
+      "factor": "0000",
+      "hasDueDate": false,
+      "note": "No due date"
+    },
+    {
+      "factor": "1450",
+      "hasDueDate": true,
+      "note": "Santander golden barcode factor"
+    }
+  ],
+  "amounts": [
+    {
+      "value": "0000000000",
+      "amountCents": 0,
+      "note": "Variable amount allowed"
+    },
+    {
+      "value": "0000009966",
+      "amountCents": 9966,
+      "note": "Santander golden barcode amount (R$ 99,66)"
+    }
+  ]
+}

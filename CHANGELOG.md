@@ -17,6 +17,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.8.0-alpha.0] - 2026-06-21
+
+Boleto Phase 5b — full cobrança: Situação 2, modulo edge vectors, optional semantics.
+
+### Added
+
+- `detectBoletoSituacao` — Situação 1 (`currency 9`) vs Situação 2 (`code 988`, `currency 0`)
+- Success results include `situacao: '1' | '2'`
+- Golden vectors: `boleto.situacao2.official.json`, `boleto.modulo-edge.json`, `boleto.semantic.official.json`
+- Optional flags: `validateDueFactor`, `validateAmount` on `validateBoleto`
+- `validateFatorVencimento`, `validateValorDocumento`, `validateSemanticFields`
+- `detectBoletoInputKind` returns `arrecadacao` for 48-digit `8…` inputs (validation still rejected)
+- CLI / playground: `situacao` on successful boleto validation
+- BR-BOLETO-011…013, UC-007 AF-4/AF-5
+
+### Fixed
+
+- Docs cite Anexo V §2.3.4 (not Anexo VI) for linha ↔ barcode conversion
+
+---
+
 ## [0.7.0-alpha.0] - 2026-06-21
 
 Unified format layer across all shipped document types (UC-003).

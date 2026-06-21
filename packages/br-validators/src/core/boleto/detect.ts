@@ -7,7 +7,7 @@ import {
   BOLETO_LINHA_LENGTH,
 } from './constants.js';
 
-export type DetectedBoletoInputKind = 'linha-digitavel' | 'codigo-barras' | 'unknown';
+export type DetectedBoletoInputKind = 'linha-digitavel' | 'codigo-barras' | 'arrecadacao' | 'unknown';
 
 const LINHA_MASK_PATTERN = /^[0-9.\s]+$/;
 
@@ -24,7 +24,7 @@ export function detectBoletoInputKind(input: string): DetectedBoletoInputKind {
   const digits = stripDigits(trimmed);
 
   if (digits.length === 48 && digits.startsWith('8')) {
-    return 'unknown';
+    return 'arrecadacao';
   }
 
   if (digits.length === BOLETO_CODIGO_BARRAS_LENGTH && /^\d+$/.test(digits)) {

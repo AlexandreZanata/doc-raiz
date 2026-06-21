@@ -3,8 +3,10 @@ import {
   BOLETO_CODIGO_BARRAS_LENGTH,
   BOLETO_GOLDEN_CODIGO_BARRAS,
   BOLETO_GOLDEN_CODIGO_BARRAS_BB,
+  BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2,
   BOLETO_GOLDEN_LINHA_BB_STRIPPED,
   BOLETO_GOLDEN_LINHA_MASKED,
+  BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED,
   BOLETO_GOLDEN_LINHA_STRIPPED,
   BOLETO_LINHA_LENGTH,
   BOLETO_OFFICIAL_SOURCE_URL,
@@ -15,6 +17,7 @@ import {
   convertLinhaToCodigoBarras,
   convertLinhaToCodigoBarrasDigits,
   detectBoletoInputKind,
+  detectBoletoSituacao,
   formatLinhaDigitavel,
   isValidBoleto,
   stripCodigoBarras,
@@ -24,6 +27,8 @@ import {
   validateLinhaDigitavel,
 } from '../../../src/core/boleto/index.js';
 import vectors from '../../vectors/boleto.official.json';
+import edgeVectors from '../../vectors/boleto.modulo-edge.json';
+import situacao2Vectors from '../../vectors/boleto.situacao2.official.json';
 
 describe('golden vectors', () => {
   it('matches official source URL', () => {
@@ -46,6 +51,11 @@ describe('golden vectors', () => {
     expect(validateLinhaDigitavel(BOLETO_GOLDEN_LINHA_BB_STRIPPED).ok).toBe(true);
     expect(validateCodigoBarras(BOLETO_GOLDEN_CODIGO_BARRAS_BB).ok).toBe(true);
   });
+
+  it('validates Situação 2 golden pair', () => {
+    expect(validateLinhaDigitavel(BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED).ok).toBe(true);
+    expect(validateCodigoBarras(BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2).ok).toBe(true);
+  });
 });
 
 describe('computeModulo10FieldDv', () => {
@@ -62,8 +72,12 @@ describe('computeModulo10FieldDv', () => {
     expect(computeModulo10FieldDv(linha.slice(21, 31))).toBe(Number(linha.charAt(31)));
   });
 
-  it('returns 0 when remainder is 0', () => {
-    expect(computeModulo10FieldDv('000000000')).toBe(0);
+  it('matches modulo edge remainder-zero vector', () => {
+    const entry = edgeVectors.modulo10.find((item) => item.expectedDv === 0);
+    expect(entry).toBeDefined();
+    if (entry) {
+      expect(computeModulo10FieldDv(entry.digits)).toBe(entry.expectedDv);
+    }
   });
 });
 
@@ -88,7 +102,7 @@ describe('detectBoletoInputKind', () => {
   });
 
   it('returns unknown for arrecadacao 48', () => {
-    expect(detectBoletoInputKind(vectors.negative.arrecadacao48)).toBe('unknown');
+    expect(detectBoletoInputKind(vectors.negative.arrecadacao48)).toBe('arrecadacao');
   });
 
   it('returns unknown for invalid length', () => {
@@ -127,6 +141,15 @@ describe('conversion', () => {
     );
     expect(convertCodigoBarrasToLinhaDigits(BOLETO_GOLDEN_CODIGO_BARRAS_BB)).toBe(
       BOLETO_GOLDEN_LINHA_BB_STRIPPED,
+    );
+  });
+
+  it('round-trips Situação 2 golden pair', () => {
+    expect(convertLinhaToCodigoBarrasDigits(BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED)).toBe(
+      BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2,
+    );
+    expect(convertCodigoBarrasToLinhaDigits(BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2)).toBe(
+      BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED,
     );
   });
 });
@@ -184,8 +207,21 @@ describe('validateLinhaDigitavel rejections', () => {
     if (!result.ok) expect(result.code).toBe('INVALID_CHECK_DIGIT');
   });
 
-  it('rejects non-Real currency', () => {
+  it('rejects non-Real currency for Situação 1', () => {
     const bad = `0338${BOLETO_GOLDEN_LINHA_STRIPPED.slice(4)}`;
+    const result = validateLinhaDigitavel(bad);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('UNSUPPORTED_FORMAT');
+  });
+
+  it('accepts Situação 2 currency indicator 0', () => {
+    const result = validateLinhaDigitavel(BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.situacao).toBe('2');
+  });
+
+  it('rejects code 988 with currency 9 on linha', () => {
+    const bad = `9889${BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED.slice(4)}`;
     const result = validateLinhaDigitavel(bad);
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.code).toBe('UNSUPPORTED_FORMAT');
@@ -225,11 +261,27 @@ describe('validateCodigoBarras rejections', () => {
     if (!result.ok) expect(result.code).toBe('INVALID_CHECK_DIGIT');
   });
 
-  it('rejects non-Real currency', () => {
+  it('rejects non-Real currency for Situação 1', () => {
     const bad = `0338${BOLETO_GOLDEN_CODIGO_BARRAS.slice(4)}`;
     const result = validateCodigoBarras(bad);
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.code).toBe('UNSUPPORTED_FORMAT');
+  });
+
+  it('accepts Situação 2 barcode with code 988 and currency 0', () => {
+    const result = validateCodigoBarras(BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.situacao).toBe('2');
+  });
+
+  it('rejects code 988 with currency 9 on barcode', () => {
+    const bad = `9889${BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2.slice(4)}`;
+    const result = validateCodigoBarras(bad);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.code).toBe('UNSUPPORTED_FORMAT');
+      expect(result.message).toContain('988');
+    }
   });
 });
 
@@ -240,7 +292,47 @@ describe('validateBoleto union', () => {
     if (result.ok) {
       expect(result.inputKind).toBe('linha-digitavel');
       expect(result.format).toBe('linha-digitavel');
+      expect(result.situacao).toBe('1');
     }
+  });
+
+  it('validates Situação 2 linha with situacao 2', () => {
+    const result = validateBoleto(BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.situacao).toBe('2');
+      expect(detectBoletoSituacao(result.value)).toBe('situacao-2');
+    }
+  });
+
+  it('validates semantic flags on Situação 1 barcode', () => {
+    const result = validateBoleto(BOLETO_GOLDEN_CODIGO_BARRAS, {
+      validateDueFactor: true,
+      validateAmount: true,
+    });
+    expect(result.ok).toBe(true);
+  });
+
+  it('skips semantic flags for Situação 2', () => {
+    const result = validateBoleto(BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2, {
+      validateDueFactor: true,
+      validateAmount: true,
+    });
+    expect(result.ok).toBe(true);
+  });
+
+  it('rejects forced kind with invalid structural input', () => {
+    const result = validateBoleto('123', { kind: 'linha-digitavel' });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('INVALID_LENGTH');
+  });
+
+  it('rejects semantic due factor when flag enabled', () => {
+    const withoutDv = `03399998${BOLETO_GOLDEN_CODIGO_BARRAS.slice(9)}`;
+    const rebuilt = `${withoutDv.slice(0, 4)}${String(computeModulo11BarcodeDv(withoutDv))}${withoutDv.slice(4)}`;
+    const result = validateBoleto(rebuilt, { validateDueFactor: true });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('UNSUPPORTED_FORMAT');
   });
 
   it('validates barcode auto-detect', () => {
@@ -260,7 +352,10 @@ describe('validateBoleto union', () => {
   it('rejects arrecadacao 48 on validate', () => {
     const result = validateBoleto(vectors.negative.arrecadacao48);
     expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.code).toBe('UNSUPPORTED_FORMAT');
+    if (!result.ok) {
+      expect(result.code).toBe('UNSUPPORTED_FORMAT');
+      expect(detectBoletoInputKind(vectors.negative.arrecadacao48)).toBe('arrecadacao');
+    }
   });
 
   it('rejects empty input', () => {
@@ -305,6 +400,19 @@ describe('convertLinhaToCodigoBarras / convertCodigoBarrasToLinhaDigitavel', () 
       expect(result.value).toBe(BOLETO_GOLDEN_LINHA_STRIPPED);
       expect(result.inputKind).toBe('linha-digitavel');
     }
+  });
+
+  it('converts valid Situação 2 barcode to linha', () => {
+    const result = convertCodigoBarrasToLinhaDigitavel(BOLETO_GOLDEN_CODIGO_BARRAS_SITUACAO2);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value).toBe(BOLETO_GOLDEN_LINHA_SITUACAO2_STRIPPED);
+      expect(result.situacao).toBe('2');
+    }
+  });
+
+  it('matches situacao2 official vector source', () => {
+    expect(situacao2Vectors.golden.situacao).toBe('2');
   });
 
   it('propagates validation failure', () => {

@@ -83,6 +83,7 @@ export default function BoletoPlaygroundPage() {
           }
         />
         <Row label="Value" value={validation?.ok ? validation.value : '—'} />
+        <Row label="Situação" value={validation?.ok ? validation.situacao : '—'} />
         <Row
           label="Converted"
           value={converted?.ok ? `${converted.inputKind}: ${converted.value}` : '—'}

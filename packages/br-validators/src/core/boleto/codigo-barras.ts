@@ -2,12 +2,13 @@
  * Código de barras validation — modulo 11 general DV (Anexo X).
  * @see BR-BOLETO-003, BR-BOLETO-004, BR-BOLETO-010
  */
-import type { BoletoValidationResult } from '../../types/validation-result.js';
+import type { BoletoSituacao, BoletoValidationResult } from '../../types/validation-result.js';
 import { brandCodigoBarras } from '../../types/validation-result.js';
 import {
   BOLETO_CODIGO_BARRAS_LENGTH,
-  BOLETO_CURRENCY_REAL,
+  BOLETO_CODE_ISPB_HOLDER,
 } from './constants.js';
+import { detectBoletoSituacao, toBoletoSituacaoCode } from './detect-situacao.js';
 import { computeModulo11BarcodeDv } from './modulo11.js';
 
 type FailedResult = Extract<BoletoValidationResult, { ok: false }>;
@@ -34,8 +35,13 @@ export function validateCodigoBarras(input: string): BoletoValidationResult {
     return failure('INVALID_LENGTH', `Código de barras must have ${BOLETO_CODIGO_BARRAS_LENGTH} digits`);
   }
 
-  if (trimmed.charAt(3) !== BOLETO_CURRENCY_REAL) {
-    return failure('UNSUPPORTED_FORMAT', 'Bank boleto currency code must be 9 (Real)');
+  const situacaoKind = detectBoletoSituacao(trimmed);
+  if (situacaoKind === 'unknown') {
+    const isIspbHolder = trimmed.slice(0, 3) === BOLETO_CODE_ISPB_HOLDER;
+    const message = isIspbHolder
+      ? 'ISPB holder boleto (code 988) requires currency indicator 0 (Situação 2)'
+      : 'Bank boleto currency code must be 9 (Real) for Situação 1';
+    return failure('UNSUPPORTED_FORMAT', message);
   }
 
   if (trimmed.charAt(4) === '0') {
@@ -47,10 +53,12 @@ export function validateCodigoBarras(input: string): BoletoValidationResult {
     return failure('INVALID_CHECK_DIGIT', 'Código de barras check digit is invalid');
   }
 
+  const situacao = toBoletoSituacaoCode(situacaoKind) as BoletoSituacao;
   return {
     ok: true,
     value: brandCodigoBarras(trimmed),
     inputKind: 'codigo-barras',
     format: 'codigo-barras',
+    situacao,
   };
 }

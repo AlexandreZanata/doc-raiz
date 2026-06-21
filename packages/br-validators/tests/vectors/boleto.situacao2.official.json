@@ -1,0 +1,11 @@
+{
+  "source": "FEBRABAN Convenção da Cobrança FB-0061/2021 — Anexo V §2.3.2 / §2.3.4 Situação 2",
+  "url": "https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf",
+  "note": "Synthetic homolog vector — code 988 + currency 0 + ISPB campo 5; modulo DVs verified against Anexos IX/X",
+  "golden": {
+    "linhaStripped": "98801234516789012345767890123457760746948000112",
+    "codigoBarras": "98807607469480001121234567890123456789012345",
+    "ispb": "60746948000112",
+    "situacao": "2"
+  }
+}

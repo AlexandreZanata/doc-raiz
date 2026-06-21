@@ -2,13 +2,14 @@
  * Linha digitável validation — modulo 10 field DVs (Anexo IX).
  * @see BR-BOLETO-002, BR-BOLETO-008
  */
-import type { BoletoValidationResult } from '../../types/validation-result.js';
+import type { BoletoSituacao, BoletoValidationResult } from '../../types/validation-result.js';
 import { brandLinhaDigitavel } from '../../types/validation-result.js';
 import {
-  BOLETO_CURRENCY_REAL,
+  BOLETO_CODE_ISPB_HOLDER,
   BOLETO_LINHA_LENGTH,
 } from './constants.js';
 import { convertLinhaToCodigoBarrasDigits } from './convert.js';
+import { detectBoletoSituacao, toBoletoSituacaoCode } from './detect-situacao.js';
 import { computeModulo10FieldDv } from './modulo10.js';
 import { computeModulo11BarcodeDv } from './modulo11.js';
 
@@ -53,8 +54,13 @@ export function validateLinhaDigitavel(input: string): BoletoValidationResult {
     return failure('INVALID_LENGTH', `Linha digitável must have ${BOLETO_LINHA_LENGTH} digits after normalization`);
   }
 
-  if (stripped.charAt(3) !== BOLETO_CURRENCY_REAL) {
-    return failure('UNSUPPORTED_FORMAT', 'Bank boleto currency code must be 9 (Real)');
+  const situacaoKind = detectBoletoSituacao(stripped);
+  if (situacaoKind === 'unknown') {
+    const isIspbHolder = stripped.slice(0, 3) === BOLETO_CODE_ISPB_HOLDER;
+    const message = isIspbHolder
+      ? 'ISPB holder boleto (code 988) requires currency indicator 0 (Situação 2)'
+      : 'Bank boleto currency code must be 9 (Real) for Situação 1';
+    return failure('UNSUPPORTED_FORMAT', message);
   }
 
   const field1Error = validateFieldDv(stripped.slice(0, 9), stripped.charAt(9), 1);
@@ -81,10 +87,12 @@ export function validateLinhaDigitavel(input: string): BoletoValidationResult {
     return failure('INVALID_CHECK_DIGIT', 'Linha digitável field 4 (barcode DV) is invalid');
   }
 
+  const situacao = toBoletoSituacaoCode(situacaoKind) as BoletoSituacao;
   return {
     ok: true,
     value: brandLinhaDigitavel(stripped),
     inputKind: 'linha-digitavel',
     format: 'linha-digitavel',
+    situacao,
   };
 }

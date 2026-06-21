@@ -257,8 +257,11 @@
 
 ### BR-BOLETO-004 — Currency code
 
-- **GIVEN** bank boleto input
+- **GIVEN** bank boleto input (Situação 1)
 - **WHEN** position 4 (currency) ≠ `9`
+- **THEN** reject with `UNSUPPORTED_FORMAT`
+- **GIVEN** ISPB holder input (Situação 2, code `988`)
+- **WHEN** position 4 ≠ `0`
 - **THEN** reject with `UNSUPPORTED_FORMAT`
 
 ### BR-BOLETO-005 — Field 4 consistency
@@ -271,7 +274,7 @@
 
 - **GIVEN** valid linha or barcode
 - **WHEN** converting counterpart
-- **THEN** apply Anexo VI mapping losslessly
+- **THEN** apply Anexo V §2.3.4 mapping losslessly (Situação 1 and 2 share field permutation)
 
 ### BR-BOLETO-007 — Strict kind option
 
@@ -296,6 +299,71 @@
 - **GIVEN** modulo 11 result 0, 10, or 11
 - **WHEN** computing barcode DV
 - **THEN** use DV `1`
+
+### BR-BOLETO-011 — Situação 1 scope (v1) / Situação 2 (5b)
+
+- **GIVEN** código `988` with currency indicator `0`
+- **WHEN** validating linha or barcode
+- **THEN** classify as Situação 2; campo 5 linha = ISPB (14 digits)
+- **GIVEN** standard bank code with currency `9`
+- **WHEN** validating
+- **THEN** classify as Situação 1; campo 5 = fator + valor
+
+### BR-BOLETO-012 — Optional fator vencimento
+
+- **GIVEN** `validateDueFactor: true` on Situação 1 input
+- **WHEN** factor is `0000`
+- **THEN** accept (no due date)
+- **WHEN** factor is `0001`–`9997`
+- **THEN** accept
+- **WHEN** factor is outside range
+- **THEN** reject with `UNSUPPORTED_FORMAT`
+
+### BR-BOLETO-013 — Optional document amount
+
+- **GIVEN** `validateAmount: true` on Situação 1 input
+- **WHEN** amount field is 10-digit centavos
+- **THEN** accept (including `0000000000`)
+
+---
+
+## Inscrição Estadual (IE)
+
+> **Phase 8 v1:** SP, MT, DF only. Full index: [IE-STATE-ALGORITHMS.md](IE-STATE-ALGORITHMS.md).  
+> **UF required** in v1 API (`validateInscricaoEstadual(input, { uf })`).
+
+### BR-IE-001 — UF required
+
+- **GIVEN** IE validation without `uf` option
+- **WHEN** validating in v1
+- **THEN** reject with `UNSUPPORTED_FORMAT` (or require explicit UF per LIBRARY-API)
+
+### BR-IE-SP-001 — São Paulo (12 digits)
+
+- **GIVEN** stripped IE for UF `SP`
+- **WHEN** length ≠ 12 or DVs fail SEFAZ modulo-11 weights
+- **THEN** reject with `INVALID_LENGTH` or `INVALID_CHECK_DIGIT`
+- **Source:** SEFAZ-SP Sintegra rotina (2012-01-05)
+
+### BR-IE-MT-001 — Mato Grosso (9 or 11 digits)
+
+- **GIVEN** IE for UF `MT`
+- **WHEN** validating canonical 9-digit `13XXXXXXD` or legacy 11-digit zero-padded SINTEGRA form
+- **THEN** apply weights `3,2,9,8,7,6,5,4,3,2` on first 10 active digits; modulo-11 DV per SINTEGRA cad_MT
+- **Source:** SEFAZ-MT Portaria Art. 6º + SINTEGRA cad_MT
+
+### BR-IE-DF-001 — Distrito Federal (13 digits)
+
+- **GIVEN** IE for UF `DF` starting with `07`
+- **WHEN** length ≠ 13 or dual DVs fail
+- **THEN** reject; apply weights per SINTEGRA cad_DF
+- **Source:** CF/DF Decreto 18.955/1997 + SINTEGRA cad_DF
+
+### BR-IE-DF-002 — Legacy 12-digit rejection
+
+- **GIVEN** 12-digit DF input from legacy SINTEGRA validators
+- **WHEN** validating against CF/DF 13-digit rules
+- **THEN** reject with `INVALID_LENGTH` unless Phase 8b legacy mode enabled
 
 ---
 

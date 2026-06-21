@@ -30,14 +30,16 @@ describe('runBoletoCommand validate', () => {
       runBoletoCommand('validate', BOLETO_GOLDEN_LINHA_MASKED, { json: false, quiet: false, source: false }, undefined, io),
     ).toBe(EXIT.OK);
     expect(io.stdout[0]).toContain('valid: yes (linha-digitavel)');
+    expect(io.stdout.some((line) => line.startsWith('situacao:'))).toBe(true);
   });
 
   it('validates with json and source', () => {
     const io = { stdout: [] as string[], stderr: [] as string[] };
     runBoletoCommand('validate', BOLETO_GOLDEN_LINHA_STRIPPED, { json: true, quiet: false, source: true }, undefined, io);
-    const parsed = JSON.parse(io.stdout[0]) as { ok: boolean; inputKind?: string; source?: string };
+    const parsed = JSON.parse(io.stdout[0]) as { ok: boolean; inputKind?: string; source?: string; situacao?: string };
     expect(parsed.ok).toBe(true);
     expect(parsed.inputKind).toBe('linha-digitavel');
+    expect(parsed.situacao).toBe('1');
     expect(parsed.source).toBe(BOLETO_OFFICIAL_SOURCE_URL);
   });
 
@@ -243,7 +245,7 @@ describe('print helpers default io', () => {
   it('printBoletoConvert json success', () => {
     const io = { stdout: [] as string[], stderr: [] as string[] };
     printBoletoConvert(
-      { ok: true, value: BOLETO_GOLDEN_CODIGO_BARRAS as never, inputKind: 'codigo-barras', format: 'codigo-barras' },
+      { ok: true, value: BOLETO_GOLDEN_CODIGO_BARRAS as never, inputKind: 'codigo-barras', format: 'codigo-barras', situacao: '1' },
       { json: true, quiet: false },
       io,
     );

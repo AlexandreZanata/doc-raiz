@@ -47,6 +47,7 @@ export function printBoletoValidation(
               value: result.value,
               inputKind: result.inputKind,
               format: result.format,
+              situacao: result.situacao,
               ...(options.source ? { source: options.source } : {}),
             }
           : {
@@ -70,6 +71,7 @@ export function printBoletoValidation(
     io.stdout.push(`valid: yes (${result.inputKind})`);
     io.stdout.push(`value: ${result.value}`);
     io.stdout.push(`format: ${result.format}`);
+    io.stdout.push(`situacao: ${result.situacao}`);
     if (options.source) {
       io.stdout.push(`source: ${options.source}`);
     }

@@ -170,10 +170,13 @@ Phone keys: E.164 with `+55` Brazilian mobile per DICT. EVP: lowercase UUID with
 
 | Function | Signature | Behavior |
 |----------|-----------|----------|
-| `detectBoletoInputKind` | `(input: string) => DetectedBoletoInputKind` | `linha-digitavel` \| `codigo-barras` \| `unknown` |
+| `detectBoletoInputKind` | `(input: string) => DetectedBoletoInputKind` | `linha-digitavel` \| `codigo-barras` \| `arrecadacao` \| `unknown` |
+| `detectBoletoSituacao` | `(stripped: string) => BoletoSituacaoKind` | `situacao-1` \| `situacao-2` \| `unknown` |
 | `validateBoleto` | `(input: string, options?: ValidateBoletoOptions) => BoletoValidationResult` | Auto-detect + validate |
 | `validateLinhaDigitavel` | `(input: string) => BoletoValidationResult` | 47 digits, modulo 10 field DVs |
 | `validateCodigoBarras` | `(input: string) => BoletoValidationResult` | 44 digits, modulo 11 barcode DV |
+| `validateFatorVencimento` | `(factor: string) => FatorVencimentoValidationResult` | Optional semantic (Situação 1) |
+| `validateValorDocumento` | `(value: string) => ValorDocumentoValidationResult` | Optional semantic (Situação 1) |
 | `convertLinhaToCodigoBarras` | `(input: string) => BoletoValidationResult` | Validate linha → return barcode |
 | `convertCodigoBarrasToLinhaDigitavel` | `(input: string) => BoletoValidationResult` | Validate barcode → return linha |
 | `stripLinhaDigitavel` | `(input: string) => string` | Remove non-digits |
@@ -184,13 +187,17 @@ Phone keys: E.164 with `+55` Brazilian mobile per DICT. EVP: lowercase UUID with
 type BoletoInputKind = 'linha-digitavel' | 'codigo-barras';
 
 type BoletoValidationResult =
-  | { ok: true; value: LinhaDigitavel | CodigoBarras; inputKind: BoletoInputKind; format: DocumentFormat }
+  | { ok: true; value: LinhaDigitavel | CodigoBarras; inputKind: BoletoInputKind; format: DocumentFormat; situacao: '1' | '2' }
   | { ok: false; code: ValidationErrorCode; message: string; inputKind?: BoletoInputKind };
 
-type ValidateBoletoOptions = { kind?: BoletoInputKind };
+type ValidateBoletoOptions = {
+  kind?: BoletoInputKind;
+  validateDueFactor?: boolean;
+  validateAmount?: boolean;
+};
 ```
 
-Golden vectors: Santander linha `03399025790899183400671742301014614500000099668` ↔ barcode `03396145000000996689025708991834007174230101`.
+Golden vectors: Santander Situação 1 linha ↔ barcode; Situação 2 pair in `tests/vectors/boleto.situacao2.official.json`.
 
 ---
 

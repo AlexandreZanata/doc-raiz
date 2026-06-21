@@ -18,7 +18,7 @@
 1. Consumer receives linha digitável or código de barras string
 2. `detectBoletoInputKind(input)` → `'linha-digitavel'` or `'codigo-barras'`
 3. `validateBoleto(input)` delegates to per-kind validator
-4. Return `{ ok: true, value, inputKind, format }`
+4. Return `{ ok: true, value, inputKind, format, situacao: '1' | '2' }`
 
 ## Alternate flows
 
@@ -35,7 +35,17 @@
 ### AF-3: Conversion
 
 - **When:** Valid linha or barcode needs counterpart format
-- **Then:** `convertLinhaToCodigoBarras` / `convertCodigoBarrasToLinhaDigitavel` per Anexo VI
+- **Then:** `convertLinhaToCodigoBarras` / `convertCodigoBarrasToLinhaDigitavel` per Anexo V §2.3.4
+
+### AF-4: Situação 2 (ISPB holder, code 988)
+
+- **When:** Linha field 1 starts with `988` and currency indicator `0`
+- **Then:** Validate as Situação 2; campo 5 = ISPB (14 digits); return `situacao: '2'`
+
+### AF-5: Optional semantic flags
+
+- **When:** `validateDueFactor` or `validateAmount` enabled on Situação 1 input
+- **Then:** Apply BR-BOLETO-012 / BR-BOLETO-013 after structural validation
 
 ## Business rules applied
 
@@ -45,6 +55,9 @@
 | BR-BOLETO-002 | Linha field DVs (modulo 10) |
 | BR-BOLETO-003 | Barcode DV (modulo 11) |
 | BR-BOLETO-006 | Linha ↔ barcode conversion |
+| BR-BOLETO-011 | Situação 1 / Situação 2 detection |
+| BR-BOLETO-012 | Optional fator vencimento |
+| BR-BOLETO-013 | Optional document amount |
 
 ## Domain events raised
 
@@ -56,7 +69,7 @@ N/A.
 
 ## Out of scope
 
-- 48-digit arrecadação/concessionária slips (future phase)
+- 48-digit arrecadação/concessionária slips (detected as `arrecadacao`; validation Phase 5c)
 - Bank slip registration / DDA lookup
 - Structured field parse (banco, valor, vencimento)
 

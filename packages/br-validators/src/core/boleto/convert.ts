@@ -1,5 +1,7 @@
 /**
  * Linha digitável ↔ código de barras conversion (Anexo V §2.3.4).
+ * Situação 1 and Situação 2 share the same field permutation; campo 5 semantics differ
+ * (fator+valor vs ISPB 14 digits).
  * @see BR-BOLETO-006
  */
 import { computeModulo10FieldDv } from './modulo10.js';
