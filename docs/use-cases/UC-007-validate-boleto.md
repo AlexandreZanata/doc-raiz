@@ -1,0 +1,66 @@
+# Use Case: UC-007 — Validate boleto (linha digitável + código de barras)
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| ID | UC-007 |
+| Actor | Payment app / billing form |
+| Status | Approved |
+
+## Preconditions
+
+- FEBRABAN Convenção da Cobrança defines bank boleto layout (47-digit linha + 44-digit barcode)
+- Modulo 10 for field DVs; modulo 11 for barcode general DV
+
+## Main flow (happy path)
+
+1. Consumer receives linha digitável or código de barras string
+2. `detectBoletoInputKind(input)` → `'linha-digitavel'` or `'codigo-barras'`
+3. `validateBoleto(input)` delegates to per-kind validator
+4. Return `{ ok: true, value, inputKind, format }`
+
+## Alternate flows
+
+### AF-1: Masked linha digitável
+
+- **When:** Input contains dots/spaces per FEBRABAN display format
+- **Then:** Strip non-digits, validate 47-digit structure and check digits
+
+### AF-2: Strict kind mismatch
+
+- **When:** Consumer forces `kind: 'linha-digitavel'` but input is 44-digit barcode
+- **Then:** Fail with `UNSUPPORTED_FORMAT`
+
+### AF-3: Conversion
+
+- **When:** Valid linha or barcode needs counterpart format
+- **Then:** `convertLinhaToCodigoBarras` / `convertCodigoBarrasToLinhaDigitavel` per Anexo VI
+
+## Business rules applied
+
+| Rule ID | Description |
+|---------|-------------|
+| BR-BOLETO-001 | Input kind detection |
+| BR-BOLETO-002 | Linha field DVs (modulo 10) |
+| BR-BOLETO-003 | Barcode DV (modulo 11) |
+| BR-BOLETO-006 | Linha ↔ barcode conversion |
+
+## Domain events raised
+
+None.
+
+## Authorization
+
+N/A.
+
+## Out of scope
+
+- 48-digit arrecadação/concessionária slips (future phase)
+- Bank slip registration / DDA lookup
+- Structured field parse (banco, valor, vencimento)
+
+## References
+
+- [OFFICIAL-SOURCES.md](../OFFICIAL-SOURCES.md) — FEBRABAN Convenção da Cobrança
+- [LIBRARY-API.md](../LIBRARY-API.md#core-api--boleto)

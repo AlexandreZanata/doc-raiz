@@ -1,0 +1,26 @@
+{
+  "source": "FEBRABAN Convenção da Cobrança FB-0061/2021",
+  "url": "https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf",
+  "golden": {
+    "santander": {
+      "linhaMasked": "03399.02579 08991.834006 71742.301014 6 14500000099668",
+      "linhaStripped": "03399025790899183400671742301014614500000099668",
+      "codigoBarras": "03396145000000996689025708991834007174230101"
+    },
+    "bancoBrasil": {
+      "linhaStripped": "00191234546789012345767890123457112340000001500",
+      "codigoBarras": "00191123400000015001234567890123456789012345"
+    }
+  },
+  "modulo10": {
+    "anexoIxField1": {
+      "digits": "097900000",
+      "expectedDv": 7
+    }
+  },
+  "negative": {
+    "arrecadacao48": "846400000008123456789012345678901234567890123456",
+    "invalidLength": "123",
+    "invalidLinhaCheckDigit": "03399025790899183400671742301014614500000099667"
+  }
+}

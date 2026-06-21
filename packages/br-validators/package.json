@@ -1,6 +1,6 @@
 {
   "name": "br-validators",
-  "version": "0.2.0-rc.0",
+  "version": "0.2.0",
   "description": "100% open-source Brazilian document validators — CPF, CNPJ, CEP, and more",
   "license": "MIT",
   "type": "module",
@@ -34,6 +34,10 @@
     "./pix": {
       "types": "./dist/pix.d.ts",
       "import": "./dist/pix.js"
+    },
+    "./boleto": {
+      "types": "./dist/boleto.d.ts",
+      "import": "./dist/boleto.js"
     }
   },
   "files": [

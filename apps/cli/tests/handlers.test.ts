@@ -3,9 +3,9 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { EXIT } from '../src/constants.js';
-import { handleCepCli, handleCnpjCli, handleCpfCli, handleListCli, handlePisPasepCli, handlePixCli, handlePlacaCli, readInputFile, writeCliIo } from '../src/handlers.js';
+import { handleCepCli, handleCnpjCli, handleCpfCli, handleListCli, handlePisPasepCli, handlePixCli, handleBoletoCli, handlePlacaCli, readInputFile, writeCliIo } from '../src/handlers.js';
 import { createProgram, run } from '../src/program.js';
-import { CEP_GOLDEN_PRIMARY, CNPJ_GOLDEN_ALPHANUMERIC, CPF_GOLDEN_PRIMARY, PIX_GOLDEN_EMAIL, PIS_PASEP_GOLDEN_PRIMARY, PLACA_GOLDEN_MERCOSUL } from 'br-validators';
+import { CEP_GOLDEN_PRIMARY, CNPJ_GOLDEN_ALPHANUMERIC, CPF_GOLDEN_PRIMARY, PIX_GOLDEN_EMAIL, PIS_PASEP_GOLDEN_PRIMARY, PLACA_GOLDEN_MERCOSUL, BOLETO_GOLDEN_LINHA_STRIPPED } from 'br-validators';
 
 describe('handlers', () => {
   it('handleListCli lists types', () => {
@@ -17,6 +17,37 @@ describe('handlers', () => {
     expect(io.stdout).toContain('placa');
     expect(io.stdout).toContain('pis-pasep');
     expect(io.stdout).toContain('pix');
+    expect(io.stdout).toContain('boleto');
+  });
+
+  it('handleBoletoCli validates value', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleBoletoCli('validate', BOLETO_GOLDEN_LINHA_STRIPPED, { quiet: true }, undefined, io)).toBe(EXIT.OK);
+  });
+
+  it('handleBoletoCli detects value', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleBoletoCli('detect', BOLETO_GOLDEN_LINHA_STRIPPED, { quiet: true }, undefined, io)).toBe(EXIT.OK);
+  });
+
+  it('handleBoletoCli converts linha to barras', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(
+      handleBoletoCli('convert', BOLETO_GOLDEN_LINHA_STRIPPED, { quiet: true }, 'linha-to-barras', io),
+    ).toBe(EXIT.OK);
+  });
+
+  it('handleBoletoCli reads value from file', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'br-validators-'));
+    const file = join(dir, 'boleto.txt');
+    writeFileSync(file, BOLETO_GOLDEN_LINHA_STRIPPED, 'utf8');
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleBoletoCli('validate', undefined, { file, quiet: true }, undefined, io)).toBe(EXIT.OK);
+  });
+
+  it('handleBoletoCli returns usage when file unreadable', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleBoletoCli('validate', undefined, { file: '/no/such/file.txt' }, undefined, io)).toBe(EXIT.USAGE);
   });
 
   it('handlePixCli validates value', () => {
@@ -152,7 +183,7 @@ describe('handlers', () => {
 describe('program', () => {
   it('createProgram exposes list and cnpj commands', () => {
     const program = createProgram();
-    expect(program.commands.map((c) => c.name())).toEqual(expect.arrayContaining(['list', 'cnpj', 'cpf', 'cep', 'placa', 'pis-pasep', 'pix']));
+    expect(program.commands.map((c) => c.name())).toEqual(expect.arrayContaining(['list', 'cnpj', 'cpf', 'cep', 'placa', 'pis-pasep', 'pix', 'boleto']));
   });
 
   it('run parses list without throwing', () => {
@@ -216,6 +247,24 @@ describe('program', () => {
     }).not.toThrow();
     expect(() => {
       run(['node', 'br-validators', 'pix', 'detect', PIX_GOLDEN_EMAIL]);
+    }).not.toThrow();
+  });
+
+  it('run parses boleto validate detect convert format strip', () => {
+    expect(() => {
+      run(['node', 'br-validators', 'boleto', 'validate', BOLETO_GOLDEN_LINHA_STRIPPED, '--quiet']);
+    }).not.toThrow();
+    expect(() => {
+      run(['node', 'br-validators', 'boleto', 'detect', BOLETO_GOLDEN_LINHA_STRIPPED]);
+    }).not.toThrow();
+    expect(() => {
+      run(['node', 'br-validators', 'boleto', 'convert', 'linha-to-barras', BOLETO_GOLDEN_LINHA_STRIPPED, '--quiet']);
+    }).not.toThrow();
+    expect(() => {
+      run(['node', 'br-validators', 'boleto', 'format', BOLETO_GOLDEN_LINHA_STRIPPED]);
+    }).not.toThrow();
+    expect(() => {
+      run(['node', 'br-validators', 'boleto', 'strip', BOLETO_GOLDEN_LINHA_STRIPPED]);
     }).not.toThrow();
   });
 });

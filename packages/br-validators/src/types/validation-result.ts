@@ -5,9 +5,13 @@ export type DocumentFormat =
   | 'mercosul'
   | 'email'
   | 'phone'
-  | 'evp';
+  | 'evp'
+  | 'linha-digitavel'
+  | 'codigo-barras';
 
 export type PixKeyType = 'cpf' | 'cnpj' | 'email' | 'phone' | 'evp';
+
+export type BoletoInputKind = 'linha-digitavel' | 'codigo-barras';
 
 export type ValidationErrorCode =
   | 'INVALID_LENGTH'
@@ -31,10 +35,16 @@ export type Cep = string & { readonly __brand: 'Cep' };
 export type Placa = string & { readonly __brand: 'Placa' };
 export type PisPasep = string & { readonly __brand: 'PisPasep' };
 export type PixKey = string & { readonly __brand: 'PixKey' };
+export type LinhaDigitavel = string & { readonly __brand: 'LinhaDigitavel' };
+export type CodigoBarras = string & { readonly __brand: 'CodigoBarras' };
 
 export type PixValidationResult =
   | { ok: true; value: PixKey; keyType: PixKeyType; format: DocumentFormat }
   | { ok: false; code: ValidationErrorCode; message: string; keyType?: PixKeyType };
+
+export type BoletoValidationResult =
+  | { ok: true; value: LinhaDigitavel | CodigoBarras; inputKind: BoletoInputKind; format: DocumentFormat }
+  | { ok: false; code: ValidationErrorCode; message: string; inputKind?: BoletoInputKind };
 
 export function brandCnpj(value: string): Cnpj {
   return value as Cnpj;
@@ -58,4 +68,12 @@ export function brandPisPasep(value: string): PisPasep {
 
 export function brandPixKey(value: string): PixKey {
   return value as PixKey;
+}
+
+export function brandLinhaDigitavel(value: string): LinhaDigitavel {
+  return value as LinhaDigitavel;
+}
+
+export function brandCodigoBarras(value: string): CodigoBarras {
+  return value as CodigoBarras;
 }

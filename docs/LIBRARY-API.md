@@ -21,7 +21,7 @@
 | `br-validators/placa` | License plates |
 | `br-validators/pis-pasep` | PIS / PASEP / NIS / NIT |
 | `br-validators/pix` | PIX keys |
-| `br-validators/boleto` | Boleto (future) |
+| `br-validators/boleto` | Boleto (linha digitável + código de barras) |
 | `br-validators/ie` | State registration (future, per-state) |
 
 ---
@@ -165,13 +165,31 @@ Phone keys: E.164 with `+55` Brazilian mobile per DICT. EVP: lowercase UUID with
 
 ---
 
-## Core API — Boleto (future)
+## Core API — Boleto
 
 | Function | Signature | Behavior |
 |----------|-----------|----------|
-| `validateLinhaDigitavel` | `(input: string) => ValidationResult` | Modulo 10 |
-| `validateCodigoBarras` | `(input: string) => ValidationResult` | 44 digits |
-| `convertLinhaToCodigoBarras` | `(input: string) => ValidationResult` | |
+| `detectBoletoInputKind` | `(input: string) => DetectedBoletoInputKind` | `linha-digitavel` \| `codigo-barras` \| `unknown` |
+| `validateBoleto` | `(input: string, options?: ValidateBoletoOptions) => BoletoValidationResult` | Auto-detect + validate |
+| `validateLinhaDigitavel` | `(input: string) => BoletoValidationResult` | 47 digits, modulo 10 field DVs |
+| `validateCodigoBarras` | `(input: string) => BoletoValidationResult` | 44 digits, modulo 11 barcode DV |
+| `convertLinhaToCodigoBarras` | `(input: string) => BoletoValidationResult` | Validate linha → return barcode |
+| `convertCodigoBarrasToLinhaDigitavel` | `(input: string) => BoletoValidationResult` | Validate barcode → return linha |
+| `stripLinhaDigitavel` | `(input: string) => string` | Remove non-digits |
+| `formatLinhaDigitavel` | `(stripped47: string) => string` | Masked display format |
+| `isValidBoleto` | `(input: string, options?) => boolean` | Boolean wrapper |
+
+```typescript
+type BoletoInputKind = 'linha-digitavel' | 'codigo-barras';
+
+type BoletoValidationResult =
+  | { ok: true; value: LinhaDigitavel | CodigoBarras; inputKind: BoletoInputKind; format: DocumentFormat }
+  | { ok: false; code: ValidationErrorCode; message: string; inputKind?: BoletoInputKind };
+
+type ValidateBoletoOptions = { kind?: BoletoInputKind };
+```
+
+Golden vectors: Santander linha `03399025790899183400671742301014614500000099668` ↔ barcode `03396145000000996689025708991834007174230101`.
 
 ---
 

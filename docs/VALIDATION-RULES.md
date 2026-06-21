@@ -235,6 +235,70 @@
 
 ---
 
+## Boleto (cobrança bancária)
+
+### BR-BOLETO-001 — Input kind detection
+
+- **GIVEN** trimmed input
+- **WHEN** detecting kind
+- **THEN** classify as `linha-digitavel` (47 digits), `codigo-barras` (44 digits), or `unknown`
+
+### BR-BOLETO-002 — Linha field DVs
+
+- **GIVEN** 47-digit linha digitável
+- **WHEN** validating fields 1–3
+- **THEN** each field DV must match modulo 10 (Anexo IX)
+
+### BR-BOLETO-003 — Barcode general DV
+
+- **GIVEN** 44-digit código de barras
+- **WHEN** validating position 5
+- **THEN** DV must match modulo 11 (Anexo X); never `0`
+
+### BR-BOLETO-004 — Currency code
+
+- **GIVEN** bank boleto input
+- **WHEN** position 4 (currency) ≠ `9`
+- **THEN** reject with `UNSUPPORTED_FORMAT`
+
+### BR-BOLETO-005 — Field 4 consistency
+
+- **GIVEN** valid linha digitável
+- **WHEN** field 4 DV checked
+- **THEN** must match modulo 11 of converted barcode
+
+### BR-BOLETO-006 — Conversion
+
+- **GIVEN** valid linha or barcode
+- **WHEN** converting counterpart
+- **THEN** apply Anexo VI mapping losslessly
+
+### BR-BOLETO-007 — Strict kind option
+
+- **GIVEN** forced `kind` option
+- **WHEN** detected kind differs
+- **THEN** reject with `UNSUPPORTED_FORMAT`
+
+### BR-BOLETO-008 — Masked linha
+
+- **GIVEN** linha with dots/spaces
+- **WHEN** validating
+- **THEN** strip non-digits before structural checks
+
+### BR-BOLETO-009 — Arrecadação out of scope
+
+- **GIVEN** 48-digit input starting with `8`
+- **WHEN** validating in v1
+- **THEN** reject with `UNSUPPORTED_FORMAT`
+
+### BR-BOLETO-010 — Barcode DV edge cases
+
+- **GIVEN** modulo 11 result 0, 10, or 11
+- **WHEN** computing barcode DV
+- **THEN** use DV `1`
+
+---
+
 ## Global pipeline rules
 
 ### BR-GLOBAL-001 — Strip before validate

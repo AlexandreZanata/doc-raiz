@@ -7,6 +7,7 @@ const types = [
   { slug: 'placa', label: 'Placa' },
   { slug: 'pis', label: 'PIS/PASEP' },
   { slug: 'pix', label: 'PIX Key' },
+  { slug: 'boleto', label: 'Boleto' },
 ];
 
 export default function HomePage() {

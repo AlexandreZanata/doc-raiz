@@ -6,6 +6,7 @@ import * as cepEntry from '../src/cep.js';
 import * as placaEntry from '../src/placa.js';
 import * as pisPasepEntry from '../src/pis-pasep.js';
 import * as pixEntry from '../src/pix.js';
+import * as boletoEntry from '../src/boleto.js';
 
 describe('package exports', () => {
   it('re-exports CNPJ API from index', () => {
@@ -46,6 +47,14 @@ describe('package exports', () => {
     expect(root.isValidPixKey).toBeTypeOf('function');
   });
 
+  it('re-exports Boleto API from index', () => {
+    expect(root.validateBoleto).toBeTypeOf('function');
+    expect(root.detectBoletoInputKind).toBeTypeOf('function');
+    expect(root.isValidBoleto).toBeTypeOf('function');
+    expect(root.convertLinhaToCodigoBarras).toBeTypeOf('function');
+    expect(root.formatLinhaDigitavel).toBeTypeOf('function');
+  });
+
   it('re-exports CNPJ API from cnpj entry', () => {
     expect(cnpjEntry.validateCnpj).toBe(root.validateCnpj);
   });
@@ -70,5 +79,11 @@ describe('package exports', () => {
     expect(pixEntry.validatePixKey).toBe(root.validatePixKey);
     expect(pixEntry.detectPixKeyType).toBe(root.detectPixKeyType);
     expect(pixEntry.isValidPixKey).toBe(root.isValidPixKey);
+  });
+
+  it('re-exports Boleto API from boleto entry', () => {
+    expect(boletoEntry.validateBoleto).toBe(root.validateBoleto);
+    expect(boletoEntry.detectBoletoInputKind).toBe(root.detectBoletoInputKind);
+    expect(boletoEntry.isValidBoleto).toBe(root.isValidBoleto);
   });
 });

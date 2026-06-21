@@ -6,8 +6,10 @@ import {
   handleListCli,
   handlePisPasepCli,
   handlePixCli,
+  handleBoletoCli,
   handlePlacaCli,
   writeCliIo,
+  type BoletoCliOptions,
   type CepCliOptions,
   type CnpjCliOptions,
   type CpfCliOptions,
@@ -22,7 +24,7 @@ export function createProgram(): Command {
   program
     .name('br-validators')
     .description('100% open-source Brazilian document validators')
-    .version('0.2.0-rc.0');
+    .version('0.2.0');
 
   program
     .command('list')
@@ -152,6 +154,68 @@ export function createProgram(): Command {
       process.exitCode = handlePixCli('validate', value, opts, io);
       writeCliIo(io);
     });
+
+  const boleto = program.command('boleto').description('Boleto — linha digitável + código de barras (FEBRABAN)');
+
+  boleto
+    .command('detect')
+    .description('detect boleto input kind')
+    .argument('[value]', 'Linha digitável or código de barras')
+    .option('--json', 'JSON output')
+    .option('-q, --quiet', 'Exit code only')
+    .option('-f, --file <path>', 'Read value from file')
+    .action((value: string | undefined, opts: BoletoCliOptions) => {
+      const io = { stdout: [] as string[], stderr: [] as string[] };
+      process.exitCode = handleBoletoCli('detect', value, opts, undefined, io);
+      writeCliIo(io);
+    });
+
+  boleto
+    .command('validate')
+    .description('validate a boleto')
+    .argument('[value]', 'Linha digitável or código de barras')
+    .option('--json', 'JSON output')
+    .option('-q, --quiet', 'Exit code only')
+    .option('--source', 'Include official source URL')
+    .option('--kind <kind>', 'Force input kind: linha-digitavel, codigo-barras')
+    .option('-f, --file <path>', 'Read value from file')
+    .action((value: string | undefined, opts: BoletoCliOptions) => {
+      const io = { stdout: [] as string[], stderr: [] as string[] };
+      process.exitCode = handleBoletoCli('validate', value, opts, undefined, io);
+      writeCliIo(io);
+    });
+
+  const convert = boleto.command('convert').description('convert between linha digitável and código de barras');
+
+  for (const direction of ['linha-to-barras', 'barras-to-linha'] as const) {
+    convert
+      .command(direction)
+      .description(`convert boleto ${direction.replace(/-/g, ' ')}`)
+      .argument('[value]', 'Linha digitável or código de barras')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: BoletoCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleBoletoCli('convert', value, opts, direction, io);
+        writeCliIo(io);
+      });
+  }
+
+  for (const action of ['format', 'strip'] as const) {
+    boleto
+      .command(action)
+      .description(`${action} a boleto linha digitável`)
+      .argument('[value]', 'Linha digitável or código de barras')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: BoletoCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleBoletoCli(action, value, opts, undefined, io);
+        writeCliIo(io);
+      });
+  }
 
   return program;
 }

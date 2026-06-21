@@ -1,0 +1,27 @@
+/**
+ * FEBRABAN bank boleto (cobrança) — linha digitável + código de barras.
+ * @see Convenção da Cobrança FB-0061/2021 — Anexos V, VI, IX, X
+ * @see https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf
+ */
+
+export const BOLETO_LINHA_LENGTH = 47;
+export const BOLETO_CODIGO_BARRAS_LENGTH = 44;
+export const BOLETO_CURRENCY_REAL = '9';
+
+export const BOLETO_GOLDEN_LINHA_MASKED =
+  '03399.02579 08991.834006 71742.301014 6 14500000099668';
+export const BOLETO_GOLDEN_LINHA_STRIPPED =
+  '03399025790899183400671742301014614500000099668';
+export const BOLETO_GOLDEN_CODIGO_BARRAS =
+  '03396145000000996689025708991834007174230101';
+
+export const BOLETO_GOLDEN_LINHA_BB_STRIPPED =
+  '00191234546789012345767890123457112340000001500';
+export const BOLETO_GOLDEN_CODIGO_BARRAS_BB =
+  '00191123400000015001234567890123456789012345';
+
+export const BOLETO_OFFICIAL_SOURCE_URL =
+  'https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf';
+
+export const BOLETO_LAYOUTS_PORTAL_URL =
+  'https://portal.febraban.org.br/pagina/3425/33/pt-br/layout-febraban';

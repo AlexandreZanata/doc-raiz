@@ -17,6 +17,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0] - 2026-06-21
+
+Boleto validator across library, CLI, and playground.
+
+### Added
+
+- `packages/br-validators` — boleto validation: linha digitável (47) + código de barras (44)
+- `detectBoletoInputKind`, `validateBoleto`, conversion linha ↔ barcode
+- Modulo 10 field DVs + modulo 11 barcode DV per FEBRABAN Anexos IX/X
+- Subpath export `br-validators/boleto`
+- `apps/cli` — `br-validators boleto validate|detect|convert|format|strip`
+- `apps/playground` — `/boleto` route with detect, validate, converted counterpart
+- UC-007, BR-BOLETO-001…010, golden vectors (Santander + BB)
+
+---
+
 ## [0.2.0-rc.0] - 2026-06-21
 
 PIX key validator across library, CLI, and playground.

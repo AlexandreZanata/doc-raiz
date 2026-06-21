@@ -5,6 +5,7 @@ import { runCpf, type CpfAction } from './commands/cpf.js';
 import { runPlaca, type PlacaAction } from './commands/placa.js';
 import { runPisPasep, type PisPasepAction } from './commands/pis-pasep.js';
 import { runPix, type PixAction } from './commands/pix.js';
+import { runBoleto, type BoletoAction, type BoletoConvertDirection } from './commands/boleto.js';
 import { listSupportedTypes } from './commands/list.js';
 import { EXIT } from './constants.js';
 
@@ -25,6 +26,10 @@ export type PisPasepCliOptions = CnpjCliOptions;
 
 export type PixCliOptions = CnpjCliOptions & {
   type?: 'cpf' | 'cnpj' | 'email' | 'phone' | 'evp';
+};
+
+export type BoletoCliOptions = CnpjCliOptions & {
+  kind?: 'linha-digitavel' | 'codigo-barras';
 };
 
 export type CliIo = { stdout: string[]; stderr: string[] };
@@ -207,6 +212,37 @@ export function handlePixCli(
       type: opts.type,
       file: fileContent,
     },
+    io,
+  );
+}
+
+export function handleBoletoCli(
+  action: BoletoAction,
+  value: string | undefined,
+  opts: BoletoCliOptions,
+  direction?: BoletoConvertDirection,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runBoleto(
+    action,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      source: Boolean(opts.source),
+      kind: opts.kind,
+      file: fileContent,
+    },
+    direction,
     io,
   );
 }
