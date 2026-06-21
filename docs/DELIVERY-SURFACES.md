@@ -109,7 +109,7 @@ br-validators cnpj validate "$CNPJ" --quiet || exit 1
 
 ### URL
 
-Production: `https://br-validators.vercel.app` (TBD at deploy)
+Production: [br-validators.vercel.app](https://br-validators.vercel.app)
 
 ### Pages
 

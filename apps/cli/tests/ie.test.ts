@@ -12,7 +12,7 @@ import {
   IE_MT_GOLDEN_LEGACY,
   IE_SP_GOLDEN,
   IE_SP_OFFICIAL_SOURCE_URL,
-} from 'br-validators';
+} from '@br-validators/core';
 
 describe('resolveInput (ie)', () => {
   it('returns null when missing value and file', () => {

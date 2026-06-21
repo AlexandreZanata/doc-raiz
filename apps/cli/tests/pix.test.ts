@@ -7,7 +7,7 @@ import {
   runPix,
   runPixCommand,
 } from '../src/commands/pix.js';
-import { PIX_GOLDEN_CPF, PIX_GOLDEN_EMAIL, PIX_OFFICIAL_SOURCE_URL } from 'br-validators';
+import { PIX_GOLDEN_CPF, PIX_GOLDEN_EMAIL, PIX_OFFICIAL_SOURCE_URL } from '@br-validators/core';
 
 describe('resolveInput (pix)', () => {
   it('returns null when missing value and file', () => {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { EXIT } from '../src/constants.js';
 import { resolveInput, runCep, runCepCommand } from '../src/commands/cep.js';
-import { CEP_GOLDEN_PRIMARY, CEP_OFFICIAL_SOURCE_URL } from 'br-validators';
+import { CEP_GOLDEN_PRIMARY, CEP_OFFICIAL_SOURCE_URL } from '@br-validators/core';
 
 describe('resolveInput (cep)', () => {
   it('returns null when missing value and file', () => {

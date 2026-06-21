@@ -10,7 +10,7 @@ import {
   stripInscricaoEstadual,
   validateInscricaoEstadual,
   type UfCode,
-} from 'br-validators';
+} from '@br-validators/core';
 
 const UF_SAMPLES: Record<UfCode, string> = {
   AC: '0113253877910',

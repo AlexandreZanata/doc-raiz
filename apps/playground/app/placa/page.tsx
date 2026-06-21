@@ -9,7 +9,7 @@ import {
   formatPlaca,
   stripPlaca,
   validatePlaca,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function PlacaPlaygroundPage() {
   const [input, setInput] = useState('ABC1D23');

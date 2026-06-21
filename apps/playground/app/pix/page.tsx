@@ -8,7 +8,7 @@ import {
   detectPixKeyType,
   formatPixKey,
   validatePixKey,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function PixPlaygroundPage() {
   const [input, setInput] = useState('pix@bcb.gov.br');

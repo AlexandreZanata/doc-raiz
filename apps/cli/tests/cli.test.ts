@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { EXIT } from '../src/constants.js';
 import { listSupportedTypes } from '../src/commands/list.js';
 import { resolveInput, runCnpj, runCnpjCommand } from '../src/commands/cnpj.js';
-import { CNPJ_GOLDEN_ALPHANUMERIC, CNPJ_OFFICIAL_SOURCE_URL } from 'br-validators';
+import { CNPJ_GOLDEN_ALPHANUMERIC, CNPJ_OFFICIAL_SOURCE_URL } from '@br-validators/core';
 import { printFormat, printStrip, printValidation } from '../src/output.js';
 
 describe('listSupportedTypes', () => {

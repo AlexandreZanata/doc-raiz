@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { EXIT } from '../src/constants.js';
 import { resolveInput, runCartaoCredito, runCartaoCreditoCommand } from '../src/commands/cartao-credito.js';
-import { CARTAO_GOLDEN_VISA, CARTAO_GOLDEN_VISA_MASKED } from 'br-validators';
+import { CARTAO_GOLDEN_VISA, CARTAO_GOLDEN_VISA_MASKED } from '@br-validators/core';
 
 describe('resolveInput (cartao-credito)', () => {
   it('returns null when missing value and file', () => {

@@ -6,7 +6,7 @@ import {
   CARTAO_GOLDEN_VISA,
   CARTAO_GOLDEN_VISA_MASKED,
   CARTAO_OFFICIAL_SOURCE_URL,
-} from 'br-validators';
+} from '@br-validators/core';
 
 describe('resolveInput (cartao)', () => {
   it('returns null when missing value and file', () => {

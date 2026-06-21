@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+### Changed
 
-- n/a
+- npm package renamed to `@br-validators/core` (unscoped `br-validators` on npm is a different project)
 
 ---
 

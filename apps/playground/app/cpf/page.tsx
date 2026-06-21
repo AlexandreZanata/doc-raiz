@@ -7,7 +7,7 @@ import {
   formatCpf,
   stripCpf,
   validateCpf,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function CpfPlaygroundPage() {
   const [input, setInput] = useState('123.456.789-09');

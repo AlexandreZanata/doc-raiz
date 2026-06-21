@@ -7,7 +7,7 @@ import {
   formatPisPasep,
   stripPisPasep,
   validatePisPasep,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function PisPlaygroundPage() {
   const [input, setInput] = useState('100.27230.88-8');

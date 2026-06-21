@@ -1,21 +1,42 @@
 {
   "name": "@br-validators/cli",
   "version": "0.10.0-alpha.0",
+  "description": "Terminal CLI for Brazilian document validation — CPF, CNPJ, CEP, IE, PIX, boleto, and more",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexandreZanata/doc-raiz.git",
+    "directory": "apps/cli"
+  },
+  "homepage": "https://github.com/AlexandreZanata/doc-raiz#readme",
+  "bugs": {
+    "url": "https://github.com/AlexandreZanata/doc-raiz/issues"
+  },
+  "keywords": [
+    "brazil",
+    "cli",
+    "validator",
+    "cpf",
+    "cnpj"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "br-validators": "./dist/index.js"
   },
   "scripts": {
     "build": "tsup",
-    "pretypecheck": "pnpm --filter br-validators build",
+    "prepublishOnly": "pnpm run build",
+    "pretypecheck": "pnpm --filter @br-validators/core build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests --max-warnings 0"
   },
   "dependencies": {
-    "br-validators": "workspace:*",
+    "@br-validators/core": "workspace:*",
     "commander": "^13.1.0"
   },
   "devDependencies": {
@@ -24,5 +45,9 @@
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }

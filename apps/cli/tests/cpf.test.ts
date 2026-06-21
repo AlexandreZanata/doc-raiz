@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { EXIT } from '../src/constants.js';
 import { resolveInput, runCpf, runCpfCommand } from '../src/commands/cpf.js';
-import { CPF_GOLDEN_PRIMARY, CPF_OFFICIAL_SOURCE_URL } from 'br-validators';
+import { CPF_GOLDEN_PRIMARY, CPF_OFFICIAL_SOURCE_URL } from '@br-validators/core';
 
 describe('resolveInput (cpf)', () => {
   it('returns null when missing value and file', () => {

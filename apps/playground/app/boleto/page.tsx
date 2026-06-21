@@ -10,7 +10,7 @@ import {
   detectBoletoInputKind,
   formatBoleto,
   validateBoleto,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function BoletoPlaygroundPage() {
   const [input, setInput] = useState('03399.02579 08991.834006 71742.301014 6 14500000099668');

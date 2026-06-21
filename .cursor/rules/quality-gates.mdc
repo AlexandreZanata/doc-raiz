@@ -50,7 +50,7 @@ Example mandatory vector: CNPJ `12ABC34501DE35` (RFB FAQ Q14).
 
 ## Agent behavior
 
-1. After editing `packages/br-validators/src/**`, run `pnpm --filter br-validators test:coverage`.
+1. After editing `packages/br-validators/src/**`, run `pnpm --filter @br-validators/core test:coverage`.
 2. After any TS/TSX edit, run `pnpm lint`.
 3. If coverage drops below 100%, add **real** tests — not snapshot-only or empty asserts.
 4. Never claim "tests pass" without running commands.

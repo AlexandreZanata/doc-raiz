@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { EXIT } from '../src/constants.js';
 import { resolveInput, runPisPasep, runPisPasepCommand } from '../src/commands/pis-pasep.js';
-import { PIS_PASEP_GOLDEN_PRIMARY, PIS_PASEP_OFFICIAL_SOURCE_URL } from 'br-validators';
+import { PIS_PASEP_GOLDEN_PRIMARY, PIS_PASEP_OFFICIAL_SOURCE_URL } from '@br-validators/core';
 
 describe('resolveInput (pis-pasep)', () => {
   it('returns null when missing value and file', () => {

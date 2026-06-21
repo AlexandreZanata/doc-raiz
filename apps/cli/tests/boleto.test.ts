@@ -15,7 +15,7 @@ import {
   BOLETO_GOLDEN_LINHA_MASKED,
   BOLETO_GOLDEN_LINHA_STRIPPED,
   BOLETO_OFFICIAL_SOURCE_URL,
-} from 'br-validators';
+} from '@br-validators/core';
 
 describe('resolveInput (boleto)', () => {
   it('returns null when missing value and file', () => {

@@ -1,4 +1,4 @@
-import type { FormatResult, ValidationResult } from 'br-validators';
+import type { FormatResult, ValidationResult } from '@br-validators/core';
 import { EXIT } from './constants.js';
 
 export type CliOutput = {

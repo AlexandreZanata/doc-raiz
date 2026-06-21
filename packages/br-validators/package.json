@@ -1,9 +1,32 @@
 {
-  "name": "br-validators",
+  "name": "@br-validators/core",
   "version": "0.10.0-alpha.0",
-  "description": "100% open-source Brazilian document validators — CPF, CNPJ, CEP, and more",
+  "description": "100% open-source Brazilian document validators — CPF, CNPJ, CEP, IE (27 UFs), PIX, boleto, and more",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexandreZanata/doc-raiz.git",
+    "directory": "packages/br-validators"
+  },
+  "homepage": "https://github.com/AlexandreZanata/doc-raiz#readme",
+  "bugs": {
+    "url": "https://github.com/AlexandreZanata/doc-raiz/issues"
+  },
+  "keywords": [
+    "brazil",
+    "cpf",
+    "cnpj",
+    "cep",
+    "validator",
+    "inscricao-estadual",
+    "pix",
+    "boleto",
+    "typescript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -49,10 +72,12 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "tsup",
+    "prepublishOnly": "pnpm run build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src tests --max-warnings 0",

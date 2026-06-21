@@ -23,7 +23,7 @@ importers:
 
   apps/cli:
     dependencies:
-      br-validators:
+      '@br-validators/core':
         specifier: workspace:*
         version: link:../../packages/br-validators
       commander:
@@ -48,7 +48,7 @@ importers:
 
   apps/playground:
     dependencies:
-      br-validators:
+      '@br-validators/core':
         specifier: workspace:*
         version: link:../../packages/br-validators
       next:

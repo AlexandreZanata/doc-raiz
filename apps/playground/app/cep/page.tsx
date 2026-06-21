@@ -7,7 +7,7 @@ import {
   formatCep,
   stripCep,
   validateCep,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function CepPlaygroundPage() {
   const [input, setInput] = useState('01310-100');

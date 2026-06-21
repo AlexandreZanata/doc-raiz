@@ -9,7 +9,7 @@ import {
   validateBoleto,
   type BoletoInputKind,
   type BoletoValidationResult,
-} from 'br-validators';
+} from '@br-validators/core';
 import { EXIT } from '../constants.js';
 import { printFormat } from '../output.js';
 

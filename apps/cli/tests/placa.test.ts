@@ -7,7 +7,7 @@ import {
   PLACA_GOLDEN_LEGACY,
   PLACA_GOLDEN_MERCOSUL,
   PLACA_OFFICIAL_SOURCE_URL,
-} from 'br-validators';
+} from '@br-validators/core';
 
 describe('resolveInput (placa)', () => {
   it('returns null when missing value and file', () => {

@@ -7,7 +7,7 @@ import {
   formatCnpj,
   stripCnpj,
   validateCnpj,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function CnpjPlaygroundPage() {
   const [input, setInput] = useState('12.ABC.345/01DE-35');

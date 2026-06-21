@@ -9,7 +9,7 @@ import {
   formatCartaoCredito,
   stripCartaoCredito,
   validateCartaoCredito,
-} from 'br-validators';
+} from '@br-validators/core';
 
 export default function CartaoPlaygroundPage() {
   const [input, setInput] = useState(CARTAO_GOLDEN_VISA_MASKED);

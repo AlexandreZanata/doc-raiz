@@ -2,105 +2,104 @@
 
 > Phased delivery. Each module ships in **library + CLI + playground** (see [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md)).
 > **TypeScript first** — [TECH-STACK.md](TECH-STACK.md).
+> **npm:** `@br-validators/core` + `@br-validators/cli` · **Current:** `v0.10.0-alpha.0`
 
 ---
 
-## Phase 0 — Foundation
+## Phase 0 — Foundation ✅
 
 - [x] Project documentation (`docs/`)
 - [x] Official sources catalog
 - [x] Architecture, **TECH-STACK**, **DELIVERY-SURFACES**
 - [x] MIT license + governance
-- [ ] **Monorepo scaffold** — `packages/br-validators`, `apps/cli`, `apps/playground`
-- [ ] pnpm workspaces + CI
-- [ ] Vercel project → `apps/playground`
+- [x] **Monorepo scaffold** — `packages/br-validators`, `apps/cli`, `apps/playground`
+- [x] pnpm workspaces + CI (GitHub Actions)
+- [x] Vercel project → `apps/playground` ([br-validators.vercel.app](https://br-validators.vercel.app))
 
 ---
 
-## Phase 1 — CNPJ (v0.1.0-alpha)
-
-**Target:** Before SEFAZ homologation peak (Q2 2026)
+## Phase 1 — CNPJ (v0.1.0-alpha) ✅
 
 | Deliverable | CNPJ |
 |-------------|------|
 | Library | `validateCnpj`, `formatCnpj`, `stripCnpj` — numeric + alphanumeric |
 | CLI | `br-validators cnpj validate\|format\|strip` + `--json` |
-| Playground | `/cnpj` on Vercel |
+| Playground | `/cnpj` |
 | Source | [RFB CNPJ alfanumérico PDF](OFFICIAL-SOURCES.md) |
 
 **Release criteria:** Golden vector `12ABC34501DE35`; all three surfaces live.
 
 ---
 
-## Phase 1b — CPF + CEP (v0.1.0-beta)
+## Phase 1b — CPF + CEP (v0.1.0-beta) ✅
 
 | Module | Library | CLI | Playground | Source |
 |--------|---------|-----|------------|--------|
 | **CPF** | ✓ | ✓ | `/cpf` | RFB |
 | **CEP** | ✓ | ✓ | `/cep` | Correios |
 
-Shared: strip/format pipeline, branded types `Cpf`, `Cep`.
-
 ---
 
-## Phase 2 — Enterprise fields (v0.2.0)
+## Phase 2 — Enterprise fields (v0.2.0) ✅
 
 | Module | Library | CLI | Playground | Source |
 |--------|---------|-----|------------|--------|
 | **Placa** | ✓ | ✓ | `/placa` | CONTRAN 729/2018 |
-| **PIX key** | ✓ | ✓ | `/pix` | 0.2.0-rc.0 |
-| **Cartão (Luhn)** | ✓ | ✓ | `/cartao` | 0.3.0-alpha.0 · ISO 7812 |
+| **PIX key** | ✓ | ✓ | `/pix` | Bacen DICT |
+| **Cartão (Luhn)** | ✓ | ✓ | `/cartao` | ISO 7812 |
 
 ---
 
-## Phase 3 — Financial (v0.3.0)
+## Phase 3 — Financial (v0.3.0) — partial ✅
 
-| Module | Library | CLI | Playground | Source |
+| Module | Library | CLI | Playground | Status |
 |--------|---------|-----|------------|--------|
-| **Boleto** | ✓ | ✓ | `/boleto` | FEBRABAN |
-| **BR Code** | ✓ | ✓ | `/brcode` | Bacen Manual BR Code |
+| **Boleto cobrança** | ✓ | ✓ | `/boleto` | Situação 1 + 2 shipped |
+| **BR Code** | — | — | — | **Backlog** — PIX keys shipped; QR payload parsing deferred to v1.1+ |
+| **Boleto arrecadação** | detect only | — | — | **Backlog** — 48-digit `8…` detected, not validated (Phase 5c) |
 
 ---
 
-## Phase 4 — Extended tax IDs (v1.0.0)
+## Phase 4 — Extended tax IDs (v0.10.0-alpha) ✅
 
-| Module | Library | CLI | Playground | Source |
+| Module | Library | CLI | Playground | Status |
 |--------|---------|-----|------------|--------|
-| **PIS/PASEP** | ✓ | ✓ | `/pis` | 0.2.0-beta.0 |
-| **IE (per state)** | ✓ | ✓ | `/ie` | SEFAZ |
+| **PIS/PASEP** | ✓ | ✓ | `/pis` | Shipped |
+| **IE (27 UFs)** | ✓ | ✓ | `/ie` | All states shipped |
 | **Alphanumeric CPF** | Blocked | — | — | RFB spec TBD |
 
 ---
 
-## Language ports (post v1.0 — not parallel)
+## v1.0.0 target (next milestone)
+
+| Requirement | Status |
+|-------------|--------|
+| All Phase 1–4 validators stable | Partial — pre-1.0 alpha |
+| npm publish `@br-validators/core` + `@br-validators/cli` | v0.10.0-alpha.0 |
+| GitHub Releases with changelog | v0.10.0-alpha.0 |
+| Playground on Vercel | Deployed |
+| Security audit | Pending |
+| API freeze (SemVer guarantees) | Pending |
+
+**Deferred to post-v1.0 or v1.1:**
+
+- BR Code payload parsing (Bacen Manual BR Code)
+- Boleto arrecadação validation
+- Alphanumeric CPF (when RFB publishes spec)
+- IE SP rural `P…` format
+- `@br-validators/adapters-correios` — CEP HTTP lookup
+- `@br-validators/react` — masked input hooks
+- Playwright E2E for playground
+
+---
+
+## Language ports (post v1.0)
 
 | Order | Language | Package | When |
 |-------|----------|---------|------|
-| 1 | **TypeScript** | npm `br-validators` | Phases 0–4 |
-| 2 | PHP | Composer | After TS v1.0 if demand (legacy autopeças/lojista) |
+| 1 | **TypeScript** | `@br-validators/core` | Phases 0–4 |
+| 2 | PHP | Composer | After TS v1.0 if demand |
 | 3 | Python | PyPI | If demand |
-
-Ports use TS golden vectors as spec — no reimplementation from scratch.
-
----
-
-## Marketing milestones
-
-| Milestone | Surfaces |
-|-----------|----------|
-| Alpha CNPJ alphanumeric | npm + CLI + Vercel `/cnpj` |
-| Beta CPF/CEP | Playground tabs + CLI commands |
-| v0.2.0 | Full enterprise kit — placa + PIX |
-| v1.0.0 | Stable SemVer + security audit |
-
----
-
-## Backlog
-
-- `@br-validators/react` — masked input hooks (OSS)
-- `@br-validators/adapters-correios` — CEP HTTP (OSS)
-- pt-BR error messages (optional i18n pack)
-- Playwright E2E for playground
 
 ---
 
@@ -108,6 +107,6 @@ Ports use TS golden vectors as spec — no reimplementation from scratch.
 
 | Event | Action |
 |-------|--------|
-| RFB excluded CNPJ letters list published | Patch library + CLI + playground source text |
+| RFB excluded CNPJ letters list published | Patch library + CLI + playground |
 | RFB alphanumeric CPF spec | New module — all three surfaces |
 | SEFAZ algorithm change | Patch ≤ 48h per [SECURITY.md](../SECURITY.md) |

@@ -3,7 +3,7 @@ import {
   formatCnpj,
   stripCnpj,
   validateCnpj,
-} from 'br-validators';
+} from '@br-validators/core';
 import { EXIT } from '../constants.js';
 import { printFormat, printStrip, printValidation } from '../output.js';
 

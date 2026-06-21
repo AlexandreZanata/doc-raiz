@@ -6,7 +6,7 @@ import {
   validateCartaoCredito,
   type CardBrand,
   type CartaoCreditoValidationResult,
-} from 'br-validators';
+} from '@br-validators/core';
 import { EXIT } from '../constants.js';
 import { printFormat, printStrip } from '../output.js';
 
