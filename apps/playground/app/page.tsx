@@ -3,6 +3,7 @@ import Link from 'next/link';
 const types = [
   { slug: 'cnpj', label: 'CNPJ' },
   { slug: 'cpf', label: 'CPF' },
+  { slug: 'cep', label: 'CEP' },
 ];
 
 export default function HomePage() {
@@ -10,7 +11,7 @@ export default function HomePage() {
     <main style={{ maxWidth: 720, margin: '0 auto', padding: '3rem 1.5rem' }}>
       <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>BR Validators Playground</h1>
       <p style={{ color: '#9aa5bd', marginBottom: '2rem' }}>
-        100% open-source · client-side validation · official RFB algorithms
+        100% open-source · client-side validation · official algorithms
       </p>
       <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gap: '0.75rem' }}>
         {types.map((t) => (

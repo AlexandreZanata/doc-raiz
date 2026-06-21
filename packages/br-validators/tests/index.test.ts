@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import * as root from '../src/index.js';
 import * as cnpjEntry from '../src/cnpj.js';
 import * as cpfEntry from '../src/cpf.js';
+import * as cepEntry from '../src/cep.js';
 
 describe('package exports', () => {
   it('re-exports CNPJ API from index', () => {
@@ -16,11 +17,21 @@ describe('package exports', () => {
     expect(root.formatCpf).toBeTypeOf('function');
   });
 
+  it('re-exports CEP API from index', () => {
+    expect(root.validateCep).toBeTypeOf('function');
+    expect(root.stripCep).toBeTypeOf('function');
+    expect(root.formatCep).toBeTypeOf('function');
+  });
+
   it('re-exports CNPJ API from cnpj entry', () => {
     expect(cnpjEntry.validateCnpj).toBe(root.validateCnpj);
   });
 
   it('re-exports CPF API from cpf entry', () => {
     expect(cpfEntry.validateCpf).toBe(root.validateCpf);
+  });
+
+  it('re-exports CEP API from cep entry', () => {
+    expect(cepEntry.validateCep).toBe(root.validateCep);
   });
 });

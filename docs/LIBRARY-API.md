@@ -106,6 +106,7 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 |----------|-----------|----------|
 | `stripCep` | `(input: string) => string` | 8 digits only |
 | `isValidCep` | `(input: string) => boolean` | Length + digits; no check digit |
+| `validateCep` | `(input: string) => ValidationResult<Cep>` | Structural validation only |
 | `formatCep` | `(input: string) => FormatResult` | `XXXXX-XXX` |
 
 ---

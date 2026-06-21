@@ -1,9 +1,11 @@
 import { Command } from 'commander';
 import {
+  handleCepCli,
   handleCnpjCli,
   handleCpfCli,
   handleListCli,
   writeCliIo,
+  type CepCliOptions,
   type CnpjCliOptions,
   type CpfCliOptions,
 } from './handlers.js';
@@ -14,7 +16,7 @@ export function createProgram(): Command {
   program
     .name('br-validators')
     .description('100% open-source Brazilian document validators')
-    .version('0.1.0-beta.0');
+    .version('0.1.0-beta.1');
 
   program
     .command('list')
@@ -57,6 +59,24 @@ export function createProgram(): Command {
       .action((value: string | undefined, opts: CpfCliOptions) => {
         const io = { stdout: [] as string[], stderr: [] as string[] };
         process.exitCode = handleCpfCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const cep = program.command('cep').description('CEP — 8-digit postal code (Correios)');
+
+  for (const action of ['validate', 'format', 'strip'] as const) {
+    cep
+      .command(action)
+      .description(`${action} a CEP`)
+      .argument('[value]', 'CEP value (raw or masked)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL (validate only)')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: CepCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleCepCli(action, value, opts, io);
         writeCliIo(io);
       });
   }

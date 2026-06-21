@@ -17,7 +17,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.1.0-beta.0] - 2026-06-21
+## [0.1.0-beta.1] - 2026-06-21
+
+CEP validator across library, CLI, and playground.
+
+### Added
+
+- `packages/br-validators` — CEP structural validation (golden vectors `01310100`, `20040020`)
+- Subpath export `br-validators/cep`
+- `apps/cli` — `br-validators cep validate|format|strip` with `--json`, `--quiet`, `--source`
+- `apps/playground` — client-side tester at `/cep`
+
+### Security
+
+- Core validates format only — no Correios HTTP lookup in core (see adapters roadmap)
+
+---
 
 CPF validator across library, CLI, and playground.
 
@@ -80,13 +95,15 @@ Documentation, governance, and agent harness bootstrap (no npm code yet).
 
 | Version | Date | Notes |
 |---------|------|-------|
+| [0.1.0-beta.1](https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-beta.1) | 2026-06-21 | CEP library + CLI + playground |
 | [0.1.0-beta.0](https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-beta.0) | 2026-06-21 | CPF library + CLI + playground |
 | [0.1.0-alpha.1](https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.1) | 2026-06-21 | CNPJ library + CLI + playground |
 | [0.1.0-alpha.0](https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.0) | 2026-06-21 | Docs + harness bootstrap |
 
 See [docs/VERSIONING.md](docs/VERSIONING.md) for versioning rules.
 
-[Unreleased]: https://github.com/AlexandreZanata/doc-raiz/compare/v0.1.0-beta.0...HEAD
+[Unreleased]: https://github.com/AlexandreZanata/doc-raiz/compare/v0.1.0-beta.1...HEAD
+[0.1.0-beta.1]: https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-beta.1
 [0.1.0-beta.0]: https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-beta.0
 [0.1.0-alpha.1]: https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.1
 [0.1.0-alpha.0]: https://github.com/AlexandreZanata/doc-raiz/releases/tag/v0.1.0-alpha.0

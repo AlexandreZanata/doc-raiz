@@ -1,0 +1,12 @@
+{
+  "source": "Correios CEP format + TECH-STACK example",
+  "url": "https://www.correios.com.br/atendimento/developers/manuais/manual-api-busca-cep",
+  "primary": {
+    "canonical": "01310100",
+    "formatted": "01310-100"
+  },
+  "secondary": {
+    "canonical": "20040020",
+    "formatted": "20040-020"
+  }
+}
