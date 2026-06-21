@@ -3,9 +3,9 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { EXIT } from '../src/constants.js';
-import { handleCepCli, handleCnpjCli, handleCpfCli, handleListCli, handlePlacaCli, readInputFile, writeCliIo } from '../src/handlers.js';
+import { handleCepCli, handleCnpjCli, handleCpfCli, handleListCli, handlePisPasepCli, handlePlacaCli, readInputFile, writeCliIo } from '../src/handlers.js';
 import { createProgram, run } from '../src/program.js';
-import { CEP_GOLDEN_PRIMARY, CNPJ_GOLDEN_ALPHANUMERIC, CPF_GOLDEN_PRIMARY, PLACA_GOLDEN_MERCOSUL } from 'br-validators';
+import { CEP_GOLDEN_PRIMARY, CNPJ_GOLDEN_ALPHANUMERIC, CPF_GOLDEN_PRIMARY, PIS_PASEP_GOLDEN_PRIMARY, PLACA_GOLDEN_MERCOSUL } from 'br-validators';
 
 describe('handlers', () => {
   it('handleListCli lists types', () => {
@@ -15,6 +15,25 @@ describe('handlers', () => {
     expect(io.stdout).toContain('cpf');
     expect(io.stdout).toContain('cep');
     expect(io.stdout).toContain('placa');
+    expect(io.stdout).toContain('pis-pasep');
+  });
+
+  it('handlePisPasepCli validates value', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handlePisPasepCli('validate', PIS_PASEP_GOLDEN_PRIMARY, { quiet: true }, io)).toBe(EXIT.OK);
+  });
+
+  it('handlePisPasepCli reads value from file', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'br-validators-'));
+    const file = join(dir, 'pis-pasep.txt');
+    writeFileSync(file, PIS_PASEP_GOLDEN_PRIMARY, 'utf8');
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handlePisPasepCli('validate', undefined, { file, quiet: true }, io)).toBe(EXIT.OK);
+  });
+
+  it('handlePisPasepCli returns usage when file unreadable', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handlePisPasepCli('validate', undefined, { file: '/no/such/file.txt' }, io)).toBe(EXIT.USAGE);
   });
 
   it('handlePlacaCli validates value', () => {
@@ -109,7 +128,7 @@ describe('handlers', () => {
 describe('program', () => {
   it('createProgram exposes list and cnpj commands', () => {
     const program = createProgram();
-    expect(program.commands.map((c) => c.name())).toEqual(expect.arrayContaining(['list', 'cnpj', 'cpf', 'cep', 'placa']));
+    expect(program.commands.map((c) => c.name())).toEqual(expect.arrayContaining(['list', 'cnpj', 'cpf', 'cep', 'placa', 'pis-pasep']));
   });
 
   it('run parses list without throwing', () => {
@@ -154,5 +173,16 @@ describe('program', () => {
     expect(() => { run(['node', 'br-validators', 'placa', 'format', PLACA_GOLDEN_MERCOSUL]); }).not.toThrow();
     expect(() => { run(['node', 'br-validators', 'placa', 'strip', PLACA_GOLDEN_MERCOSUL]); }).not.toThrow();
     expect(() => { run(['node', 'br-validators', 'placa', 'convert', 'ABC1234', '--quiet']); }).not.toThrow();
+  });
+
+  it('run parses pis-pasep validate', () => {
+    expect(() => {
+      run(['node', 'br-validators', 'pis-pasep', 'validate', PIS_PASEP_GOLDEN_PRIMARY, '--quiet']);
+    }).not.toThrow();
+  });
+
+  it('run parses pis-pasep format and strip', () => {
+    expect(() => { run(['node', 'br-validators', 'pis-pasep', 'format', PIS_PASEP_GOLDEN_PRIMARY]); }).not.toThrow();
+    expect(() => { run(['node', 'br-validators', 'pis-pasep', 'strip', PIS_PASEP_GOLDEN_PRIMARY]); }).not.toThrow();
   });
 });

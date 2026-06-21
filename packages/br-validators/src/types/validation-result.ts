@@ -20,6 +20,7 @@ export type Cnpj = string & { readonly __brand: 'Cnpj' };
 export type Cpf = string & { readonly __brand: 'Cpf' };
 export type Cep = string & { readonly __brand: 'Cep' };
 export type Placa = string & { readonly __brand: 'Placa' };
+export type PisPasep = string & { readonly __brand: 'PisPasep' };
 
 export function brandCnpj(value: string): Cnpj {
   return value as Cnpj;
@@ -35,4 +36,8 @@ export function brandCep(value: string): Cep {
 
 export function brandPlaca(value: string): Placa {
   return value as Placa;
+}
+
+export function brandPisPasep(value: string): PisPasep {
+  return value as PisPasep;
 }

@@ -3,6 +3,7 @@ import { runCep, type CepAction } from './commands/cep.js';
 import { runCnpj, type CnpjAction } from './commands/cnpj.js';
 import { runCpf, type CpfAction } from './commands/cpf.js';
 import { runPlaca, type PlacaAction } from './commands/placa.js';
+import { runPisPasep, type PisPasepAction } from './commands/pis-pasep.js';
 import { listSupportedTypes } from './commands/list.js';
 import { EXIT } from './constants.js';
 
@@ -18,6 +19,8 @@ export type CpfCliOptions = CnpjCliOptions;
 export type CepCliOptions = CnpjCliOptions;
 
 export type PlacaCliOptions = CnpjCliOptions;
+
+export type PisPasepCliOptions = CnpjCliOptions;
 
 export type CliIo = { stdout: string[]; stderr: string[] };
 
@@ -134,6 +137,34 @@ export function handlePlacaCli(
   }
 
   return runPlaca(
+    action,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      source: Boolean(opts.source),
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handlePisPasepCli(
+  action: PisPasepAction,
+  value: string | undefined,
+  opts: PisPasepCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runPisPasep(
     action,
     value,
     {

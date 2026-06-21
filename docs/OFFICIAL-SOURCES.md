@@ -17,7 +17,7 @@
 | **PIX / BR Code** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf), [Anexo I — Padrões Iniciação PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) | EMV-QRCPS. BR Code payload + PIX key validation rules. |
 | **Boleto** | FEBRABAN | FEBRABAN layout standards (linha digitável + código de barras) | Modulo 10 / 11 depending on field. To be linked when implementation starts. |
 | **Credit card** | ISO/IEC 7812 | Luhn algorithm | Not Brazil-specific; included for enterprise form validation. |
-| **PIS / PASEP / NIS** | Caixa / INSS | **No clear primary PDF found yet** | Modulo 11 with specific weights — research pending before implementation. |
+| **PIS / PASEP / NIS** | Caixa / INSS | [Caixa PIS portal](https://www.gov.br/caixa/pt-br/atendimento/beneficios/pis) | 11 digits, mask `XXX.XXXXX.XX-X`. Modulo 11 weights `[3,2,9,8,7,6,5,4,3,2]` on first 10 digits. Golden vectors: **`10027230888`** (UC-006), **`12056456402`** (cross-check). PIS, PASEP, NIS, NIT share the same algorithm. |
 | **Inscrição Estadual (IE)** | Each state SEFAZ | No single federal norm — 27 algorithms | SINTEGRA consolidated table discontinued. Highest effort module; state-by-state delivery. |
 
 ---

@@ -5,6 +5,7 @@ const types = [
   { slug: 'cpf', label: 'CPF' },
   { slug: 'cep', label: 'CEP' },
   { slug: 'placa', label: 'Placa' },
+  { slug: 'pis', label: 'PIS/PASEP' },
 ];
 
 export default function HomePage() {

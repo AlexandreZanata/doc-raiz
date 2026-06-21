@@ -4,11 +4,13 @@ import {
   handleCnpjCli,
   handleCpfCli,
   handleListCli,
+  handlePisPasepCli,
   handlePlacaCli,
   writeCliIo,
   type CepCliOptions,
   type CnpjCliOptions,
   type CpfCliOptions,
+  type PisPasepCliOptions,
   type PlacaCliOptions,
 } from './handlers.js';
 
@@ -18,7 +20,7 @@ export function createProgram(): Command {
   program
     .name('br-validators')
     .description('100% open-source Brazilian document validators')
-    .version('0.2.0-alpha.0');
+    .version('0.2.0-beta.0');
 
   program
     .command('list')
@@ -97,6 +99,24 @@ export function createProgram(): Command {
       .action((value: string | undefined, opts: PlacaCliOptions) => {
         const io = { stdout: [] as string[], stderr: [] as string[] };
         process.exitCode = handlePlacaCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const pisPasep = program.command('pis-pasep').description('PIS/PASEP — numeric modulo 11 (Caixa/INSS)');
+
+  for (const action of ['validate', 'format', 'strip'] as const) {
+    pisPasep
+      .command(action)
+      .description(`${action} a PIS/PASEP number`)
+      .argument('[value]', 'PIS/PASEP value (raw or masked)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL (validate only)')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: PisPasepCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handlePisPasepCli(action, value, opts, io);
         writeCliIo(io);
       });
   }

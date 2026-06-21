@@ -143,6 +143,46 @@
 
 ---
 
+## PIS / PASEP
+
+### BR-PIS-001 — Length
+
+- **GIVEN** stripped input
+- **WHEN** length ≠ 11
+- **THEN** reject with `INVALID_LENGTH`
+
+### BR-PIS-002 — Numeric only
+
+- **GIVEN** stripped input
+- **WHEN** contains non-digit characters
+- **THEN** reject with `INVALID_CHARACTER`
+
+### BR-PIS-003 — Known invalid sequence
+
+- **GIVEN** all 11 digits are identical (e.g. `11111111111`)
+- **WHEN** validating
+- **THEN** reject with `KNOWN_INVALID_PATTERN`
+
+### BR-PIS-004 — Check digit
+
+- **GIVEN** first 10 digits
+- **WHEN** modulo-11 check digit does not match position 11
+- **THEN** reject with `INVALID_CHECK_DIGIT`
+
+### BR-PIS-005 — Weights
+
+- **GIVEN** DV calculation on base digits
+- **WHEN** applying weights
+- **THEN** use `[3,2,9,8,7,6,5,4,3,2]` on first 10 digits
+
+### BR-PIS-006 — Format mask
+
+- **GIVEN** valid canonical 11-digit PIS/PASEP
+- **WHEN** formatting
+- **THEN** output `XXX.XXXXX.XX-X`
+
+---
+
 ## PIX key
 
 ### BR-PIX-001 — Type detection

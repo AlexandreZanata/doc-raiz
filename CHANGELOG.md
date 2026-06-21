@@ -17,6 +17,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0-beta.0] - 2026-06-21
+
+PIS/PASEP validator across library, CLI, and playground.
+
+### Added
+
+- `packages/br-validators` — PIS/PASEP modulo 11 validation (golden `10027230888`)
+- Subpath export `br-validators/pis-pasep`
+- `apps/cli` — `br-validators pis-pasep validate|format|strip` with `--json`, `--quiet`, `--source`
+- `apps/playground` — client-side tester at `/pis`
+
+### Security
+
+- Core validates check digit only — no CNIS lookup in core
+
+---
+
 ## [0.2.0-alpha.0] - 2026-06-21
 
 Placa validator across library, CLI, and playground.

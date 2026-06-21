@@ -66,7 +66,7 @@ Shared: strip/format pipeline, branded types `Cpf`, `Cep`.
 
 | Module | Library | CLI | Playground | Source |
 |--------|---------|-----|------------|--------|
-| **PIS/PASEP** | ✓ | ✓ | `/pis` | TBD |
+| **PIS/PASEP** | ✓ | ✓ | `/pis` | 0.2.0-beta.0 |
 | **IE (per state)** | ✓ | ✓ | `/ie` | SEFAZ |
 | **Alphanumeric CPF** | Blocked | — | — | RFB spec TBD |
 

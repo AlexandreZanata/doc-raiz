@@ -1,0 +1,14 @@
+{
+  "source": "UC-006 worked example + modulo 11 cross-check",
+  "url": "https://www.gov.br/caixa/pt-br/atendimento/beneficios/pis",
+  "primary": {
+    "canonical": "10027230888",
+    "formatted": "100.27230.88-8",
+    "base": "1002723088",
+    "dv": "8"
+  },
+  "secondary": {
+    "canonical": "12056456402",
+    "formatted": "120.56456.40-2"
+  }
+}

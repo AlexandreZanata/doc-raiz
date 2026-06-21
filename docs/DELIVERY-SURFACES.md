@@ -39,6 +39,7 @@ As each module ships, **all three** must be updated:
 | CPF | `br-validators/cpf` | `br-validators cpf …` | CPF | RFB |
 | CEP | `br-validators/cep` | `br-validators cep …` | CEP | Correios |
 | Placa | `br-validators/placa` | `br-validators placa …` | Placa | CONTRAN |
+| PIS/PASEP | `br-validators/pis-pasep` | `br-validators pis-pasep …` | PIS/PASEP | Caixa |
 | PIX key | `br-validators/pix` | `br-validators pix …` | PIX | Bacen |
 | Boleto | `br-validators/boleto` | `br-validators boleto …` | Boleto | FEBRABAN |
 | IE | `br-validators/ie` | `br-validators ie …` | IE (per UF) | SEFAZ |

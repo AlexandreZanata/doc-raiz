@@ -19,6 +19,7 @@
 | `br-validators/cnpj` | CNPJ numeric + alphanumeric |
 | `br-validators/cep` | CEP |
 | `br-validators/placa` | License plates |
+| `br-validators/pis-pasep` | PIS / PASEP / NIS / NIT |
 | `br-validators/pix` | PIX keys |
 | `br-validators/boleto` | Boleto (future) |
 | `br-validators/ie` | State registration (future, per-state) |
@@ -54,6 +55,7 @@ type Cpf = string & { readonly __brand: 'Cpf' };
 type Cnpj = string & { readonly __brand: 'Cnpj' };
 type Cep = string & { readonly __brand: 'Cep' };
 type Placa = string & { readonly __brand: 'Placa' };
+type PisPasep = string & { readonly __brand: 'PisPasep' };
 ```
 
 All public validators return `ValidationResult<T>` with branded `T` where applicable — **never** throw for invalid input (unless documented `assert*` helpers).
@@ -123,6 +125,19 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 | `convertPlacaToMercosul` | `(input: string) => FormatResult` | Legacy → Mercosul where mappable |
 | `formatPlaca` | `(input: string) => FormatResult` | Uppercase, no hyphen |
 | `stripPlaca` | `(input: string) => string` | Uppercase, remove hyphen/spaces |
+
+---
+
+## Core API — PIS / PASEP
+
+| Function | Signature | Behavior |
+|----------|-----------|----------|
+| `stripPisPasep` | `(input: string) => string` | Remove non-digits |
+| `isValidPisPasep` | `(input: string) => boolean` | Modulo 11, reject known invalid patterns |
+| `validatePisPasep` | `(input: string) => ValidationResult<PisPasep>` | Full result with canonical 11 digits |
+| `formatPisPasep` | `(input: string) => FormatResult` | `XXX.XXXXX.XX-X` after validation |
+
+**Invariants:** Output canonical form is exactly 11 digits. Covers PIS, PASEP, NIS, and NIT (same CNIS algorithm).
 
 ---
 
