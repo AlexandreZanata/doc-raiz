@@ -4,6 +4,7 @@ import * as cnpjEntry from '../src/cnpj.js';
 import * as cpfEntry from '../src/cpf.js';
 import * as cepEntry from '../src/cep.js';
 import * as telefoneEntry from '../src/telefone.js';
+import * as brcodeEntry from '../src/brcode.js';
 import * as placaEntry from '../src/placa.js';
 import * as pisPasepEntry from '../src/pis-pasep.js';
 import * as pixEntry from '../src/pix.js';
@@ -33,6 +34,12 @@ describe('package exports', () => {
     expect(root.validateTelefone).toBeTypeOf('function');
     expect(root.stripTelefone).toBeTypeOf('function');
     expect(root.formatTelefone).toBeTypeOf('function');
+  });
+
+  it('re-exports BR Code API from index', () => {
+    expect(root.parseBrCode).toBeTypeOf('function');
+    expect(root.validateBrCode).toBeTypeOf('function');
+    expect(root.isValidBrCode).toBeTypeOf('function');
   });
 
   it('re-exports Placa API from index', () => {
@@ -92,6 +99,11 @@ describe('package exports', () => {
 
   it('re-exports Telefone API from telefone entry', () => {
     expect(telefoneEntry.validateTelefone).toBe(root.validateTelefone);
+  });
+
+  it('re-exports BR Code API from brcode entry', () => {
+    expect(brcodeEntry.parseBrCode).toBe(root.parseBrCode);
+    expect(brcodeEntry.validateBrCode).toBe(root.validateBrCode);
   });
 
   it('re-exports Placa API from placa entry', () => {

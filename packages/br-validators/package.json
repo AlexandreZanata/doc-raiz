@@ -50,6 +50,10 @@
       "types": "./dist/telefone.d.ts",
       "import": "./dist/telefone.js"
     },
+    "./brcode": {
+      "types": "./dist/brcode.d.ts",
+      "import": "./dist/brcode.js"
+    },
     "./placa": {
       "types": "./dist/placa.d.ts",
       "import": "./dist/placa.js"

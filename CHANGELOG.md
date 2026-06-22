@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **F-03 BR Code (F-03):** `parseBrCode`, `validateBrCode` — Bacen EMV TLV + CRC16-CCITT; delegates PIX key to `validatePixKey`
+- Subpath `@br-validators/core/brcode`
+- CLI `br-validators brcode parse|validate`
+- Playground `/brcode`
 - **F-04 `@br-validators/zod`:** Zod schemas (`cpfSchema`, `cnpjSchema`, `cepSchema`, `telefoneSchema`, …) delegating to core `validate*` — Zod 3 + 4 peer range
 - **F-05 `@br-validators/react-hook-form`:** `*Rule()` register options and `*Resolver()` for React Hook Form — same core messages
 - **Telefone (F-01):** `validateTelefone`, `formatTelefone`, `stripTelefone` — 67 Anatel DDDs, `tipo: celular | fixo`, accepts `+55` and masks

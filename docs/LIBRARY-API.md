@@ -19,6 +19,7 @@
 | `@br-validators/core/cnpj` | CNPJ numeric + alphanumeric |
 | `@br-validators/core/cep` | CEP |
 | `@br-validators/core/telefone` | Brazilian telephone (fixo + celular) |
+| `@br-validators/core/brcode` | BR Code PIX QR payload (EMV TLV + CRC16) |
 | `@br-validators/core/placa` | License plates |
 | `@br-validators/core/pis-pasep` | PIS / PASEP / NIS / NIT |
 | `@br-validators/core/pix` | PIX keys |
@@ -135,6 +136,22 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 **Success result:** `{ ok: true, value: Telefone, tipo: 'celular' | 'fixo', format: 'telefone' }`
 
 **Official source:** [Anatel — Plano de Numeração Brasileiro](https://www.gov.br/anatel/pt-br/regulado/numeracao/plano-de-numeracao-brasileiro) · `TELEFONE_OFFICIAL_SOURCE_URL` · `tests/vectors/telefone.official.json` · Golden celular: `11999999999`, fixo: `1133333333`
+
+---
+
+## Core API — BR Code
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `parseBrCode` | `(input: string) => BrCodeValidationResult` | Parse EMV TLV payload; extract merchant, amount, txid, PIX key or initiation URL |
+| `validateBrCode` | `(input: string) => BrCodeValidationResult` | Same as `parseBrCode` but requires static PIX key (subfield 01) |
+| `isValidBrCode` | `(input: string) => boolean` | Convenience wrapper over `validateBrCode` |
+| `verifyBrCodeCrc` | `(payload: string) => { ok: true } \| { ok: false; message: string }` | CRC16-CCITT check (tag 63) |
+| `parseBrCodePayload` | `(input: string) => BrCodeParseResult` | Lower-level parse (no branded result wrapper) |
+
+**Success result:** `{ ok: true, value: BrCodePayload, format: 'brcode', merchantName, merchantCity, pixKey?, pixKeyType?, amount?, txid?, pixInitiationUrl? }`
+
+**Official source:** [Bacen Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões para Iniciação do Pix (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) · `BRCODE_OFFICIAL_SOURCE_URL` · `tests/vectors/brcode.official.json` · Golden static EVP payload in `BRCODE_GOLDEN_STATIC_EVP`
 
 ---
 

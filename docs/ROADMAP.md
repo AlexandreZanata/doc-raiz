@@ -75,14 +75,13 @@
 | Module / requirement | Library | CLI | Playground | Status |
 |----------------------|---------|-----|------------|--------|
 | **Telefone (F-01)** | ✓ `@br-validators/core/telefone` | ✓ `telefone …` | ✓ `/telefone` | Shipped — [Anatel](OFFICIAL-SOURCES.md) |
+| **BR Code (F-03)** | ✓ `@br-validators/core/brcode` | ✓ `brcode …` | ✓ `/brcode` | Shipped — [Bacen Manual BR Code](OFFICIAL-SOURCES.md) |
 | **Boleto arrecadação (F-02)** | partial | — | — | detect only — validation backlog |
-| **BR Code (F-03)** | — | — | — | Backlog |
 | npm publish `@br-validators/core` + `@br-validators/cli` | — | — | — | v0.10.0-alpha.0 |
 | API freeze (SemVer guarantees) | — | — | — | Pending |
 
 **Deferred to post-v1.0 or v1.1:**
 
-- BR Code payload parsing (Bacen Manual BR Code)
 - Boleto arrecadação validation
 - Alphanumeric CPF (when RFB publishes spec)
 - IE SP rural `P…` format

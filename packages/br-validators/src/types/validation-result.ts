@@ -10,7 +10,8 @@ export type DocumentFormat =
   | 'codigo-barras'
   | 'cartao-credito'
   | 'inscricao-estadual'
-  | 'telefone';
+  | 'telefone'
+  | 'brcode';
 
 export type PixKeyType = 'cpf' | 'cnpj' | 'email' | 'phone' | 'evp';
 
@@ -45,6 +46,7 @@ export type CodigoBarras = string & { readonly __brand: 'CodigoBarras' };
 export type CartaoCredito = string & { readonly __brand: 'CartaoCredito' };
 export type InscricaoEstadual = string & { readonly __brand: 'InscricaoEstadual' };
 export type Telefone = string & { readonly __brand: 'Telefone' };
+export type BrCodePayload = string & { readonly __brand: 'BrCodePayload' };
 
 export type UfCode =
   | 'AC' | 'AL' | 'AM' | 'AP' | 'BA' | 'CE' | 'DF' | 'ES' | 'GO' | 'MA' | 'MG' | 'MS' | 'MT'
@@ -78,6 +80,21 @@ export type InscricaoEstadualValidationResult =
 
 export type TelefoneValidationResult =
   | { ok: true; value: Telefone; tipo: TelefoneTipo; format: 'telefone' }
+  | { ok: false; code: ValidationErrorCode; message: string };
+
+export type BrCodeValidationResult =
+  | {
+      ok: true;
+      value: BrCodePayload;
+      format: 'brcode';
+      merchantName: string;
+      merchantCity: string;
+      amount?: string;
+      txid?: string;
+      pixKey?: PixKey;
+      pixKeyType?: PixKeyType;
+      pixInitiationUrl?: string;
+    }
   | { ok: false; code: ValidationErrorCode; message: string };
 
 export function brandCnpj(value: string): Cnpj {
@@ -122,4 +139,8 @@ export function brandInscricaoEstadual(value: string): InscricaoEstadual {
 
 export function brandTelefone(value: string): Telefone {
   return value as Telefone;
+}
+
+export function brandBrCodePayload(value: string): BrCodePayload {
+  return value as BrCodePayload;
 }

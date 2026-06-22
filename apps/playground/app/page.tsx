@@ -8,6 +8,7 @@ const types = [
   { slug: 'placa', label: 'Placa' },
   { slug: 'pis', label: 'PIS/PASEP' },
   { slug: 'pix', label: 'PIX Key' },
+  { slug: 'brcode', label: 'BR Code' },
   { slug: 'boleto', label: 'Boleto' },
   { slug: 'cartao', label: 'Credit Card' },
   { slug: 'ie', label: 'Inscrição Estadual (27 UFs)' },

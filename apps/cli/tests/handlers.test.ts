@@ -3,9 +3,9 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { EXIT } from '../src/constants.js';
-import { handleCepCli, handleCnpjCli, handleCpfCli, handleTelefoneCli, handleListCli, handlePisPasepCli, handlePixCli, handleBoletoCli, handleCartaoCli, handleCartaoCreditoCli, handleIeCli, handlePlacaCli, readInputFile, writeCliIo } from '../src/handlers.js';
+import { handleCepCli, handleCnpjCli, handleCpfCli, handleTelefoneCli, handleBrCodeCli, handleListCli, handlePisPasepCli, handlePixCli, handleBoletoCli, handleCartaoCli, handleCartaoCreditoCli, handleIeCli, handlePlacaCli, readInputFile, writeCliIo } from '../src/handlers.js';
 import { createProgram, run } from '../src/program.js';
-import { CEP_GOLDEN_PRIMARY, CNPJ_GOLDEN_ALPHANUMERIC, CPF_GOLDEN_PRIMARY, PIX_GOLDEN_EMAIL, PIS_PASEP_GOLDEN_PRIMARY, PLACA_GOLDEN_MERCOSUL, BOLETO_GOLDEN_LINHA_STRIPPED, CARTAO_GOLDEN_VISA, IE_SP_GOLDEN, TELEFONE_GOLDEN_CELULAR } from '@br-validators/core';
+import { CEP_GOLDEN_PRIMARY, CNPJ_GOLDEN_ALPHANUMERIC, CPF_GOLDEN_PRIMARY, PIX_GOLDEN_EMAIL, PIS_PASEP_GOLDEN_PRIMARY, PLACA_GOLDEN_MERCOSUL, BOLETO_GOLDEN_LINHA_STRIPPED, CARTAO_GOLDEN_VISA, IE_SP_GOLDEN, TELEFONE_GOLDEN_CELULAR, BRCODE_GOLDEN_STATIC_EVP } from '@br-validators/core';
 
 describe('handlers', () => {
   it('handleListCli lists types', () => {
@@ -15,6 +15,7 @@ describe('handlers', () => {
     expect(io.stdout).toContain('cpf');
     expect(io.stdout).toContain('cep');
     expect(io.stdout).toContain('telefone');
+    expect(io.stdout).toContain('brcode');
     expect(io.stdout).toContain('placa');
     expect(io.stdout).toContain('pis-pasep');
     expect(io.stdout).toContain('pix');
@@ -194,6 +195,19 @@ describe('handlers', () => {
     expect(handleTelefoneCli('validate', undefined, { file: '/no/such/file.txt' }, io)).toBe(EXIT.USAGE);
   });
 
+  it('handleBrCodeCli reads value from file', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'br-validators-'));
+    const file = join(dir, 'brcode.txt');
+    writeFileSync(file, BRCODE_GOLDEN_STATIC_EVP, 'utf8');
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleBrCodeCli('validate', undefined, { file, quiet: true }, io)).toBe(EXIT.OK);
+  });
+
+  it('handleBrCodeCli returns usage when file unreadable', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleBrCodeCli('validate', undefined, { file: '/no/such/file.txt' }, io)).toBe(EXIT.USAGE);
+  });
+
   it('handleCpfCli validates value', () => {
     const io = { stdout: [] as string[], stderr: [] as string[] };
     expect(handleCpfCli('validate', CPF_GOLDEN_PRIMARY, { quiet: true }, io)).toBe(EXIT.OK);
@@ -273,7 +287,7 @@ describe('handlers', () => {
 describe('program', () => {
   it('createProgram exposes list and cnpj commands', () => {
     const program = createProgram();
-    expect(program.commands.map((c) => c.name())).toEqual(expect.arrayContaining(['list', 'cnpj', 'cpf', 'cep', 'telefone', 'placa', 'pis-pasep', 'pix', 'boleto', 'cartao', 'cartao-credito']));
+    expect(program.commands.map((c) => c.name())).toEqual(expect.arrayContaining(['list', 'cnpj', 'cpf', 'cep', 'telefone', 'brcode', 'placa', 'pis-pasep', 'pix', 'boleto', 'cartao', 'cartao-credito']));
   });
 
   it('run parses list without throwing', () => {
@@ -317,6 +331,18 @@ describe('program', () => {
   it('run parses telefone format and strip', () => {
     expect(() => { run(['node', 'br-validators', 'telefone', 'format', TELEFONE_GOLDEN_CELULAR]); }).not.toThrow();
     expect(() => { run(['node', 'br-validators', 'telefone', 'strip', TELEFONE_GOLDEN_CELULAR]); }).not.toThrow();
+  });
+
+  it('run parses brcode validate', () => {
+    expect(() => {
+      run(['node', 'br-validators', 'brcode', 'validate', BRCODE_GOLDEN_STATIC_EVP, '--quiet']);
+    }).not.toThrow();
+  });
+
+  it('run parses brcode parse', () => {
+    expect(() => {
+      run(['node', 'br-validators', 'brcode', 'parse', BRCODE_GOLDEN_STATIC_EVP, '--json']);
+    }).not.toThrow();
   });
 
   it('run parses placa validate', () => {

@@ -1,0 +1,38 @@
+/** Bacen Manual BR Code — EMV-QRCPS-MPM TLV + CRC16-CCITT */
+export const BRCODE_OFFICIAL_SOURCE_URL =
+  'https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf';
+
+export const BRCODE_PIX_INITIATION_MANUAL_URL =
+  'https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf';
+
+export const BRCODE_PAYLOAD_FORMAT_INDICATOR = '01';
+
+export const BRCODE_PIX_GUI = 'br.gov.bcb.pix';
+
+export const BRCODE_COUNTRY_CODE = 'BR';
+
+export const BRCODE_CURRENCY_BRL = '986';
+
+export const BRCODE_CRC_TAG = '63';
+
+export const BRCODE_CRC_LENGTH = 4;
+
+/** Manual de Padrões PIX — static QR, EVP key (CRC 1D3D). */
+export const BRCODE_GOLDEN_STATIC_EVP =
+  '00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-4266554400005204000053039865802BR5913Fulano de Tal6008BRASILIA62070503***63041D3D';
+
+/** Manual de Padrões PIX — dynamic QR with amount (CRC 7309). */
+export const BRCODE_GOLDEN_DYNAMIC_URL =
+  '00020101021226730014br.gov.bcb.pix2551pix.example.com/v2/8b3da2f39a4140d1a91abd93113bd4415204000053039865406123.455802BR5913Fulano de Tal6008BRASILIA62190515RP12345678-201963047309';
+
+/** Manual BR Code — composite payload with PIX + other arranjos (CRC AD38). */
+export const BRCODE_GOLDEN_COMPOSITE =
+  '00020104141234567890123426580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-42665544000027300012BR.COM.OUTRO011001234567895204000053039865406123.455802BR5917NOME DO RECEBEDOR6008BRASILIA61087007490062190515RP12345678-201980390012BR.COM.OUTRO01190123.ABCD.3456.WXYZ6304AD38';
+
+/** Golden CPF PIX key 12345678909 — CRC computed per manual algorithm. */
+export const BRCODE_GOLDEN_STATIC_CPF =
+  '00020126330014br.gov.bcb.pix0111123456789095204000053039865802BR5917NOME DO RECEBEDOR6009SAO PAULO62070503***6304258E';
+
+/** Golden email pix@bcb.gov.br — CRC computed per manual algorithm. */
+export const BRCODE_GOLDEN_STATIC_EMAIL =
+  '00020126360014br.gov.bcb.pix0114pix@bcb.gov.br5204000053039865802BR5913Fulano de Tal6008BRASILIA62070503***6304A7E9';

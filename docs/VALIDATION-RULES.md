@@ -163,6 +163,36 @@
 
 ---
 
+## BR Code
+
+> **Source:** [Bacen Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões para Iniciação do Pix (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf)
+
+### BR-BRC-001 — CRC16-CCITT
+
+- **GIVEN** full EMV payload ending with tag `63` length `04` + 4 hex checksum
+- **WHEN** validating CRC
+- **THEN** compute CRC16-CCITT (poly `0x1021`, init `0xFFFF`) over body including `6304`; reject tampered checksum with `INVALID_CHECK_DIGIT`
+
+### BR-BRC-002 — TLV structure
+
+- **GIVEN** payload after CRC strip
+- **WHEN** parsing TLV sequence
+- **THEN** require format indicator `01` (tag 00), PIX merchant account (tag 26, GUI `br.gov.bcb.pix`), country `BR` (tag 58), merchant name (59) and city (60)
+
+### BR-BRC-003 — PIX key delegation
+
+- **GIVEN** static QR with subfield `01` (PIX key)
+- **WHEN** parsing key
+- **THEN** delegate to `validatePixKey` (CPF, CNPJ, email, phone, EVP)
+
+### BR-BRC-004 — Dynamic initiation URL
+
+- **GIVEN** payload with subfield `25` (initiation URL) and no subfield `01`
+- **WHEN** `parseBrCode`
+- **THEN** succeed with `pixInitiationUrl`; `validateBrCode` rejects with `UNSUPPORTED_FORMAT`
+
+---
+
 ## Placa
 
 ### BR-PLACA-001 — Legacy format

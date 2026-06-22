@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  brandBrCodePayload,
   brandCartaoCredito,
   brandCnpj,
   brandCep,
@@ -66,6 +67,15 @@ describe('brandCodigoBarras', () => {
   it('casts string to CodigoBarras brand', () => {
     const value = brandCodigoBarras('03396145000000996689025708991834007174230101');
     expect(value).toBe('03396145000000996689025708991834007174230101');
+  });
+});
+
+describe('brandBrCodePayload', () => {
+  it('casts string to BrCodePayload brand', () => {
+    const payload =
+      '00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-4266554400005204000053039865802BR5913Fulano de Tal6008BRASILIA62070503***63041D3D';
+    const value = brandBrCodePayload(payload);
+    expect(value).toBe(payload);
   });
 });
 

@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import {
+  handleBrCodeCli,
   handleCepCli,
   handleCnpjCli,
   handleCpfCli,
@@ -16,6 +17,7 @@ import {
   type BoletoCliOptions,
   type CartaoCliOptions,
   type CartaoCreditoCliOptions,
+  type BrCodeCliOptions,
   type CepCliOptions,
   type TelefoneCliOptions,
   type CnpjCliOptions,
@@ -111,6 +113,24 @@ export function createProgram(): Command {
       .action((value: string | undefined, opts: TelefoneCliOptions) => {
         const io = { stdout: [] as string[], stderr: [] as string[] };
         process.exitCode = handleTelefoneCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const brcode = program.command('brcode').description('BR Code — PIX QR payload (Bacen EMV TLV)');
+
+  for (const action of ['parse', 'validate'] as const) {
+    brcode
+      .command(action)
+      .description(`${action} a BR Code payload`)
+      .argument('[value]', 'BR Code payload (Pix Copia e Cola)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: BrCodeCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleBrCodeCli(action, value, opts, io);
         writeCliIo(io);
       });
   }
