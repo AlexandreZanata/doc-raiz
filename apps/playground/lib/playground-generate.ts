@@ -103,7 +103,7 @@ export function generateValidDocument(
   }
 
   if (slug === 'pix') {
-    const raw = generatePixEvp();
+    const raw = generatePixEvp(seed);
     if (!options.masked) {
       return raw;
     }

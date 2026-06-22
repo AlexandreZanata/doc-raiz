@@ -88,6 +88,13 @@ describe('playground-generate', () => {
     expect(detectCardBrand(amex)).toBe('amex');
   });
 
+  it('initial pix workspace is deterministic for hydration', () => {
+    const first = initialWorkspaceInput('pix', 'SP');
+    const second = initialWorkspaceInput('pix', 'SP');
+    expect(first).toBe(second);
+    expect(validatePixKey(first).ok).toBe(true);
+  });
+
   it('seeds initial workspace input deterministically for hydration', () => {
     const first = initialWorkspaceInput('cpf', 'SP');
     const second = initialWorkspaceInput('cpf', 'SP');
