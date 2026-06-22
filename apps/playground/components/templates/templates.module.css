@@ -7,8 +7,15 @@
 .content {
   min-width: 0;
   position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.pageContent {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
 }
 
 .header {
@@ -29,7 +36,11 @@
 }
 
 .mobileSidebar {
-  display: none;
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: min(85vw, 320px);
+  z-index: 30;
+  box-shadow: var(--shadow-md);
 }
 
 .headerLeft,
@@ -44,7 +55,10 @@
 }
 
 .backdrop {
-  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 45%);
+  z-index: 20;
 }
 
 @media (max-width: 900px) {
@@ -58,29 +72,6 @@
 
   .desktopSidebar {
     display: none;
-  }
-
-  .mobileSidebar {
-    display: block;
-    position: fixed;
-    inset: 0 auto 0 0;
-    width: min(85vw, 320px);
-    transform: translateX(-100%);
-    transition: transform 0.2s ease;
-    z-index: 30;
-    box-shadow: var(--shadow-md);
-  }
-
-  .mobileSidebarOpen {
-    transform: translateX(0);
-  }
-
-  .backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgb(0 0 0 / 45%);
-    z-index: 20;
   }
 
   .menuButton {

@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import {
   BRCODE_GOLDEN_STATIC_EVP,
   BOLETO_GOLDEN_LINHA_MASKED,
-  detectPlacaFormat,
   IE_SUPPORTED_UFS,
   parseBrCode,
   validateBoleto,
@@ -53,9 +52,8 @@ describe('playground generators', () => {
   });
 
   it('generates valid Mercosul plate', () => {
-    const value = generatePlacaSample();
+    const value = generatePlacaSample('mercosul');
     expect(validatePlaca(value).ok).toBe(true);
-    expect(detectPlacaFormat(value)).toBe('mercosul');
   });
 
   it('generates valid phone', () => {

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 504" aria-hidden="true">
+  <!-- Brazil  design per ISO 3166-1 (public domain / flag-icons MIT) -->
+  <rect width="720" height="504" fill="#009b3a"/>
+  <polygon points="360,42 678,252 360,462 42,252" fill="#fedf00"/>
+  <circle cx="360" cy="252" r="120" fill="#002776"/>
+  <path fill="#fff" d="M320 252c0-22 18-40 40-40s40 18 40 40-18 40-40 40-40-18-40-40z"/>
+</svg>

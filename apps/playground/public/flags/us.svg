@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 741 390" aria-hidden="true">
+  <!-- United States  design per ISO 3166-1 (public domain / flag-icons MIT) -->
+  <rect width="741" height="390" fill="#b22234"/>
+  <path fill="#fff" d="M0 30h741M0 90h741M0 150h741M0 210h741M0 270h741M0 330h741"/>
+  <rect width="296" height="210" fill="#3c3b6e"/>
+  <g fill="#fff">
+    <circle cx="37" cy="21" r="9"/><circle cx="111" cy="21" r="9"/><circle cx="185" cy="21" r="9"/><circle cx="259" cy="21" r="9"/>
+    <circle cx="74" cy="42" r="9"/><circle cx="148" cy="42" r="9"/><circle cx="222" cy="42" r="9"/>
+    <circle cx="37" cy="63" r="9"/><circle cx="111" cy="63" r="9"/><circle cx="185" cy="63" r="9"/><circle cx="259" cy="63" r="9"/>
+  </g>
+</svg>
