@@ -1,6 +1,6 @@
 import type { DocumentSlug } from './nav';
 
-export type ActionTab = 'validate' | 'format' | 'strip' | 'sanitize' | 'generate';
+export type ActionTab = 'validate' | 'format' | 'strip' | 'sanitize';
 
 export type DocumentCapabilities = {
   validate: boolean;
@@ -33,6 +33,7 @@ export const CAPABILITIES: Record<DocumentSlug, DocumentCapabilities> = {
     strip: true,
     sanitize: true,
     generate: true,
+    ufSelector: true,
     generateFormats: ['celular', 'fixo'],
   },
   placa: {
@@ -47,13 +48,20 @@ export const CAPABILITIES: Record<DocumentSlug, DocumentCapabilities> = {
   pis: { validate: true, format: true, strip: true, sanitize: true, generate: true },
   cnh: { validate: true, format: true, strip: true, sanitize: true, generate: true },
   renavam: { validate: true, format: true, strip: true, sanitize: true, generate: true },
-  'titulo-eleitor': { validate: true, format: true, strip: true, sanitize: true, generate: false },
-  'nfe-chave': { validate: true, format: true, strip: true, sanitize: true, generate: false, parse: true },
+  'titulo-eleitor': { validate: true, format: true, strip: true, sanitize: true, generate: true, ufSelector: true },
+  'nfe-chave': { validate: true, format: true, strip: true, sanitize: true, generate: true, parse: true },
   ie: { validate: true, format: true, strip: true, sanitize: true, generate: true, ufSelector: true },
   pix: { validate: true, format: true, strip: false, sanitize: false, generate: true },
   brcode: { validate: true, format: false, strip: false, sanitize: false, generate: false, parse: true, multiline: true },
-  boleto: { validate: true, format: true, strip: true, sanitize: true, generate: false, convert: true, multiline: true },
-  cartao: { validate: true, format: true, strip: true, sanitize: true, generate: true },
+  boleto: { validate: true, format: true, strip: true, sanitize: true, generate: true, convert: true, multiline: true },
+  cartao: {
+    validate: true,
+    format: true,
+    strip: true,
+    sanitize: true,
+    generate: true,
+    generateFormats: ['visa', 'mastercard', 'amex', 'elo', 'hipercard'],
+  },
 };
 
 export function enabledTabs(capabilities: DocumentCapabilities): ActionTab[] {
@@ -62,6 +70,5 @@ export function enabledTabs(capabilities: DocumentCapabilities): ActionTab[] {
   if (capabilities.format) tabs.push('format');
   if (capabilities.strip) tabs.push('strip');
   if (capabilities.sanitize) tabs.push('sanitize');
-  if (capabilities.generate) tabs.push('generate');
   return tabs;
 }

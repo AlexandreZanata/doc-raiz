@@ -527,25 +527,38 @@ Import: `@br-validators/core/generate` or barrel.
 ```typescript
 type GeneratableDocumentType =
   | 'cpf' | 'cnpj' | 'cep' | 'placa' | 'pis-pasep'
-  | 'renavam' | 'cnh' | 'telefone' | 'cartao-credito';
+  | 'renavam' | 'cnh' | 'telefone' | 'cartao-credito'
+  | 'inscricao-estadual' | 'titulo-eleitor';
 
 type GenerateOptions = {
   format?: 'numeric' | 'alphanumeric' | 'legacy' | 'mercosul' | 'celular' | 'fixo';
   masked?: boolean;
   seed?: number;
+  uf?: UfCode;
+  brand?: 'visa' | 'mastercard' | 'amex' | 'elo' | 'hipercard';
 };
 
 function generate(type: GeneratableDocumentType, options?: GenerateOptions): string;
 ```
 
-Uses Mulberry32 when `seed` is set; reuses official DV helpers (RFB modulo 11, CONTRAN placa patterns, Anatel DDDs, ISO 7812 Luhn). Excludes boleto, NF-e chave, IE, BR Code, PIX.
+Uses Mulberry32 when `seed` is set; reuses official DV helpers (RFB modulo 11, CONTRAN placa patterns, Anatel DDDs, ISO 7812 Luhn, per-UF IE modulo helpers). Excludes boleto, NF-e chave, BR Code, PIX.
 
 ```typescript
 import { generate } from '@br-validators/core/generate';
 import { validateCpf } from '@br-validators/core/cpf';
+import { validateInscricaoEstadual } from '@br-validators/core/inscricao-estadual';
 
 const cpf = generate('cpf', { seed: 42 });
 validateCpf(cpf).ok; // true
+
+const ie = generate('inscricao-estadual', { uf: 'SP', seed: 42, masked: true });
+validateInscricaoEstadual(ie, { uf: 'SP' }).ok; // true
+
+const titulo = generate('titulo-eleitor', { uf: 'SC', seed: 42 });
+validateTituloEleitor(titulo).ok; // true
+
+const card = generate('cartao-credito', { brand: 'mastercard', seed: 42 });
+validateCartaoCredito(card).ok; // true
 ```
 
 ### CLI mirror (platform)
@@ -553,7 +566,7 @@ validateCpf(cpf).ok; // true
 ```bash
 br-validators detect [value] [--uf SP] [--json] [--quiet] [--file]
 br-validators sanitize <type> [value] [--uf SP] [--json] [--quiet] [--file]
-br-validators generate <type> [--masked] [--format mercosul] [--seed 42] [--json] [--quiet]
+br-validators generate <type> [--masked] [--format mercosul] [--seed 42] [--uf SP] [--brand visa] [--json] [--quiet]
 ```
 
 ---

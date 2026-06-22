@@ -148,7 +148,8 @@ export type { DetectOptions, DetectResult, DetectableDocumentType } from './dete
 export { sanitize } from './sanitize.js';
 export type { SanitizeOptions, SanitizeResult, SanitizableDocumentType } from './sanitize.js';
 export { generate } from './generate.js';
-export type { GenerateOptions, GeneratableDocumentType } from './generate.js';
+export type { GenerateOptions, GeneratableDocumentType, GeneratableCardBrand } from './generate.js';
+export { isGeneratableCardBrand, GENERATABLE_CARD_BRANDS } from './generate.js';
 export type {
   IeProdutorRuralValidationResult,
   InscricaoEstadual,

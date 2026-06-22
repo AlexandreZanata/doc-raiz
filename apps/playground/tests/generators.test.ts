@@ -19,11 +19,12 @@ import { generateCep } from '../lib/generators/cep';
 import { generateCnpj } from '../lib/generators/cnpj';
 import { generateCpf } from '../lib/generators/cpf';
 import { generateCreditCard } from '../lib/generators/cartao';
-import { generateIe as generateIeSample } from '../lib/generators/ie';
+import { generateIeDocument } from '../lib/generators/ie';
 import { generatePixEvp as generatePixEvpSample } from '../lib/generators/pix';
 import { generatePisPasep as generatePisPasepSample } from '../lib/generators/pis-pasep';
 import { generatePlaca as generatePlacaSample } from '../lib/generators/placa';
-import { generateTelefone as generateTelefoneSample } from '../lib/generators/telefone';
+import { generateTelefoneDocument } from '../lib/generators/telefone';
+import { isTelefoneDddInUf } from '../lib/telefone-ddd-by-uf';
 
 describe('playground generators', () => {
   it('generates valid CPF', () => {
@@ -56,20 +57,22 @@ describe('playground generators', () => {
     expect(validatePlaca(value).ok).toBe(true);
   });
 
-  it('generates valid phone', () => {
-    const value = generateTelefoneSample();
+  it('generates valid phone for selected state', () => {
+    const value = generateTelefoneDocument('SP', 'celular', false, 1);
     expect(validateTelefone(value).ok).toBe(true);
+    expect(isTelefoneDddInUf(value.slice(0, 2), 'SP')).toBe(true);
   });
 
-  it('generates valid credit card', () => {
-    const value = generateCreditCard();
+  it('generates valid credit card for selected brand', () => {
+    const value = generateCreditCard('mastercard', false, 1);
     expect(validateCartaoCredito(value).ok).toBe(true);
+    expect(value.startsWith('5')).toBe(true);
   });
 
   it('returns valid IE sample for each UF', () => {
     for (const uf of IE_SUPPORTED_UFS) {
-      const value = generateIeSample(uf);
-      expect(validateInscricaoEstadual(value, { uf }).ok).toBe(true);
+      expect(validateInscricaoEstadual(generateIeDocument(uf, false), { uf }).ok).toBe(true);
+      expect(validateInscricaoEstadual(generateIeDocument(uf, true), { uf }).ok).toBe(true);
     }
   });
 

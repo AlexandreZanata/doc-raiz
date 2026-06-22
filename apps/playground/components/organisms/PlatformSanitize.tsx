@@ -9,7 +9,7 @@ import {
 } from '@br-validators/core';
 import { Label } from '@/components/atoms/Label';
 import { Select } from '@/components/atoms/Select';
-import { Input } from '@/components/atoms/Input';
+import { CopyableInput } from '@/components/molecules/CopyableInput';
 import { CliCommandHint } from '@/components/molecules/CliCommandHint';
 import { FixesList } from '@/components/molecules/FixesList';
 import { useI18n } from '@/components/providers/I18nProvider';
@@ -98,7 +98,7 @@ export function PlatformSanitize() {
 
       <div>
         <Label htmlFor="sanitize-input">{copy.inputLabel}</Label>
-        <Input
+        <CopyableInput
           id="sanitize-input"
           value={input}
           onChange={(e) => {

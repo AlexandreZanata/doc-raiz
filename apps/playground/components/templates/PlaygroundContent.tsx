@@ -7,6 +7,7 @@ import { PixWorkspace } from '@/components/organisms/PixWorkspace';
 import { PlatformDetect } from '@/components/organisms/PlatformDetect';
 import { PlatformGenerate } from '@/components/organisms/PlatformGenerate';
 import { PlatformSanitize } from '@/components/organisms/PlatformSanitize';
+import { OfficialSourcesPage } from '@/components/organisms/OfficialSourcesPage';
 import { usePlaygroundPath } from '@/components/providers/PlaygroundRouterProvider';
 import type { DocumentSlug, PlatformSlug } from '@/lib/nav';
 import { playgroundRouteKey, resolvePlaygroundRoute } from '@/lib/playground-routes';
@@ -27,6 +28,8 @@ function PlatformPane({ slug }: { slug: PlatformSlug }) {
       return <PlatformSanitize />;
     case 'generate':
       return <PlatformGenerate />;
+    case 'official-sources':
+      return <OfficialSourcesPage />;
   }
 }
 

@@ -41,6 +41,48 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.headerButton {
+  border: 1px solid #484f58;
+  background: #21262d;
+  color: #e6edf3;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 2rem;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.headerButton:hover {
+  background: #30363d;
+  border-color: #6e7681;
+}
+
+.overlayFullscreen {
+  padding: 0;
+}
+
+.shellFullscreen {
+  width: 100%;
+  max-width: none;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+}
+
 .outputPane {
   padding: var(--space-4);
   overflow: auto;

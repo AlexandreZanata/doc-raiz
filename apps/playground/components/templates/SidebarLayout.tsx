@@ -18,6 +18,10 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
     setMenuOpen(false);
   };
 
+  const toggleMenu = () => {
+    setMenuOpen((previous) => !previous);
+  };
+
   return (
     <div className={styles.shell}>
       <Sidebar className={styles.desktopSidebar} />
@@ -29,11 +33,10 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
               className={styles.menuButton}
               variant="icon"
               size="sm"
-              aria-label={messages.actions.openMenu}
-              title={messages.actions.openMenu}
-              onClick={() => {
-                setMenuOpen(true);
-              }}
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? messages.actions.closeMenu : messages.actions.openMenu}
+              title={menuOpen ? messages.actions.closeMenu : messages.actions.openMenu}
+              onClick={toggleMenu}
             >
               <MenuIcon />
             </Button>

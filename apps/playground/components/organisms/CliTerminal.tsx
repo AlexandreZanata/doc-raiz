@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import { Button } from '@/components/atoms/Button';
+import { ExpandIcon, MinimizeIcon } from '@/components/atoms/icons';
 import { CLI_WELCOME_LINES, executeTerminalLine } from '@/lib/cli/execute-line';
 import { useI18n } from '@/components/providers/I18nProvider';
 import styles from './cli-terminal.module.css';
@@ -43,6 +43,7 @@ export function CliTerminal({ onClose }: Props) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number | null>(null);
+  const [fullscreen, setFullscreen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -53,6 +54,10 @@ export function CliTerminal({ onClose }: Props) {
   useEffect(() => {
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'Escape') {
+        if (fullscreen) {
+          setFullscreen(false);
+          return;
+        }
         onClose();
       }
     };
@@ -60,7 +65,7 @@ export function CliTerminal({ onClose }: Props) {
     return () => {
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [onClose]);
+  }, [fullscreen, onClose]);
 
   useEffect(() => {
     const node = scrollRef.current;
@@ -161,14 +166,30 @@ export function CliTerminal({ onClose }: Props) {
     }
   };
 
+  const shellClass = `${styles.shell} ${fullscreen ? styles.shellFullscreen : ''}`.trim();
+  const overlayClass = `${styles.overlay} ${fullscreen ? styles.overlayFullscreen : ''}`.trim();
+
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label={cli.title}>
-      <div className={styles.shell}>
+    <div className={overlayClass} role="dialog" aria-modal="true" aria-label={cli.title}>
+      <div className={shellClass}>
         <header className={styles.header}>
           <div className={styles.headerTitle}>{cli.title}</div>
-          <Button type="button" variant="ghost" size="sm" onClick={onClose}>
-            {cli.close}
-          </Button>
+          <div className={styles.headerActions}>
+            <button
+              type="button"
+              className={styles.headerButton}
+              aria-label={fullscreen ? cli.minimize : cli.expand}
+              title={fullscreen ? cli.minimize : cli.expand}
+              onClick={() => {
+                setFullscreen((previous) => !previous);
+              }}
+            >
+              {fullscreen ? <MinimizeIcon /> : <ExpandIcon />}
+            </button>
+            <button type="button" className={styles.headerButton} onClick={onClose}>
+              {cli.close}
+            </button>
+          </div>
         </header>
 
         <div ref={scrollRef} className={styles.outputPane}>

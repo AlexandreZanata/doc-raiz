@@ -91,6 +91,8 @@ export type GenerateCliOptions = {
   masked?: boolean;
   format?: string;
   seed?: number;
+  uf?: string;
+  brand?: string;
 };
 
 export function handleListCli(io: CliIo = { stdout: [], stderr: [] }): number {
@@ -617,6 +619,8 @@ export function handleGenerateCli(
       masked: Boolean(opts.masked),
       format: opts.format,
       seed: opts.seed,
+      uf: opts.uf,
+      brand: opts.brand,
     },
     io,
   );

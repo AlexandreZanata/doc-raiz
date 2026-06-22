@@ -48,12 +48,18 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  min-width: 0;
+}
+
+.headerLeft {
+  flex: 1;
 }
 
 .headerBrand {
   display: grid;
   gap: 2px;
   min-width: 0;
+  flex: 1;
 }
 
 .headerTitle {
@@ -82,6 +88,20 @@
 
 .menuButton {
   display: none;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuButton span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .backdrop {
@@ -110,5 +130,9 @@
 
   .menuButton {
     display: inline-flex;
+  }
+
+  .headerRight {
+    flex-shrink: 0;
   }
 }

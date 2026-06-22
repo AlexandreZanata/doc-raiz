@@ -353,8 +353,6 @@ export function buildCliCommand(
       return slug === 'ie'
         ? `br-validators sanitize ${quoted} --type inscricao-estadual --uf ${uf}`
         : `br-validators sanitize ${quoted} --type ${cliSlug}`;
-    case 'generate':
-      return `br-validators generate --type ${cliSlug} --json`;
     case 'format':
       return slug === 'pix' || slug === 'boleto' || slug === 'brcode'
         ? `br-validators ${cliSlug} format ${quoted}`

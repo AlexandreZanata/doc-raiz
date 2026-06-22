@@ -1,4 +1,4 @@
-import { generate, type GeneratableDocumentType, type GenerateOptions as CoreGenerateOptions } from '@br-validators/core';
+import { generate, type GeneratableDocumentType, type GenerateOptions as CoreGenerateOptions, type UfCode, isGeneratableCardBrand } from '@br-validators/core';
 import { EXIT } from '../constants.js';
 
 export type GenerateCliOptions = {
@@ -7,6 +7,8 @@ export type GenerateCliOptions = {
   masked?: boolean;
   format?: string;
   seed?: number;
+  uf?: string;
+  brand?: string;
 };
 
 const GENERATABLE_TYPES: GeneratableDocumentType[] = [
@@ -19,6 +21,8 @@ const GENERATABLE_TYPES: GeneratableDocumentType[] = [
   'cnh',
   'telefone',
   'cartao-credito',
+  'inscricao-estadual',
+  'titulo-eleitor',
 ];
 
 export function isGeneratableType(type: string): type is GeneratableDocumentType {
@@ -35,6 +39,12 @@ export function buildGenerateOptions(options: GenerateCliOptions): CoreGenerateO
   }
   if (options.format) {
     core.format = options.format as CoreGenerateOptions['format'];
+  }
+  if (options.uf) {
+    core.uf = options.uf.toUpperCase() as UfCode;
+  }
+  if (options.brand && isGeneratableCardBrand(options.brand)) {
+    core.brand = options.brand;
   }
   return core;
 }

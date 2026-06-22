@@ -34,6 +34,7 @@ export const PLATFORM_ROUTES = [
   { slug: 'detect', label: 'Detect', description: 'Auto-identify document type', group: 'platform' },
   { slug: 'sanitize', label: 'Sanitize', description: 'ETL fixes + validate', group: 'platform' },
   { slug: 'generate', label: 'Generate', description: 'Synthetic test fixtures', group: 'platform' },
+  { slug: 'official-sources', label: 'Official sources', description: 'Normative references by data type', group: 'platform' },
 ] as const satisfies readonly PlatformRoute[];
 
 export const ALL_ROUTES = [...DOCUMENT_ROUTES, ...PLATFORM_ROUTES] as const;

@@ -6,7 +6,7 @@ import {
   isGeneratableType,
   buildGenerateOptions,
 } from '../src/commands/generate.js';
-import { validateCpf } from '@br-validators/core';
+import { validateCpf, validateInscricaoEstadual, validateTituloEleitor, detectCardBrand } from '@br-validators/core';
 
 describe('generate command', () => {
   it('generates CPF', () => {
@@ -21,12 +21,35 @@ describe('generate command', () => {
     expect(runGenerate('boleto', { json: false, quiet: false }, io)).toBe(EXIT.USAGE);
   });
 
+  it('generates inscricao-estadual with uf', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(runGenerate('inscricao-estadual', { json: true, quiet: false, seed: 42, uf: 'SP' }, io)).toBe(EXIT.OK);
+    const parsed = JSON.parse(io.stdout[0] ?? '{}') as { value: string };
+    expect(validateInscricaoEstadual(parsed.value, { uf: 'SP' }).ok).toBe(true);
+  });
+
+  it('generates titulo-eleitor with uf', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(runGenerate('titulo-eleitor', { json: true, quiet: false, seed: 42, uf: 'SC' }, io)).toBe(EXIT.OK);
+    const parsed = JSON.parse(io.stdout[0] ?? '{}') as { value: string };
+    expect(validateTituloEleitor(parsed.value).ok).toBe(true);
+  });
+
+  it('generates cartao-credito with brand', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(runGenerate('cartao-credito', { json: true, quiet: false, seed: 42, brand: 'mastercard' }, io)).toBe(EXIT.OK);
+    const parsed = JSON.parse(io.stdout[0] ?? '{}') as { value: string };
+    expect(detectCardBrand(parsed.value)).toBe('mastercard');
+  });
+
   it('isGeneratableType and buildGenerateOptions', () => {
-    expect(isGeneratableType('cpf')).toBe(true);
-    expect(buildGenerateOptions({ json: false, quiet: false, masked: true, seed: 1, format: 'legacy' })).toEqual({
+    expect(isGeneratableType('titulo-eleitor')).toBe(true);
+    expect(buildGenerateOptions({ json: false, quiet: false, masked: true, seed: 1, format: 'legacy', uf: 'sp', brand: 'visa' })).toEqual({
       masked: true,
       seed: 1,
       format: 'legacy',
+      uf: 'SP',
+      brand: 'visa',
     });
   });
 
