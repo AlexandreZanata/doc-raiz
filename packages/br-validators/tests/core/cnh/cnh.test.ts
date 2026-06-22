@@ -55,6 +55,13 @@ describe('CNH golden vectors — CONTRAN / SENATRAN', () => {
   it('exports official source URLs', () => {
     expect(CNH_OFFICIAL_SOURCE_URL).toBe(vectors.url);
     expect(CNH_SENATRAN_VALIDAR_URL).toBe(vectors.systemFormatUrl);
+    expect(vectors.algorithmCrossCheckUrl).toBe(
+      'https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/',
+    );
+    expect(vectors.implementationCrossCheckUrls).toEqual([
+      'https://www.geravalida.com.br/validador-cnh',
+      'https://geradorbr.com/validador-de-cnh/',
+    ]);
   });
 });
 
@@ -70,15 +77,19 @@ describe('CNH check digits', () => {
     expect(computeCnhCheckDigits('000000018')).toBe('01');
   });
 
-  it('adjusts second DV when remainder minus desconto is negative', () => {
+  it('adjusts second DV when remainder minus desconto is negative (add 9)', () => {
     expect(computeCnhSecondCheckDigit('000000093', 2)).toBe(9);
   });
 
-  it('clamps second DV to zero when adjusted value is 10 or more', () => {
+  it('subtracts desconto when remainder minus 2 is non-negative', () => {
+    expect(computeCnhSecondCheckDigit('300000000', 2)).toBe(1);
+  });
+
+  it('clamps second DV to zero after desconto adds 9 to small remainder', () => {
     expect(computeCnhSecondCheckDigit('000000182', 2)).toBe(0);
   });
 
-  it('returns zero when second remainder is 10 or more', () => {
+  it('clamps second DV to zero when remainder exceeds 9 without desconto', () => {
     expect(computeCnhSecondCheckDigit('000000006', 0)).toBe(0);
   });
 });

@@ -20,6 +20,7 @@
 | `@br-validators/core/cep` | CEP |
 | `@br-validators/core/telefone` | Brazilian telephone (fixo + celular) |
 | `@br-validators/core/cnh` | CNH — Registro Nacional |
+| `@br-validators/core/renavam` | RENAVAM — vehicle registry code |
 | `@br-validators/core/brcode` | BR Code PIX QR payload (EMV TLV + CRC16) |
 | `@br-validators/core/placa` | License plates |
 | `@br-validators/core/pis-pasep` | PIS / PASEP / NIS / NIT |
@@ -151,7 +152,22 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 
 **Success result:** `{ ok: true, value: Cnh, format: 'numeric' }`
 
-**Official source:** [CONTRAN Resolução 511/2014 (PDF)](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [Validar CNH — gov.br](https://www.gov.br/pt-br/servicos/validar-cnh) · `CNH_OFFICIAL_SOURCE_URL` · `CNH_SENATRAN_VALIDAR_URL` · `tests/vectors/cnh.official.json` · Golden: `62472927637` (format = same 11 digits)
+**Official sources:** [OFFICIAL-SOURCES.md § CNH](OFFICIAL-SOURCES.md#cnh--reference-index) — [CONTRAN 511/2014](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [Validar CNH — gov.br](https://www.gov.br/pt-br/servicos/validar-cnh) · [AdvPL CNH](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/) · [GeraValida](https://www.geravalida.com.br/validador-cnh) · [GeradorBR](https://geradorbr.com/validador-de-cnh/) · `CNH_OFFICIAL_SOURCE_URL` · `tests/vectors/cnh.official.json` · Golden: `62472927637`
+
+---
+
+## Core API — RENAVAM
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `validateRenavam` | `(input: string) => ValidationResult<Renavam>` | Modulo 11, peso 9 (single check digit) |
+| `formatRenavam` | `(input: string) => FormatResult` | Official system format: 11 contiguous digits |
+| `stripRenavam` | `(input: string) => string` | Digits only |
+| `isValidRenavam` | `(input: string) => boolean` | Convenience wrapper |
+
+**Success result:** `{ ok: true, value: Renavam, format: 'numeric' }`
+
+**Official sources:** [OFFICIAL-SOURCES.md § RENAVAM](OFFICIAL-SOURCES.md#renavam--reference-index) — [Portaria DENATRAN 27/2013](https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf) · [Consultar veículo RENAVAM — gov.br](https://www.gov.br/pt-br/servicos/consultar-dados-de-veiculo-na-base-renavam) · [AdvPL RENAVAM](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-renavam/) · [GeraValida](https://www.geravalida.com.br/gerador-de-renavam) · [GeradorFácil](https://geradorfacil.com/geradores/renavam) · `RENAVAM_OFFICIAL_SOURCE_URL` · `tests/vectors/renavam.official.json` · Golden: `63977791104`
 
 ---
 

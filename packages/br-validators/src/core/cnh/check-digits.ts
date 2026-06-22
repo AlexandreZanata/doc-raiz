@@ -1,6 +1,8 @@
 /**
  * CNH check digits — modulo 11 with inter-DV discount (desconto).
+ * DV1 and DV2 weighted sums are computed in parallel on the same 9 base digits.
  * @see https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf
+ * @see https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/ — algorithm cross-check (AdvPL)
  */
 import { weightedSum } from '../cnpj/modulo11.js';
 import { CNH_DV1_WEIGHTS, CNH_DV2_WEIGHTS } from './constants.js';
@@ -22,12 +24,15 @@ export function computeCnhFirstCheckDigit(base: string): { dv: number; discount:
 }
 
 export function computeCnhSecondCheckDigit(base: string, discount: number): number {
-  const remainder = weightedSum(digitValues(base), CNH_DV2_WEIGHTS) % 11;
-  let dv = remainder >= 10 ? 0 : remainder - discount;
-  if (dv < 0) {
-    dv += 11;
+  let dv = weightedSum(digitValues(base), CNH_DV2_WEIGHTS) % 11;
+  if (discount === 2) {
+    if (dv - 2 < 0) {
+      dv += 9;
+    } else {
+      dv -= 2;
+    }
   }
-  if (dv >= 10) {
+  if (dv > 9) {
     dv = 0;
   }
   return dv;

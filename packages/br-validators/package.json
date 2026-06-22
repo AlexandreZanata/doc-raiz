@@ -55,6 +55,10 @@
       "types": "./dist/cnh.d.ts",
       "import": "./dist/cnh.js"
     },
+    "./renavam": {
+      "types": "./dist/renavam.d.ts",
+      "import": "./dist/renavam.js"
+    },
     "./brcode": {
       "types": "./dist/brcode.d.ts",
       "import": "./dist/brcode.js"

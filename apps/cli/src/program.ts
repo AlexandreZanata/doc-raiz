@@ -6,6 +6,7 @@ import {
   handleCpfCli,
   handleTelefoneCli,
   handleCnhCli,
+  handleRenavamCli,
   handleListCli,
   handlePisPasepCli,
   handlePixCli,
@@ -22,6 +23,7 @@ import {
   type CepCliOptions,
   type TelefoneCliOptions,
   type CnhCliOptions,
+  type RenavamCliOptions,
   type CnpjCliOptions,
   type CpfCliOptions,
   type IeCliOptions,
@@ -133,6 +135,24 @@ export function createProgram(): Command {
       .action((value: string | undefined, opts: CnhCliOptions) => {
         const io = { stdout: [] as string[], stderr: [] as string[] };
         process.exitCode = handleCnhCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const renavam = program.command('renavam').description('RENAVAM — 11-digit vehicle registry code (DENATRAN / SENATRAN)');
+
+  for (const action of ['validate', 'format', 'strip'] as const) {
+    renavam
+      .command(action)
+      .description(`${action} a RENAVAM`)
+      .argument('[value]', 'RENAVAM value (11 digits or optional dash before DV)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL (validate only)')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: RenavamCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleRenavamCli(action, value, opts, io);
         writeCliIo(io);
       });
   }

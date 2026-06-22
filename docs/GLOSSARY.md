@@ -90,8 +90,18 @@
 **Definition:** Carteira Nacional de Habilitação — **Número de Registro** (BINCO). Permanent driver identifier: 9 base digits + 2 check digits (modulo 11 with inter-DV **desconto**).
 **Official system format:** **11 contiguous digits** — no dots or dashes (unlike CPF).
 **Not the same as:** Espelho CNH (9+1 DV per card issue) or formulário RENACH (UF-prefixed state form).
-**Legal reference:** [OFFICIAL-SOURCES.md](OFFICIAL-SOURCES.md) — CONTRAN 511/2014, CONTRAN 886/2021, [Validar CNH](https://www.gov.br/pt-br/servicos/validar-cnh)
+**Legal reference:** [OFFICIAL-SOURCES.md § CNH](OFFICIAL-SOURCES.md#cnh--reference-index) — [CONTRAN 511/2014](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [AdvPL CNH](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/) · [GeraValida](https://www.geravalida.com.br/validador-cnh) · [GeradorBR](https://geradorbr.com/validador-de-cnh/)
 **Code name:** `Cnh`, format `'numeric'`
+
+---
+
+## RENAVAM
+
+**Definition:** Registro Nacional de Veículos Automotores — permanent 11-digit vehicle registry code (DENATRAN/SENATRAN). 10 base digits + 1 check digit (modulo 11, **peso 9**).
+**Official system format:** **11 contiguous digits** — leading zeros significant.
+**Not the same as:** Placa (7 chars, may change) or chassis/VIN (17 chars).
+**Legal reference:** [OFFICIAL-SOURCES.md § RENAVAM](OFFICIAL-SOURCES.md#renavam--reference-index) — [Portaria DENATRAN 27/2013](https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf) · [AdvPL RENAVAM](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-renavam/) · [GeraValida](https://www.geravalida.com.br/gerador-de-renavam) · [GeradorFácil](https://geradorfacil.com/geradores/renavam)
+**Code name:** `Renavam`, format `'numeric'`
 
 ---
 

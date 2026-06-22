@@ -39,7 +39,8 @@ As each module ships, **all three** must be updated:
 | CPF | `@br-validators/core/cpf` | `br-validators cpf …` | CPF | [RFB CPF](OFFICIAL-SOURCES.md) |
 | CEP | `@br-validators/core/cep` | `br-validators cep …` | CEP | [Correios](OFFICIAL-SOURCES.md) |
 | Telefone | `@br-validators/core/telefone` | `br-validators telefone …` | `/telefone` | [Anatel — Plano de Numeração](OFFICIAL-SOURCES.md) |
-| CNH | `@br-validators/core/cnh` | `br-validators cnh …` | `/cnh` | [CONTRAN 511/2014 + Validar CNH](OFFICIAL-SOURCES.md) — 11 contiguous digits (not CPF mask) |
+| CNH | `@br-validators/core/cnh` | `br-validators cnh …` | `/cnh` | [OFFICIAL-SOURCES § CNH](OFFICIAL-SOURCES.md#cnh--reference-index) |
+| RENAVAM | `@br-validators/core/renavam` | `br-validators renavam …` | `/renavam` | [OFFICIAL-SOURCES § RENAVAM](OFFICIAL-SOURCES.md#renavam--reference-index) |
 | BR Code | `@br-validators/core/brcode` | `br-validators brcode …` | `/brcode` | [Bacen Manual BR Code](OFFICIAL-SOURCES.md) |
 | Placa | `@br-validators/core/placa` | `br-validators placa …` | Placa | [CONTRAN 729/2018](OFFICIAL-SOURCES.md) |
 | PIS/PASEP | `@br-validators/core/pis-pasep` | `br-validators pis-pasep …` | PIS/PASEP | [SIPREV RV_03](OFFICIAL-SOURCES.md) |

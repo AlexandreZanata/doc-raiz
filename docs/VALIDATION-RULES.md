@@ -165,7 +165,7 @@
 
 ## CNH (Registro Nacional)
 
-> **Source:** [CONTRAN Resolução 511/2014 (PDF)](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [CONTRAN Resolução 886/2021 (PDF)](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao8862021.pdf) · [SENATRAN — Validar CNH](https://www.gov.br/pt-br/servicos/validar-cnh)
+> **Sources:** [OFFICIAL-SOURCES.md § CNH](OFFICIAL-SOURCES.md#cnh--reference-index) — [CONTRAN 511/2014](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [CONTRAN 886/2021](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao8862021.pdf) · [Validar CNH — gov.br](https://www.gov.br/pt-br/servicos/validar-cnh) · Algorithm: [AdvPL CNH](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/) · Cross-check: [GeraValida](https://www.geravalida.com.br/validador-cnh) · [GeradorBR](https://geradorbr.com/validador-de-cnh/)
 
 ### BR-CNH-001 — Length
 
@@ -188,9 +188,11 @@
 ### BR-CNH-004 — Check digits (modulo 11 + desconto)
 
 - **GIVEN** base 9 digits
-- **WHEN** computing DV1: multiply by weights `9,8,7,6,5,4,3,2,1`, `remainder = sum % 11`; if `remainder ≥ 10` then DV1 = 0 and `desconto = 2`, else DV1 = remainder and `desconto = 0`
-- **WHEN** computing DV2: multiply base by weights `1…9`, `remainder = sum % 11`; if `remainder ≥ 10` then DV2 = 0, else DV2 = remainder − desconto (add 11 if negative; clamp to 0 if still ≥ 10)
+- **WHEN** computing DV1 and DV2 in **parallel** on the same base: DV1 weights `9,8,7,6,5,4,3,2,1`, DV2 weights `1,2,3,4,5,6,7,8,9`
+- **WHEN** DV1: `remainder = sum % 11`; if `remainder > 9` then DV1 = 0 and `desconto = 2`, else DV1 = remainder and `desconto = 0`
+- **WHEN** DV2: `remainder = sum % 11`; if `desconto = 2`: when `remainder − 2 < 0`, set `DV2 = remainder + 9`; else `DV2 = remainder − 2`; if `desconto = 0`: `DV2 = remainder`; if `DV2 > 9` then DV2 = 0
 - **THEN** compare with positions 10–11; mismatch → `INVALID_CHECK_DIGIT`
+- **Algorithm cross-check:** [AdvPL — Validação de CNH](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/) · [GeraValida](https://www.geravalida.com.br/validador-cnh) · [GeradorBR](https://geradorbr.com/validador-de-cnh/) (CONTRAN 511/2014 defines structure only)
 
 ### BR-CNH-005 — Official system format (no decorative mask)
 
@@ -198,6 +200,46 @@
 - **WHEN** formatting for official systems (SENATRAN portal, Detran forms)
 - **THEN** emit **11 contiguous digits** — no dots or dashes (unlike CPF `XXX.XXX.XXX-DD`)
 - **NOTE** CPF-style decoration may be accepted on **input** via strip but is **not** official CNH format
+
+---
+
+## RENAVAM
+
+> **Sources:** [OFFICIAL-SOURCES.md § RENAVAM](OFFICIAL-SOURCES.md#renavam--reference-index) — [Portaria DENATRAN 27/2013](https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf) · [Consultar veículo RENAVAM — gov.br](https://www.gov.br/pt-br/servicos/consultar-dados-de-veiculo-na-base-renavam) · Algorithm: [AdvPL RENAVAM](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-renavam/) · Cross-check: [GeraValida](https://www.geravalida.com.br/gerador-de-renavam) · [GeradorFácil](https://geradorfacil.com/geradores/renavam)
+
+### BR-RENAVAM-001 — Length
+
+- **GIVEN** stripped input
+- **WHEN** length ≠ 11
+- **THEN** reject with `INVALID_LENGTH`
+
+### BR-RENAVAM-002 — Numeric only
+
+- **GIVEN** input after removing optional dash before check digit
+- **WHEN** non-digit characters remain
+- **THEN** reject with `INVALID_CHARACTER`
+
+### BR-RENAVAM-003 — Known invalid sequence
+
+- **GIVEN** 11 identical digits (e.g. `11111111111`)
+- **WHEN** validating
+- **THEN** reject with `KNOWN_INVALID_PATTERN`
+
+### BR-RENAVAM-004 — Check digit (modulo 11, peso 9)
+
+- **GIVEN** base 10 digits
+- **WHEN** multiplying each digit (left to right) by weights `3,2,9,8,7,6,5,4,3,2`, summing, then `remainder = sum % 11`
+- **WHEN** `DV = 11 − remainder`; if `DV > 9` then DV = 0
+- **THEN** compare with position 11; mismatch → `INVALID_CHECK_DIGIT`
+- **NOTE** Not the boleto rule `(sum × 10) % 11` — RENAVAM uses direct subtraction from 11
+- **Algorithm cross-check:** [AdvPL — Validação de RENAVAM](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-renavam/) · [GeraValida](https://www.geravalida.com.br/gerador-de-renavam) · [GeradorFácil](https://geradorfacil.com/geradores/renavam) (Portaria DENATRAN 27/2013 defines structure only)
+
+### BR-RENAVAM-005 — Official system format (no decorative mask)
+
+- **GIVEN** valid canonical number
+- **WHEN** formatting for official systems (CRLV/CRV, SENATRAN portal)
+- **THEN** emit **11 contiguous digits** — no punctuation
+- **NOTE** Optional dash before DV may be accepted on **input** via strip but is **not** official format
 
 ---
 

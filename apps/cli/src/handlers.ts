@@ -3,6 +3,7 @@ import { runBrCode, type BrCodeAction } from './commands/brcode.js';
 import { runCep, type CepAction } from './commands/cep.js';
 import { runTelefone, type TelefoneAction } from './commands/telefone.js';
 import { runCnh, type CnhAction } from './commands/cnh.js';
+import { runRenavam, type RenavamAction } from './commands/renavam.js';
 import { runCnpj, type CnpjAction } from './commands/cnpj.js';
 import { runCpf, type CpfAction } from './commands/cpf.js';
 import { runPlaca, type PlacaAction } from './commands/placa.js';
@@ -29,6 +30,8 @@ export type CepCliOptions = CnpjCliOptions;
 export type TelefoneCliOptions = CnpjCliOptions;
 
 export type CnhCliOptions = CnpjCliOptions;
+
+export type RenavamCliOptions = CnpjCliOptions;
 
 export type BrCodeCliOptions = CnpjCliOptions;
 
@@ -367,6 +370,34 @@ export function handleCartaoCreditoCli(
   }
 
   return runCartaoCredito(
+    action,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      source: Boolean(opts.source),
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleRenavamCli(
+  action: RenavamAction,
+  value: string | undefined,
+  opts: RenavamCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runRenavam(
     action,
     value,
     {

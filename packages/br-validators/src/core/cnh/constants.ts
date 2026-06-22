@@ -3,6 +3,9 @@
  * @see https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf
  * @see https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao8862021.pdf
  * @see https://www.gov.br/pt-br/servicos/validar-cnh
+ * @see https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/ — algorithm cross-check (AdvPL)
+ * @see https://www.geravalida.com.br/validador-cnh — implementation cross-check
+ * @see https://geradorbr.com/validador-de-cnh/ — implementation cross-check
  */
 export const CNH_DV1_WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2, 1] as const;
 export const CNH_DV2_WEIGHTS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;

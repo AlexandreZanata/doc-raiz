@@ -5,6 +5,7 @@ import {
   brandCnpj,
   brandCep,
   brandCnh,
+  brandRenavam,
   brandCpf,
   brandCodigoBarras,
   brandInscricaoEstadual,
@@ -33,6 +34,13 @@ describe('brandCnh', () => {
   it('casts string to Cnh brand', () => {
     const value = brandCnh('62472927637');
     expect(value).toBe('62472927637');
+  });
+});
+
+describe('brandRenavam', () => {
+  it('casts string to Renavam brand', () => {
+    const value = brandRenavam('63977791104');
+    expect(value).toBe('63977791104');
   });
 });
 

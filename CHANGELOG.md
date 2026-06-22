@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Subpath `@br-validators/core/cnh`
 - CLI `br-validators cnh validate|format|strip`
 - Playground `/cnh`
+- **RENAVAM (Phase 13):** `validateRenavam`, `formatRenavam`, `stripRenavam` — 11-digit vehicle registry code, modulo 11 peso 9
+- Subpath `@br-validators/core/renavam`
+- CLI `br-validators renavam validate|format|strip`
+- Playground `/renavam`
 
 ### Changed
 
