@@ -2,7 +2,7 @@
 
 > Phased delivery. Each module ships in **library + CLI + playground** (see [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md)).
 > **TypeScript first** — [TECH-STACK.md](TECH-STACK.md).
-> **npm:** `@br-validators/core` + `@br-validators/cli` · **Current:** `v0.10.0-alpha.0`
+> **npm:** `@br-validators/core` + `@br-validators/cli` · **Current:** core `v0.10.0-alpha.0`, CLI `v0.10.0-alpha.1`
 
 ---
 

@@ -172,7 +172,14 @@ Every shipped type exists in **library + CLI + playground**. See [docs/DELIVERY-
 
 ## Current release
 
-**v0.10.0-alpha.0** — pre-1.0; API may change. Pin exact version in production.
+| Package | npm | Version |
+|---------|-----|---------|
+| `@br-validators/core` | [npm](https://www.npmjs.com/package/@br-validators/core) | `0.10.0-alpha.0` |
+| `@br-validators/cli` | [npm](https://www.npmjs.com/package/@br-validators/cli) | `0.10.0-alpha.1` |
+
+Pre-1.0 — API may change. Pin exact version in production. Avoid `@br-validators/cli@0.10.0-alpha.0` (broken global install; fixed in `alpha.1`).
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 | Not in v0.10 | Reason |
 |--------------|--------|
