@@ -62,6 +62,13 @@ CI (`.github/workflows/ci.yml`) MUST build core **once** before `pnpm typecheck`
 1. `pnpm verify` green on `developing`
 2. PR `developing` → `main` (CI + maintainer approval)
 3. Version bump + `CHANGELOG` on `main`
-4. `git tag vX.Y.Z` + GitHub Release
-5. `npm publish` from clean `main` tag
-6. Reset `developing` from `main` for next cycle
+4. `git tag vX.Y.Z && git push origin vX.Y.Z` → **Release workflow** publishes npm + GitHub Release
+5. Sync `developing` from `main`
+
+GitHub secret required: **`NPM_TOKEN`** — see `docs/BRANCHING.md`.
+
+## CI Release workflow: `NPM_TOKEN` missing
+
+**Symptom:** Release job fails at publish with `401` / `ENEEDAUTH`.
+
+**Fix:** Add `NPM_TOKEN` repository secret (npm granular token with publish on `@br-validators/*`). Re-run the workflow.

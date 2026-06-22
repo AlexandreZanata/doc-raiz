@@ -25,7 +25,8 @@
     "typescript"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
