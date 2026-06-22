@@ -47,6 +47,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Subpaths `@br-validators/core/detect`, `@br-validators/core/sanitize`, `@br-validators/core/generate`
 - CLI `br-validators detect|sanitize|generate`
 - Playground `/detect`, `/sanitize`, `/generate`
+- **`mask()`** — unified display mask (`@br-validators/core/mask`)
+- **`compare()` / `batch()` / `diff()`** — platform equality, bulk validation, field diff
+- **Boleto arrecadação** — `validateArrecadacao` (FEBRABAN Layout v7); wired in `validateBoleto` + `detect()`
+- **Playground PIX static QR** — permanent (no amount) or fixed-value BR Code on `/pix`
 
 ### Changed
 
@@ -127,7 +131,7 @@ Boleto Phase 5b — full cobrança: Situação 2, modulo edge vectors, optional 
 - Golden vectors: `boleto.situacao2.official.json`, `boleto.modulo-edge.json`, `boleto.semantic.official.json`
 - Optional flags: `validateDueFactor`, `validateAmount` on `validateBoleto`
 - `validateFatorVencimento`, `validateValorDocumento`, `validateSemanticFields`
-- `detectBoletoInputKind` returns `arrecadacao` for 48-digit `8…` inputs (validation still rejected)
+- `detectBoletoInputKind` returns `arrecadacao` for 48-digit `8…` inputs *(validation added in 0.12.0-alpha.3 — see [Unreleased])*
 - CLI / playground: `situacao` on successful boleto validation
 - BR-BOLETO-011…013, UC-007 AF-4/AF-5
 

@@ -135,11 +135,46 @@ Requires Node ≥ 18. ESM only (`"type": "module"`). Zero runtime dependencies.
 | PIS / PASEP / NIS | `@br-validators/core/pis-pasep` | `br-validators pis-pasep …` | `/pis` |
 | PIX key | `@br-validators/core/pix` | `br-validators pix …` | `/pix` |
 | BR Code (PIX QR) | `@br-validators/core/brcode` | `br-validators brcode …` | `/brcode` |
-| Boleto (Situação 1 + 2) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
+| Boleto cobrança (Situação 1 + 2) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
+| Boleto arrecadação (48/44, product `8`) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
 | Credit card (Luhn / ISO 7812) | `@br-validators/core/cartao-credito` | `br-validators cartao …` | `/cartao-credito` |
 | Inscrição Estadual (27 UFs) | `@br-validators/core/inscricao-estadual` | `br-validators ie … --uf SP` | `/ie` |
-| IE SP produtor rural | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie-rural …` | `/ie-rural` |
-| **Platform APIs** | `detect` · `sanitize` · `mask` · `generate` | partial | partial |
+| IE SP produtor rural | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie …` (auto `P`) | `/ie` |
+| **Platform APIs** | see below | partial | partial |
+
+### Platform APIs (`@br-validators/core`)
+
+| API | Subpath | CLI | Playground | Purpose |
+|-----|---------|-----|------------|---------|
+| `detect()` | `/detect` | `br-validators detect …` | `/detect` | Auto-classify raw input |
+| `sanitize()` | `/sanitize` | `br-validators sanitize <type> …` | `/sanitize` | ETL fixes + validate |
+| `mask()` | `/mask` | — | via `format` actions | Unified display mask |
+| `compare()` | `/compare` | — | — | Normalized equality |
+| `batch()` | `/batch` | — | — | Bulk validate + summary |
+| `diff()` | `/diff` | — | — | Field-level structural diff |
+| `generate()` | `/generate` | `br-validators generate …` | `/generate` | Synthetic test fixtures |
+
+```typescript
+import { compare, batch, diff, mask } from '@br-validators/core';
+
+compare('123.456.789-09', '12345678909', 'cpf'); // { equal: true }
+batch(['12345678909', 'bad'], 'cpf');             // { valid, invalid, summary }
+diff('12345678909', '12345678901', 'cpf');        // { changed, fields: [{ field: 'dv', … }] }
+mask('12345678909', 'cpf');                       // { ok: true, formatted: '123.456.789-09' }
+```
+
+### PIX static QR Code (playground)
+
+The **[playground `/pix`](https://doc-raiz-playground.vercel.app/pix)** builds **static PIX BR Code** payloads (Bacen EMV TLV + CRC16) from a validated PIX key:
+
+| Mode | Amount field | Use case |
+|------|--------------|----------|
+| **Permanent (static)** | Leave empty | Payer chooses the amount at payment time |
+| **Fixed value** | e.g. `10.50` | QR encodes tag `54` with the transaction amount |
+
+Payload is validated with `validateBrCode` before rendering the QR image. Official sources: [Bacen Manual BR Code](docs/OFFICIAL-SOURCES.md), [Manual de Padrões PIX](docs/OFFICIAL-SOURCES.md).
+
+Core library ships **`validateBrCode` / `parseBrCode`** and **`computeCrc16Ccitt`**; QR image rendering is playground-only (`apps/playground/lib/pix/build-static-brcode.ts`).
 
 Official sources per type: [docs/OFFICIAL-SOURCES.md](docs/OFFICIAL-SOURCES.md)
 
@@ -199,8 +234,10 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 | Gap | Status |
 |-----|--------|
-| Boleto arrecadação (48-digit) | Detected only; validation backlog (Week 3) |
 | Alphanumeric CPF | Blocked — RFB spec not published |
+| `compare` / `batch` / `diff` CLI commands | Library-only — use `@br-validators/core` |
+| PIX QR **builder** in library | Playground `/pix` only — core validates/parses BR Code |
+| `@br-validators/adapters-correios` | Planned — CEP HTTP lookup |
 
 ---
 

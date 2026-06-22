@@ -47,13 +47,19 @@ As each module ships, **all three** must be updated:
 | Placa | `@br-validators/core/placa` | `br-validators placa …` | Placa | [CONTRAN 729/2018](OFFICIAL-SOURCES.md) |
 | PIS/PASEP | `@br-validators/core/pis-pasep` | `br-validators pis-pasep …` | PIS/PASEP | [SIPREV RV_03](OFFICIAL-SOURCES.md) |
 | PIX key | `@br-validators/core/pix` | `br-validators pix …` | PIX | [Bacen PIX / DICT](OFFICIAL-SOURCES.md) |
-| Boleto | `@br-validators/core/boleto` | `br-validators boleto …` | Boleto | [FEBRABAN](OFFICIAL-SOURCES.md) |
+| Boleto cobrança | `@br-validators/core/boleto` | `br-validators boleto …` | Boleto | [FEBRABAN FB-0061/2021](OFFICIAL-SOURCES.md) |
+| Boleto arrecadação | `@br-validators/core/boleto` | `br-validators boleto …` | Boleto | [FEBRABAN Layout v7](OFFICIAL-SOURCES.md) |
 | Credit card | `@br-validators/core/cartao-credito` | `br-validators cartao …` / `cartao-credito …` | Credit Card | [ISO/IEC 7812-1](OFFICIAL-SOURCES.md) |
 | IE (27 UFs) | `@br-validators/core/inscricao-estadual` | `br-validators ie … --uf <UF>` | `/ie` | [OFFICIAL-SOURCES § IE](OFFICIAL-SOURCES.md#inscrição-estadual-ie--all-27-ufs) |
 | IE produtor rural (SP) | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie … --uf SP` (auto `P` prefix) | `/ie` badge | [SINTEGRA cad_SP Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) |
 | **detect()** | `@br-validators/core/detect` | `br-validators detect …` | `/detect` | Composes per-type [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
 | **sanitize()** | `@br-validators/core/sanitize` | `br-validators sanitize <type> …` | `/sanitize` | Same validators as per-type rows |
+| **mask()** | `@br-validators/core/mask` | — | via per-type `format` | Per-type masks — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
+| **compare()** | `@br-validators/core/compare` | — | — | Normalized equality via per-type `validate*` |
+| **batch()** | `@br-validators/core/batch` | — | — | Bulk validate + summary |
+| **diff()** | `@br-validators/core/diff` | — | — | Field-level diff per official structures |
 | **generate()** | `@br-validators/core/generate` | `br-validators generate <type> …` | `/generate` | DV sources per generatable type — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
+| **PIX static QR** | `computeCrc16Ccitt` + `validateBrCode` (core) | — | `/pix` QR panel | [Bacen Manual BR Code](OFFICIAL-SOURCES.md) — builder in `apps/playground` |
 
 **Definition of done per module:** library tests green + CLI command + playground section + source link.
 
