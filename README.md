@@ -30,7 +30,7 @@ npx @br-validators/cli --help
 
 ### Playground (no install)
 
-Open the live demo: **[br-validators.vercel.app](https://br-validators.vercel.app)** — client-side only, no PII sent to server.
+Open the live demo: **[doc-raiz-playground.vercel.app](https://doc-raiz-playground.vercel.app/)** — client-side only, no PII sent to server.
 
 ---
 

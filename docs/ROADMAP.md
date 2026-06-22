@@ -14,7 +14,7 @@
 - [x] MIT license + governance
 - [x] **Monorepo scaffold** — `packages/br-validators`, `apps/cli`, `apps/playground`
 - [x] pnpm workspaces + CI (GitHub Actions)
-- [x] Vercel project → `apps/playground` ([br-validators.vercel.app](https://br-validators.vercel.app))
+- [x] Vercel project → `apps/playground` ([doc-raiz-playground.vercel.app](https://doc-raiz-playground.vercel.app/))
 
 ---
 
