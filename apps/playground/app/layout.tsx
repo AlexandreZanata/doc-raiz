@@ -1,14 +1,10 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { SidebarLayout } from '@/components/templates/SidebarLayout';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'BR Validators Playground',
   description: '100% open-source · client-side validation · official algorithms',
-};
-
-export const viewport: Viewport = {
-  themeColor: '#0b1020',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   `;
 
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <SidebarLayout>{children}</SidebarLayout>

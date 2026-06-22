@@ -1,51 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { Button } from '@/components/atoms/Button';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { Sidebar } from '@/components/organisms/Sidebar';
 import styles from './templates.module.css';
 
 export function SidebarLayout({ children }: { children: React.ReactNode }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
     <div className={styles.shell}>
-      <Sidebar className={styles.desktopSidebar} />
+      <Sidebar />
       <div className={styles.content}>
         <header className={styles.mobileHeader}>
-          <div className={styles.mobileHeaderLeft}>
-            <Button
-              variant="icon"
-              size="sm"
-              aria-label="Open menu"
-              title="Open menu"
-              onClick={() => {
-                setMenuOpen(true);
-              }}
-            >
-              ☰
-            </Button>
-            <span>BR Validators Playground</span>
-          </div>
-          <div className={styles.mobileHeaderLeft}>
-            <ThemeToggle />
-          </div>
+          <span>BR Validators Playground</span>
+          <ThemeToggle />
         </header>
-        {menuOpen ? (
-          <div
-            className={styles.backdrop}
-            onClick={() => {
-              setMenuOpen(false);
-            }}
-          />
-        ) : null}
-        <Sidebar
-          className={`${styles.mobileSidebar} ${menuOpen ? styles.mobileSidebarOpen : ''}`.trim()}
-          onNavigate={() => {
-            setMenuOpen(false);
-          }}
-        />
         {children}
       </div>
     </div>
