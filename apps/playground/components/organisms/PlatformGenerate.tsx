@@ -12,31 +12,31 @@ import {
   validateCnh,
   validateTelefone,
   validateCartaoCredito,
+  validateInscricaoEstadual,
+  validateTituloEleitor,
+  detectCardBrand,
   type GeneratableDocumentType,
+  type GeneratableCardBrand,
+  type GenerateOptions,
+  type UfCode,
 } from '@br-validators/core';
 import { Label } from '@/components/atoms/Label';
 import { Select } from '@/components/atoms/Select';
-import { GenerateOptions, type GenerateOptionsState } from '@/components/molecules/GenerateOptions';
+import { CopyableInput } from '@/components/molecules/CopyableInput';
+import { GenerateParamFields } from '@/components/molecules/GenerateParamFields';
+import { formatPlacaDisplay } from '@/lib/format-display';
 import { CliCommandHint } from '@/components/molecules/CliCommandHint';
 import { ResultRow } from '@/components/molecules/ResultRow';
 import { ResultSection } from '@/components/molecules/ResultSection';
 import { Button } from '@/components/atoms/Button';
 import { useI18n } from '@/components/providers/I18nProvider';
+import {
+  findPlatformGeneratable,
+  PLATFORM_GENERATABLE,
+} from '@/lib/platform-generate-types';
 import styles from './organisms.module.css';
 
-const GENERATABLE: { value: GeneratableDocumentType; label: string; formats?: string[] }[] = [
-  { value: 'cpf', label: 'CPF' },
-  { value: 'cnpj', label: 'CNPJ', formats: ['numeric', 'alphanumeric'] },
-  { value: 'cep', label: 'CEP' },
-  { value: 'telefone', label: 'Telefone', formats: ['celular', 'fixo'] },
-  { value: 'placa', label: 'Placa', formats: ['mercosul', 'legacy'] },
-  { value: 'pis-pasep', label: 'PIS/PASEP' },
-  { value: 'cnh', label: 'CNH' },
-  { value: 'renavam', label: 'RENAVAM' },
-  { value: 'cartao-credito', label: 'Cartão de Crédito' },
-];
-
-function confirmValid(type: GeneratableDocumentType, value: string): boolean {
+function confirmValid(type: GeneratableDocumentType, value: string, uf: UfCode): boolean {
   switch (type) {
     case 'cpf':
       return validateCpf(value).ok;
@@ -56,9 +56,59 @@ function confirmValid(type: GeneratableDocumentType, value: string): boolean {
       return validateTelefone(value).ok;
     case 'cartao-credito':
       return validateCartaoCredito(value).ok;
+    case 'inscricao-estadual':
+      return validateInscricaoEstadual(value, { uf }).ok;
+    case 'titulo-eleitor':
+      return validateTituloEleitor(value).ok;
     default:
       return false;
   }
+}
+
+function buildGenerateOptions(
+  entry: ReturnType<typeof findPlatformGeneratable>,
+  masked: boolean,
+  format: string | undefined,
+  uf: UfCode,
+): GenerateOptions {
+  const options: GenerateOptions = { masked, uf: entry?.ufSelector ? uf : undefined };
+
+  if (!format || !entry?.formats) {
+    return options;
+  }
+
+  if (entry.brandSelector) {
+    options.brand = format as GeneratableCardBrand;
+    return options;
+  }
+
+  options.format = format as GenerateOptions['format'];
+  return options;
+}
+
+function formatOutput(type: GeneratableDocumentType, value: string, masked: boolean): string {
+  if (type === 'placa' && masked) {
+    return formatPlacaDisplay(value);
+  }
+  return value;
+}
+
+function buildCliCommand(
+  type: GeneratableDocumentType,
+  entry: ReturnType<typeof findPlatformGeneratable>,
+  uf: UfCode,
+  format: string | undefined,
+): string {
+  const parts = ['br-validators', 'generate', type, '--json'];
+  if (entry?.ufSelector) {
+    parts.push('--uf', uf);
+  }
+  if (format && entry?.brandSelector) {
+    parts.push('--brand', format);
+  } else if (format && entry?.formats && !entry.brandSelector) {
+    parts.push('--format', format);
+  }
+  return parts.join(' ');
 }
 
 export function PlatformGenerate() {
@@ -66,26 +116,52 @@ export function PlatformGenerate() {
   const copy = messages.platform.generate;
   const [type, setType] = useState<GeneratableDocumentType>('cpf');
   const [output, setOutput] = useState('');
-  const [options, setOptions] = useState<GenerateOptionsState>({ masked: false });
+  const [uf, setUf] = useState<UfCode>('SP');
+  const [format, setFormat] = useState<string | undefined>();
 
-  const selected = GENERATABLE.find((item) => item.value === type);
+  const selected = findPlatformGeneratable(type);
   const formats = selected?.formats;
+  const showUf = Boolean(selected?.ufSelector);
 
   const valid = useMemo(
-    () => (output ? confirmValid(type, output) : null),
-    [type, output],
+    () => (output ? confirmValid(type, output, uf) : null),
+    [type, output, uf],
   );
 
-  const handleGenerate = () => {
-    const value = generate(type, {
-      seed: options.seed,
-      masked: options.masked,
-      format: options.format as 'numeric' | 'alphanumeric' | 'legacy' | 'mercosul' | 'celular' | 'fixo' | undefined,
-    });
+  const runGenerate = (masked: boolean, nextUf = uf, nextFormat = format) => {
+    const entry = findPlatformGeneratable(type);
+    let value = generate(type, buildGenerateOptions(entry, masked, nextFormat, nextUf));
+    value = formatOutput(type, value, masked);
     setOutput(value);
   };
 
-  const cliCommand = `br-validators generate --type ${type} --json`;
+  const handleTypeChange = (next: GeneratableDocumentType) => {
+    setType(next);
+    const nextEntry = findPlatformGeneratable(next);
+    setFormat(nextEntry?.formats?.[0]);
+    setOutput('');
+  };
+
+  const handleUfChange = (next: UfCode) => {
+    setUf(next);
+    if (output && showUf) {
+      runGenerate(true, next, format);
+    }
+  };
+
+  const handleFormatChange = (nextFormat: string) => {
+    setFormat(nextFormat);
+    if (output) {
+      runGenerate(true, uf, nextFormat);
+    }
+  };
+
+  const cliCommand = buildCliCommand(type, selected, uf, format);
+
+  const brandMatches =
+    output && selected?.brandSelector && format
+      ? detectCardBrand(output.replace(/\s/g, '')) === format
+      : null;
 
   return (
     <main className={styles.panel}>
@@ -100,14 +176,10 @@ export function PlatformGenerate() {
           id="generate-type"
           value={type}
           onChange={(e) => {
-            const next = e.target.value as GeneratableDocumentType;
-            setType(next);
-            const nextFormats = GENERATABLE.find((item) => item.value === next)?.formats;
-            setOptions({ masked: false, format: nextFormats?.[0] });
-            setOutput('');
+            handleTypeChange(e.target.value as GeneratableDocumentType);
           }}
         >
-          {GENERATABLE.map((item) => (
+          {PLATFORM_GENERATABLE.map((item) => (
             <option key={item.value} value={item.value}>
               {item.label}
             </option>
@@ -115,16 +187,36 @@ export function PlatformGenerate() {
         </Select>
       </div>
 
-      <GenerateOptions formats={formats} options={options} onChange={setOptions} />
+      <GenerateParamFields
+        idPrefix="platform-generate"
+        showUf={showUf}
+        uf={uf}
+        onUfChange={handleUfChange}
+        formats={formats}
+        format={format ?? formats?.[0]}
+        onFormatChange={handleFormatChange}
+        formatLabel={selected?.brandSelector ? messages.generate.brand : undefined}
+      />
 
-      <Button type="button" variant="primary" onClick={handleGenerate}>
-        {messages.actions.generateRun}
-      </Button>
+      <div className={styles.generateActions}>
+        <Button type="button" variant="secondary" onClick={() => { runGenerate(false); }}>
+          {messages.actions.generateValid}
+        </Button>
+        <Button type="button" variant="primary" onClick={() => { runGenerate(true); }}>
+          {messages.actions.generateValidFormatted}
+        </Button>
+      </div>
 
       {output ? (
         <ResultSection title={messages.sections.output}>
-          <ResultRow label={messages.common.value} value={output} mono />
+          <div className={styles.outputField}>
+            <Label htmlFor="generate-output">{messages.common.value}</Label>
+            <CopyableInput id="generate-output" value={output} readOnly aria-label={messages.common.value} />
+          </div>
           <ResultRow label={messages.common.valid} value={valid ? 'yes' : 'no'} />
+          {brandMatches !== null ? (
+            <ResultRow label="Brand" value={brandMatches ? format ?? '—' : 'mismatch'} />
+          ) : null}
         </ResultSection>
       ) : null}
 

@@ -7,6 +7,7 @@ import { formatPisPasep } from '../format/pis-pasep.js';
 import { formatPlaca } from '../format/placa.js';
 import { formatRenavam } from '../format/renavam.js';
 import { formatTelefone } from '../format/telefone.js';
+import { formatTituloEleitor } from '../format/titulo-eleitor.js';
 import type { GeneratableDocumentType } from './index.js';
 
 export function applyMask(type: GeneratableDocumentType, value: string): string {
@@ -45,6 +46,12 @@ export function applyMask(type: GeneratableDocumentType, value: string): string 
     }
     case 'cartao-credito': {
       const result = formatCartaoCredito(value);
+      return result.ok ? result.formatted : value;
+    }
+    case 'inscricao-estadual':
+      return value;
+    case 'titulo-eleitor': {
+      const result = formatTituloEleitor(value);
       return result.ok ? result.formatted : value;
     }
     default: {

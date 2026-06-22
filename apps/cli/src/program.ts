@@ -474,6 +474,8 @@ export function createProgram(): Command {
     .option('--masked', 'Return masked/formatted output')
     .option('--format <format>', 'Format variant (numeric, alphanumeric, legacy, mercosul, celular, fixo)')
     .option('--seed <number>', 'Deterministic PRNG seed', (v: string) => Number(v))
+    .option('--uf <uf>', 'State code (required for inscricao-estadual and titulo-eleitor)')
+    .option('--brand <brand>', 'Card brand (visa, mastercard, amex, elo, hipercard)')
     .action((type: string, opts: GenerateCliOptions) => {
       const io = { stdout: [] as string[], stderr: [] as string[] };
       process.exitCode = handleGenerateCli(type, opts, io);

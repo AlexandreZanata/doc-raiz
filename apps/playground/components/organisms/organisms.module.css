@@ -76,11 +76,92 @@
   text-overflow: ellipsis;
 }
 
+.officialSourcesPage {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.officialSourcesTableHeader {
+  display: none;
+}
+
+.officialSourcesRow {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.officialSourcesResourceTitle {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.officialSourcesAgencyInline {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.officialSourcesReferences {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.officialSourcesPageLink {
+  color: var(--accent);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.officialSourcesPageLink:hover {
+  text-decoration: underline;
+}
+
+.outputField {
+  display: grid;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .officialSourcesTableHeader {
+    display: grid;
+    grid-template-columns: minmax(12rem, 1fr) 2fr;
+    gap: var(--space-4);
+    padding: 0 var(--space-4) var(--space-2);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .officialSourcesRow {
+    grid-template-columns: minmax(12rem, 1fr) 2fr;
+    align-items: start;
+  }
+}
+
 .panel {
   width: 100%;
   padding: var(--space-6);
   display: grid;
   gap: var(--space-5);
+}
+
+.generateActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
 .title {

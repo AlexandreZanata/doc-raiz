@@ -1,5 +1,9 @@
-import { generate } from '@br-validators/core';
+import { generate, type GeneratableCardBrand } from '@br-validators/core';
 
-export function generateCreditCard() {
-  return generate('cartao-credito');
+export function generateCreditCard(brand: GeneratableCardBrand, masked: boolean, seed?: number): string {
+  return generate('cartao-credito', {
+    brand,
+    masked,
+    seed,
+  });
 }

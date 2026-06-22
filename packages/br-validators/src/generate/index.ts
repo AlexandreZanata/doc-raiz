@@ -15,11 +15,15 @@ import { RENAVAM_BASE_LENGTH } from '../core/renavam/constants.js';
 import { PLACA_LEGACY_PATTERN, PLACA_MERCOSUL_PATTERN } from '../core/placa/constants.js';
 import { ANATEL_DDDS } from '../core/telefone/constants.js';
 import { validateCep } from '../core/cep/index.js';
-import { validateCartaoCredito } from '../core/cartao-credito/index.js';
 import { validatePlaca } from '../core/placa/index.js';
 import { validateTelefone } from '../core/telefone/index.js';
 import { applyMask } from './apply-mask.js';
-import { computeLuhnCheckDigit, createRandomSource, hasRepeatedChars, type RandomSource } from './random.js';
+import { generateCartaoCreditoValue, type GeneratableCardBrand } from './cartao-credito.js';
+import { generateInscricaoEstadualValue } from './inscricao-estadual.js';
+import { generateTituloEleitorValue } from './titulo-eleitor.js';
+import { createRandomSource, hasRepeatedChars, type RandomSource } from './random.js';
+import type { UfCode } from '../types/validation-result.js';
+import { formatInscricaoEstadual } from '../core/inscricao-estadual/index.js';
 
 export type GeneratableDocumentType =
   | 'cpf'
@@ -30,7 +34,9 @@ export type GeneratableDocumentType =
   | 'renavam'
   | 'cnh'
   | 'telefone'
-  | 'cartao-credito';
+  | 'cartao-credito'
+  | 'inscricao-estadual'
+  | 'titulo-eleitor';
 
 export type GenerateFormat =
   | 'numeric'
@@ -44,7 +50,11 @@ export type GenerateOptions = {
   format?: GenerateFormat;
   masked?: boolean;
   seed?: number;
+  uf?: UfCode;
+  brand?: GeneratableCardBrand;
 };
+
+export type { GeneratableCardBrand } from './cartao-credito.js';
 
 const CNPJ_ALNUM_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const MAX_ATTEMPTS = 50;
@@ -163,20 +173,13 @@ function generateTelefoneValue(rng: RandomSource, format: GenerateOptions['forma
   return useFixo ? '1133333333' : '11999999999';
 }
 
-function generateCartaoValue(rng: RandomSource): string {
-  const length = rng.int(13, 16);
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const partial = rng.digits(length - 1);
-    if (hasRepeatedChars(partial)) {
-      continue;
-    }
-    const check = computeLuhnCheckDigit(partial);
-    const candidate = partial + check;
-    if (validateCartaoCredito(candidate).ok) {
-      return candidate;
-    }
-  }
-  return '4111111111111111';
+function generateCartaoValue(rng: RandomSource, brand?: GeneratableCardBrand): string {
+  return generateCartaoCreditoValue(rng, brand);
+}
+
+function applyInscricaoEstadualGenerateMask(value: string, uf: UfCode): string {
+  const formatted = formatInscricaoEstadual(value, { uf });
+  return formatted.ok ? formatted.formatted : value;
 }
 
 export function generate(type: GeneratableDocumentType, options: GenerateOptions = {}): string {
@@ -209,12 +212,30 @@ export function generate(type: GeneratableDocumentType, options: GenerateOptions
       value = generateTelefoneValue(rng, options.format);
       break;
     case 'cartao-credito':
-      value = generateCartaoValue(rng);
+      value = generateCartaoValue(rng, options.brand);
       break;
+    case 'inscricao-estadual': {
+      if (!options.uf) {
+        throw new Error('UF is required for inscricao-estadual generation');
+      }
+      value = generateInscricaoEstadualValue(options.uf, rng);
+      break;
+    }
+    case 'titulo-eleitor': {
+      if (!options.uf) {
+        throw new Error('UF is required for titulo-eleitor generation');
+      }
+      value = generateTituloEleitorValue(options.uf, rng);
+      break;
+    }
     default: {
       const _exhaustive: never = type;
       throw new Error(`Unsupported generatable type: ${String(_exhaustive)}`);
     }
+  }
+
+  if (options.masked && type === 'inscricao-estadual') {
+    return applyInscricaoEstadualGenerateMask(value, options.uf!);
   }
 
   return options.masked ? applyMask(type, value) : value;
@@ -260,6 +281,7 @@ export const __generateTesting = {
   generateCnpjValue: (format?: GenerateOptions['format']) => generateCnpjValue(repeatingRng, format),
   generateCepValue: () => generateCepValue(zeroRng),
   generateCartaoValue: () => generateCartaoValue(repeatingRng),
+  generateCartaoValueForBrand: (brand: GeneratableCardBrand) => generateCartaoValue(repeatingRng, brand),
   generatePlacaValue: (format?: GenerateOptions['format']) =>
     generatePlacaValue(format === 'legacy' ? exhaustPlacaLegacyRng : exhaustPlacaMercosulRng, format),
   generateTelefoneValue: (format?: GenerateOptions['format']) =>
@@ -267,6 +289,10 @@ export const __generateTesting = {
   generatePisValue: () => generatePisValue(repeatingRng),
   generateRenavamValue: () => generateRenavamValue(repeatingRng),
   generateCnhValue: () => generateCnhValue(repeatingRng),
+  generateInscricaoEstadualValue: (uf: UfCode) => generateInscricaoEstadualValue(uf, repeatingRng),
+  generateTituloEleitorValue: (uf: UfCode) => generateTituloEleitorValue(uf, repeatingRng),
+  applyInscricaoEstadualGenerateMask: (value: string, uf: UfCode) =>
+    applyInscricaoEstadualGenerateMask(value, uf),
   touchAllRngMethods: () => {
     for (const rng of [repeatingRng, zeroRng, exhaustPlacaLegacyRng, exhaustPlacaMercosulRng, exhaustTelefoneRng]) {
       rng.next();

@@ -16,7 +16,10 @@ import { validateRenavam } from '../../src/core/renavam/index.js';
 import { validateCnh } from '../../src/core/cnh/index.js';
 import { validateTelefone } from '../../src/core/telefone/index.js';
 import { validateCartaoCredito } from '../../src/core/cartao-credito/index.js';
-import { stripCpf } from '../../src/strip/cpf.js';
+import { validateInscricaoEstadual } from '../../src/core/inscricao-estadual/index.js';
+import { validateTituloEleitor } from '../../src/core/titulo-eleitor/index.js';
+import { detectCardBrand } from '../../src/core/cartao-credito/index.js';
+import ieSpVectors from '../vectors/ie.sp.official.json';
 import cnpjVectors from '../vectors/cnpj.official.json';
 import cepVectors from '../vectors/cep.official.json';
 import placaVectors from '../vectors/placa.official.json';
@@ -24,6 +27,7 @@ import pisVectors from '../vectors/pis-pasep.official.json';
 import renavamVectors from '../vectors/renavam.official.json';
 import cnhVectors from '../vectors/cnh.official.json';
 import telefoneVectors from '../vectors/telefone.official.json';
+import tituloVectors from '../vectors/titulo-eleitor.official.json';
 import cartaoVectors from '../vectors/cartao-credito.official.json';
 
 const GENERATABLE_TYPES = [
@@ -36,6 +40,8 @@ const GENERATABLE_TYPES = [
   'cnh',
   'telefone',
   'cartao-credito',
+  'inscricao-estadual',
+  'titulo-eleitor',
 ] as const;
 
 const VALIDATORS = {
@@ -48,14 +54,31 @@ const VALIDATORS = {
   cnh: validateCnh,
   telefone: validateTelefone,
   'cartao-credito': validateCartaoCredito,
+  'inscricao-estadual': (value: string) => validateInscricaoEstadual(value, { uf: 'SP' }),
+  'titulo-eleitor': (value: string) => validateTituloEleitor(value),
 };
 
 describe('generate()', () => {
   for (const type of GENERATABLE_TYPES) {
     it(`property: validateX(generate(${type})).ok`, () => {
       for (let i = 0; i < 20; i++) {
-        const value = generate(type, { seed: 1000 + i });
-        expect(VALIDATORS[type](value).ok).toBe(true);
+        const options =
+          type === 'inscricao-estadual' || type === 'titulo-eleitor'
+            ? { seed: 1000 + i, uf: 'SP' as const }
+            : type === 'cartao-credito'
+              ? { seed: 1000 + i, brand: 'visa' as const }
+              : { seed: 1000 + i };
+        const value = generate(type, options);
+        if (type === 'inscricao-estadual') {
+          expect(validateInscricaoEstadual(value, { uf: 'SP' }).ok).toBe(true);
+        } else if (type === 'titulo-eleitor') {
+          expect(validateTituloEleitor(value).ok).toBe(true);
+        } else if (type === 'cartao-credito') {
+          expect(VALIDATORS[type](value).ok).toBe(true);
+          expect(detectCardBrand(value)).toBe('visa');
+        } else {
+          expect(VALIDATORS[type](value).ok).toBe(true);
+        }
       }
     });
   }
@@ -68,7 +91,7 @@ describe('generate()', () => {
 
   it('masked CPF passes format strip', () => {
     const masked = generate('cpf', { masked: true, seed: 99 });
-    expect(stripCpf(masked)).toHaveLength(11);
+    expect(masked.replace(/\D/g, '')).toHaveLength(11);
     expect(validateCpf(masked).ok).toBe(true);
   });
 
@@ -107,7 +130,8 @@ describe('generate()', () => {
     expect(__generateTesting.randomBaseDigits(9)).toHaveLength(9);
     expect(__generateTesting.randomCnpjAlphanumericBase()).toHaveLength(12);
     expect(__generateTesting.generateCepValue()).toBe('01310100');
-    expect(__generateTesting.generateCartaoValue()).toBe('4111111111111111');
+    expect(__generateTesting.generateCartaoValue()).toHaveLength(16);
+    expect(__generateTesting.generateCartaoValueForBrand('visa')).toHaveLength(16);
     expect(__generateTesting.generatePlacaValue('legacy')).toBe('ABC1234');
     expect(__generateTesting.generatePlacaValue('mercosul')).toBe('ABC1D23');
     expect(__generateTesting.generateTelefoneValue('fixo')).toBe('1133333333');
@@ -118,6 +142,10 @@ describe('generate()', () => {
     expect(__generateTesting.generatePisValue()).toHaveLength(11);
     expect(__generateTesting.generateRenavamValue()).toHaveLength(11);
     expect(__generateTesting.generateCnhValue()).toHaveLength(11);
+    expect(__generateTesting.generateInscricaoEstadualValue('SP')).toHaveLength(12);
+    expect(__generateTesting.generateTituloEleitorValue('SP')).toHaveLength(12);
+    expect(__generateTesting.applyInscricaoEstadualGenerateMask(ieSpVectors.golden.stripped, 'SP')).toContain('.');
+    expect(__generateTesting.applyInscricaoEstadualGenerateMask('123', 'SP')).toBe('123');
     __generateTesting.touchAllRngMethods();
   });
 
@@ -133,6 +161,8 @@ describe('generate()', () => {
       ['cnh', cnhVectors.primary.canonical],
       ['telefone', telefoneVectors.celular.canonical],
       ['cartao-credito', cartaoVectors.visa.canonical],
+      ['inscricao-estadual', ieSpVectors.golden.stripped],
+      ['titulo-eleitor', tituloVectors.primary.canonical],
     ];
     for (const [type, value] of cases) {
       expect(applyMask(type, value).length).toBeGreaterThan(0);
@@ -145,7 +175,15 @@ describe('generate()', () => {
 
   it('masked output for all generatable types', () => {
     for (const type of GENERATABLE_TYPES) {
-      const value = generate(type, { masked: true, seed: 77 });
+      const options =
+        type === 'inscricao-estadual'
+          ? { masked: true, seed: 77, uf: 'SP' as const }
+          : type === 'titulo-eleitor'
+            ? { masked: true, seed: 77, uf: 'SC' as const }
+            : type === 'cartao-credito'
+              ? { masked: true, seed: 77, brand: 'visa' as const }
+              : { masked: true, seed: 77 };
+      const value = generate(type, options);
       expect(value.length).toBeGreaterThan(0);
     }
   });
@@ -161,6 +199,8 @@ describe('generate()', () => {
     expect(applyMask('cnh', 'bad')).toBe('bad');
     expect(applyMask('telefone', 'bad')).toBe('bad');
     expect(applyMask('cartao-credito', 'bad')).toBe('bad');
+    expect(applyMask('inscricao-estadual', 'bad')).toBe('bad');
+    expect(applyMask('titulo-eleitor', 'bad')).toBe('bad');
   });
 
   it('applyMask default branch via cast', async () => {

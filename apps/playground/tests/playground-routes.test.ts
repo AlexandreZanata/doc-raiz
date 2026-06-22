@@ -17,6 +17,10 @@ describe('resolvePlaygroundRoute', () => {
 
   it('resolves platform routes', () => {
     expect(resolvePlaygroundRoute('/detect')).toEqual({ kind: 'platform', slug: 'detect' });
+    expect(resolvePlaygroundRoute('/official-sources')).toEqual({
+      kind: 'platform',
+      slug: 'official-sources',
+    });
   });
 
   it('builds stable route keys', () => {

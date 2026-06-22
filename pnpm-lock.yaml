@@ -48,6 +48,9 @@ importers:
 
   apps/playground:
     dependencies:
+      '@br-validators/cli':
+        specifier: workspace:*
+        version: link:../cli
       '@br-validators/core':
         specifier: workspace:*
         version: link:../../packages/br-validators

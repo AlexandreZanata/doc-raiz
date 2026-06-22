@@ -6,7 +6,7 @@ import { usePlaygroundPath } from '@/components/providers/PlaygroundRouterProvid
 import { useI18n } from '@/components/providers/I18nProvider';
 import { SidebarNavLink } from '@/components/organisms/SidebarNavLink';
 import { DOCUMENT_ROUTES, PLATFORM_ROUTES } from '@/lib/nav';
-import type { DocumentSlug } from '@/lib/nav';
+import type { DocumentSlug, PlatformSlug } from '@/lib/nav';
 import styles from './organisms.module.css';
 
 function NavSection({
@@ -29,7 +29,7 @@ function NavSection({
         {routes.map((route) => {
           const href = `/${route.slug}`;
           const isActive = pathname === href;
-          const routeCopy = messages.routes[route.slug as DocumentSlug | 'detect' | 'sanitize' | 'generate'];
+          const routeCopy = messages.routes[route.slug as DocumentSlug | PlatformSlug];
           return (
             <SidebarNavLink
               key={route.slug}

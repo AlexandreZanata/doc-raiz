@@ -12,6 +12,11 @@
   gap: var(--space-4);
 }
 
+.labelHint {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
 .inputRow {
   display: grid;
   gap: var(--space-3);
@@ -156,22 +161,76 @@
   font-size: var(--text-sm);
 }
 
-.generateOptions {
-  display: grid;
-  gap: var(--space-4);
-  max-width: 28rem;
-  padding: var(--space-5);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--bg-surface);
+.copyableField {
+  position: relative;
+  width: 100%;
 }
 
-.checkboxRow {
-  display: flex;
+.copyableFieldMultiline .copyableFieldButton {
+  top: 0.65rem;
+  transform: none;
+}
+
+.copyableFieldControl {
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+  padding-right: 2.75rem !important;
+}
+
+.copyableFieldMultiline .copyableFieldControl {
+  text-align: left;
+  padding-right: 2.75rem !important;
+}
+
+.copyableFieldButton {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.copyableFieldButton:hover {
   color: var(--text-primary);
+  background: var(--bg-subtle);
+}
+
+.copyableFieldButtonActive {
+  color: var(--success);
+  background: rgb(74 222 128 / 14%);
+}
+
+.copyableFieldButtonActive:hover {
+  color: var(--success);
+  background: rgb(74 222 128 / 20%);
+}
+
+.generateParams {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.generateParamField {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.generateParamField select {
+  width: 100%;
 }
 
 @media (min-width: 700px) {

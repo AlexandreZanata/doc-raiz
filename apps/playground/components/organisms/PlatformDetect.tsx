@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { detect, IE_SUPPORTED_UFS, type UfCode } from '@br-validators/core';
 import { Label } from '@/components/atoms/Label';
 import { Select } from '@/components/atoms/Select';
-import { Input } from '@/components/atoms/Input';
+import { CopyableInput } from '@/components/molecules/CopyableInput';
 import { CliCommandHint } from '@/components/molecules/CliCommandHint';
 import { CopyableCode } from '@/components/molecules/CopyableCode';
 import { ResultRow } from '@/components/molecules/ResultRow';
@@ -33,7 +33,7 @@ export function PlatformDetect() {
 
       <div>
         <Label htmlFor="detect-input">{copy.inputLabel}</Label>
-        <Input
+        <CopyableInput
           id="detect-input"
           value={input}
           onChange={(e) => {
