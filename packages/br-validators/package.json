@@ -51,6 +51,22 @@
       "types": "./dist/telefone.d.ts",
       "import": "./dist/telefone.js"
     },
+    "./cnh": {
+      "types": "./dist/cnh.d.ts",
+      "import": "./dist/cnh.js"
+    },
+    "./renavam": {
+      "types": "./dist/renavam.d.ts",
+      "import": "./dist/renavam.js"
+    },
+    "./titulo-eleitor": {
+      "types": "./dist/titulo-eleitor.d.ts",
+      "import": "./dist/titulo-eleitor.js"
+    },
+    "./nfe-chave": {
+      "types": "./dist/nfe-chave.d.ts",
+      "import": "./dist/nfe-chave.js"
+    },
     "./brcode": {
       "types": "./dist/brcode.d.ts",
       "import": "./dist/brcode.js"
@@ -78,6 +94,22 @@
     "./inscricao-estadual": {
       "types": "./dist/inscricao-estadual.d.ts",
       "import": "./dist/inscricao-estadual.js"
+    },
+    "./inscricao-estadual-produtor-rural": {
+      "types": "./dist/inscricao-estadual-produtor-rural.d.ts",
+      "import": "./dist/inscricao-estadual-produtor-rural.js"
+    },
+    "./detect": {
+      "types": "./dist/detect.d.ts",
+      "import": "./dist/detect.js"
+    },
+    "./sanitize": {
+      "types": "./dist/sanitize.d.ts",
+      "import": "./dist/sanitize.js"
+    },
+    "./generate": {
+      "types": "./dist/generate.d.ts",
+      "import": "./dist/generate.js"
     }
   },
   "files": [

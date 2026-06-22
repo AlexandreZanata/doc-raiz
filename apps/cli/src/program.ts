@@ -5,6 +5,10 @@ import {
   handleCnpjCli,
   handleCpfCli,
   handleTelefoneCli,
+  handleCnhCli,
+  handleRenavamCli,
+  handleTituloEleitorCli,
+  handleNfeChaveCli,
   handleListCli,
   handlePisPasepCli,
   handlePixCli,
@@ -12,6 +16,9 @@ import {
   handleCartaoCli,
   handleCartaoCreditoCli,
   handleIeCli,
+  handleDetectCli,
+  handleSanitizeCli,
+  handleGenerateCli,
   handlePlacaCli,
   writeCliIo,
   type BoletoCliOptions,
@@ -20,9 +27,16 @@ import {
   type BrCodeCliOptions,
   type CepCliOptions,
   type TelefoneCliOptions,
+  type CnhCliOptions,
+  type RenavamCliOptions,
+  type TituloEleitorCliOptions,
+  type NfeChaveCliOptions,
   type CnpjCliOptions,
   type CpfCliOptions,
   type IeCliOptions,
+  type DetectCliOptions,
+  type SanitizeCliOptions,
+  type GenerateCliOptions,
   type PisPasepCliOptions,
   type PixCliOptions,
   type PlacaCliOptions,
@@ -113,6 +127,82 @@ export function createProgram(): Command {
       .action((value: string | undefined, opts: TelefoneCliOptions) => {
         const io = { stdout: [] as string[], stderr: [] as string[] };
         process.exitCode = handleTelefoneCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const cnh = program.command('cnh').description('CNH — Registro Nacional, 11 contiguous digits (CONTRAN / SENATRAN)');
+
+  for (const action of ['validate', 'format', 'strip'] as const) {
+    cnh
+      .command(action)
+      .description(`${action} a CNH`)
+      .argument('[value]', 'CNH value (11 digits or decorated input)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL (validate only)')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: CnhCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleCnhCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const renavam = program.command('renavam').description('RENAVAM — 11-digit vehicle registry code (DENATRAN / SENATRAN)');
+
+  for (const action of ['validate', 'format', 'strip'] as const) {
+    renavam
+      .command(action)
+      .description(`${action} a RENAVAM`)
+      .argument('[value]', 'RENAVAM value (11 digits or optional dash before DV)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL (validate only)')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: RenavamCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleRenavamCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const tituloEleitor = program
+    .command('titulo-eleitor')
+    .description('Título de Eleitor — 12-digit voter registration (TSE / Wikipedia PT algorithm)');
+
+  for (const action of ['validate', 'format', 'strip'] as const) {
+    tituloEleitor
+      .command(action)
+      .description(`${action} a Título de Eleitor`)
+      .argument('[value]', 'Título de Eleitor value (12 or 13 digits, spaces allowed)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL (validate only)')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: TituloEleitorCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleTituloEleitorCli(action, value, opts, io);
+        writeCliIo(io);
+      });
+  }
+
+  const nfeChave = program
+    .command('nfe-chave')
+    .description('NF-e / NFC-e chave de acesso — 44 digits (SEFAZ MOC §2.2.6)');
+
+  for (const action of ['validate', 'parse', 'format', 'strip'] as const) {
+    nfeChave
+      .command(action)
+      .description(`${action} an NF-e chave de acesso`)
+      .argument('[value]', 'Chave de acesso (44 digits, spaces allowed)')
+      .option('--json', 'JSON output')
+      .option('-q, --quiet', 'Exit code only')
+      .option('--source', 'Include official source URL (validate/parse only)')
+      .option('-f, --file <path>', 'Read value from file')
+      .action((value: string | undefined, opts: NfeChaveCliOptions) => {
+        const io = { stdout: [] as string[], stderr: [] as string[] };
+        process.exitCode = handleNfeChaveCli(action, value, opts, io);
         writeCliIo(io);
       });
   }
@@ -348,6 +438,47 @@ export function createProgram(): Command {
         writeCliIo(io);
       });
   }
+
+  program
+    .command('detect')
+    .description('Detect document type from raw input')
+    .argument('[value]', 'Raw value to classify')
+    .option('--uf <uf>', 'State code for Inscrição Estadual detection')
+    .option('--json', 'JSON output')
+    .option('-q, --quiet', 'Exit code only')
+    .option('-f, --file <path>', 'Read value from file')
+    .action((value: string | undefined, opts: DetectCliOptions) => {
+      const io = { stdout: [] as string[], stderr: [] as string[] };
+      process.exitCode = handleDetectCli(value, opts, io);
+      writeCliIo(io);
+    });
+
+  program
+    .command('sanitize <type> [value]')
+    .description('Sanitize messy input then validate')
+    .option('--uf <uf>', 'State code (required for inscricao-estadual)')
+    .option('--json', 'JSON output')
+    .option('-q, --quiet', 'Exit code only')
+    .option('-f, --file <path>', 'Read value from file')
+    .action((type: string, value: string | undefined, opts: SanitizeCliOptions) => {
+      const io = { stdout: [] as string[], stderr: [] as string[] };
+      process.exitCode = handleSanitizeCli(type, value, opts, io);
+      writeCliIo(io);
+    });
+
+  program
+    .command('generate <type>')
+    .description('Generate synthetic valid test document')
+    .option('--json', 'JSON output')
+    .option('-q, --quiet', 'Exit code only')
+    .option('--masked', 'Return masked/formatted output')
+    .option('--format <format>', 'Format variant (numeric, alphanumeric, legacy, mercosul, celular, fixo)')
+    .option('--seed <number>', 'Deterministic PRNG seed', (v: string) => Number(v))
+    .action((type: string, opts: GenerateCliOptions) => {
+      const io = { stdout: [] as string[], stderr: [] as string[] };
+      process.exitCode = handleGenerateCli(type, opts, io);
+      writeCliIo(io);
+    });
 
   return program;
 }

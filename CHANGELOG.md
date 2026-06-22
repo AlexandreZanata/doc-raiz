@@ -23,11 +23,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Subpath `@br-validators/core/telefone`
 - CLI `br-validators telefone validate|format|strip`
 - Playground `/telefone`
+- **CNH (Phase 12):** `validateCnh`, `formatCnh`, `stripCnh` — Registro Nacional modulo 11 with inter-DV desconto; official format is 11 contiguous digits (not CPF mask)
+- Subpath `@br-validators/core/cnh`
+- CLI `br-validators cnh validate|format|strip`
+- Playground `/cnh`
+- **RENAVAM (Phase 13):** `validateRenavam`, `formatRenavam`, `stripRenavam` — 11-digit vehicle registry code, modulo 11 peso 9
+- Subpath `@br-validators/core/renavam`
+- CLI `br-validators renavam validate|format|strip`
+- Playground `/renavam`
+- **Título de Eleitor (Phase 14):** `validateTituloEleitor`, `formatTituloEleitor`, `stripTituloEleitor` — 12-digit voter registration (13 for SP/MG), modulo 11, TSE UF codes
+- Subpath `@br-validators/core/titulo-eleitor`
+- CLI `br-validators titulo-eleitor validate|format|strip`
+- Playground `/titulo-eleitor`
+- **NF-e chave de acesso (Phase 15):** `validateNfeChave`, `parseNfeChave`, `formatNfeChave`, `stripNfeChave` — 44-digit access key, modulo 11 DV (MOC §2.2.6.2), IBGE cUF + modelo 55/65
+- Subpath `@br-validators/core/nfe-chave`
+- CLI `br-validators nfe-chave validate|parse|format|strip`
+- Playground `/nfe-chave`
+- **IE produtor rural (Phase 16):** `validateIeProdutorRural`, `validateIeSpRural`, `formatIeProdutorRural`, `stripIeSpRural` — SP Regra II `P…` format (SINTEGRA cad_SP.html); MT/GO/MS/PR/RS agro uses existing `validateInscricaoEstadual`
+- Subpath `@br-validators/core/inscricao-estadual-produtor-rural`
+- CLI `br-validators ie validate|format|strip` auto-detects SP `P` prefix → produtor rural path
+- Playground `/ie` — produtor rural badge when `P` prefix detected
+- **Platform APIs (Phases 17–19):** `detect()`, `sanitize()`, `generate()` — unified router, ETL sanitize pipeline, synthetic PRNG generation
+- Subpaths `@br-validators/core/detect`, `@br-validators/core/sanitize`, `@br-validators/core/generate`
+- CLI `br-validators detect|sanitize|generate`
+- Playground `/detect`, `/sanitize`, `/generate`
 
 ### Changed
 
 - GitHub repo renamed to [AlexandreZanata/br-validators](https://github.com/AlexandreZanata/br-validators)
 - npm scope: **`@br-validators/core`** + **`@br-validators/cli`** (org `br-validators` on npm; unscoped `br-validators` is a different project)
+
+---
+
+## [1.2.0] - 2026-06-22
+
+### Added
+
+- **`detect()`** — priority router delegating to existing validators; 11-digit disambiguation; IE requires `uf`
+- **`sanitize()`** — ETL fixes pipeline + mandatory validation (15 types; PIX excluded until `stripPixKey`)
+- **`generate()`** — synthetic test documents with optional `seed` and `masked`; 9 generatable types
+- CLI commands: `detect`, `sanitize`, `generate`
+- Playground pages: `/detect`, `/sanitize`, `/generate`
+- Business rules: BR-DETECT-001, BR-SANITIZE-001, BR-GENERATE-001
 
 ---
 

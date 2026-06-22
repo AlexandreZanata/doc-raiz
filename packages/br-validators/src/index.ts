@@ -2,6 +2,11 @@ export * from './cnpj.js';
 export * from './cpf.js';
 export * from './cep.js';
 export * from './telefone.js';
+export * from './cnh.js';
+export * from './renavam.js';
+export * from './titulo-eleitor.js';
+export * from './nfe-chave.js';
+export * from './inscricao-estadual-produtor-rural.js';
 export * from './brcode.js';
 export * from './placa.js';
 export * from './pis-pasep.js';
@@ -126,10 +131,28 @@ export {
   IE_SP_GOLDEN,
   IE_SP_GOLDEN_MASKED,
   IE_SP_OFFICIAL_SOURCE_URL,
+  IE_SP_RURAL_GOLDEN,
+  IE_SP_RURAL_GOLDEN_MASKED,
+  IE_SP_RURAL_OFFICIAL_SOURCE_URL,
   IE_SUPPORTED_UFS,
+  formatIeProdutorRural,
+  getIeProdutorRuralOfficialSourceUrl,
+  isSpRuralIeInput,
+  isValidIeProdutorRural,
+  stripIeSpRural,
+  validateIeProdutorRural,
+  validateIeSpRural,
 } from './inscricao-estadual.js';
+export { detect } from './detect.js';
+export type { DetectOptions, DetectResult, DetectableDocumentType } from './detect.js';
+export { sanitize } from './sanitize.js';
+export type { SanitizeOptions, SanitizeResult, SanitizableDocumentType } from './sanitize.js';
+export { generate } from './generate.js';
+export type { GenerateOptions, GeneratableDocumentType } from './generate.js';
 export type {
+  IeProdutorRuralValidationResult,
   InscricaoEstadual,
+  InscricaoEstadualProdutorRural,
   InscricaoEstadualValidationResult,
   UfCode,
   ValidateInscricaoEstadualOptions,

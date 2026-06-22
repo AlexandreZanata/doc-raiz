@@ -15,13 +15,18 @@
 | **License plate (Mercosul)** | CONTRAN / DENATRAN | [Resolução CONTRAN 729/2018 (consolidada)](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao7292018consolidada.pdf), [Anexo I — Resolução 969/2022](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao9692022anexos.pdf) | Format `LLLNLNN` (7 alphanumeric). Legacy `LLLNNNN` still valid — lib must accept both + converter. |
 | **CEP** | Correios | [Manual API Busca CEP](https://www.correios.com.br/atendimento/developers/manuais/manual-api-busca-cep) | 8 digits, mask `XXXXX-XXX`. **No check digit.** Golden vectors: **`01310100`** (TECH-STACK), **`20040020`** (cross-check). Format/mask only in core; HTTP lookup in `@br-validators/adapters-correios` (planned). |
 | **Telefone** | Anatel | [Plano de Numeração Brasileiro](https://www.gov.br/anatel/pt-br/regulado/numeracao/plano-de-numeracao-brasileiro) · [Painel Códigos Nacionais](https://informacoes.anatel.gov.br/paineis/areas-tarifarias/codigos-nacionais) · [Nono dígito](https://www.gov.br/anatel/pt-br/regulado/numeracao/nono-digito) | 67 DDDs; fixo 8-digit (starts 2–5); celular 9-digit (starts with 9). Golden: **`11999999999`**, **`1133333333`**. |
+| **CNH (Registro Nacional)** | CONTRAN / SENATRAN | [Resolução CONTRAN 511/2014 (PDF)](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [Validar CNH — gov.br](https://www.gov.br/pt-br/servicos/validar-cnh) · Full index: [§ CNH](#cnh--reference-index) | 9 base + 2 DVs = **11 contiguous digits**. Modulo 11 + **desconto**. Golden: **`62472927637`**. |
+| **RENAVAM** | DENATRAN / SENATRAN | [Portaria DENATRAN 27/2013 (PDF)](https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf) · [Consultar veículo RENAVAM — gov.br](https://www.gov.br/pt-br/servicos/consultar-dados-de-veiculo-na-base-renavam) · Full index: [§ RENAVAM](#renavam--reference-index) | 10 base + 1 DV = **11 digits**. Modulo 11 **peso 9**. Golden: **`63977791104`**, **`72176426415`**. |
+| **Título de Eleitor** | TSE | [Resolução TSE 20.132/1998](https://www.tse.jus.br/legislacao/compilada/res/1998/resolucao-no-20-132-de-19-de-marco-de-1998) · [Res. 23.659/2021](https://www.tse.jus.br/legislacao/compilada/res/2021/resolucao-no-23-659-de-26-de-outubro-de-2021) · Full index: [§ Título de Eleitor](#título-de-eleitor--reference-index) | 8 seq + 2 UF + 2 DV = **12 digits** (13 for SP/MG). Modulo 11 per Art. 10. Golden: **`004356870906`**. **Weights/SP-MG rule:** [Wikipedia PT](https://pt.wikipedia.org/wiki/T%C3%ADtulo_eleitoral#C%C3%A1lculo_do_d%C3%ADgito_verificador) + [Ghiorzi](http://ghiorzi.org/DVnew.htm#e). |
+| **NF-e chave de acesso** | ENCAT / SEFAZ | [Portal NF-e — MOC index](https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=ndIjl+iEFdE%3D) · Full index: [§ NF-e chave](#nf-e--nfc-e-chave-de-acesso--reference-index) | **44 digits** — structure + modulo-11 DV on first 43. Models **55** (NF-e) / **65** (NFC-e). Golden: **`52060433009911002506550120000007800267301615`** (MOC §2.2.6.2 worked example, sum=644, DV=5). |
 | **PIX key** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf), [Anexo I — Padrões Iniciação PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf), [DICT API v2.9](https://aprendervalor.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT_v2-9-0.html) | **Key validation (Phase 4):** five types — CPF, CNPJ, email (max 77 lowercase), phone (`+55` mobile), EVP (UUID). Golden: `pix@bcb.gov.br`, `+5510998765432`, `123e4567-e89b-12d3-a456-426655440000`. |
 | **BR Code payload** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) | EMV TLV + CRC16-CCITT (tag 63). `parseBrCode` / `validateBrCode`. Golden vectors: `tests/vectors/brcode.official.json` (≥5 manual examples). Static EVP CRC `1D3D`. |
 | **Boleto** | FEBRABAN | [Convenção da Cobrança FB-0061/2021 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf) | Bank boleto: 47-digit linha digitável (modulo 10 field DVs) + 44-digit código de barras (modulo 11 general DV). **Situação 1** (v1): currency `9`, fator+valor campo 5. **Situação 2** (5b): code `988`, currency `0`, ISPB campo 5. Golden: Santander linha ↔ barcode; synthetic Situação 2 pair in `boleto.situacao2.official.json`. 48-digit arrecadação detected but not validated — Phase 5c. |
 | **Credit card** | ISO/IEC 7812 | [ISO/IEC 7812-1:2017](https://www.iso.org/standard/70484.html) | PAN 8–19 digits; Luhn modulus-10 per **Annex B**. Golden: Visa `4111111111111111`, Mastercard `5555555555554444`, Amex `378282246310005`, walkthrough `79927398713`. Brand detect (Elo/Hipercard IIN) — best-effort, non-authoritative. No CVV/expiry/authorization. |
 | **PIS / PASEP / NIS** | Dataprev / INSS (CNIS) | [SIPREV Regras de Validação v1.14 — RV_03 (PDF)](https://www.gov.br/previdencia/pt-br/outros/imagens/2015/07/rgrva_RegrasValidacao.pdf) | 11 digits, mask `XXX.XXXXX.XX-X`. Modulo 11 per **padrão do NIT**; weights `[3,2,9,8,7,6,5,4,3,2]` on first 10 digits (NIT implementation). Golden: **`10027230888`** (UC-006), **`12056456402`** (cross-check). PIS (Caixa), PASEP (BB), NIS/NIT (CNIS) share the same checksum. **Caixa PIS gov.br page removed (404, June 2026).** |
 | **IE — São Paulo (SP)** | SEFAZ-SP | [Sintegra rotina de consistência](https://portal.fazenda.sp.gov.br/servicos/icms/Paginas/sintegra-rotina-consistencia.aspx) | 12 digits, dual modulo-11 DVs. Golden: **`110042490114`**. Vector: `ie.sp.official.json`. Mirror: [cad_SP.html](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html). |
-| **IE — all 27 UFs** | Per-state SEFAZ | Full table: [§ Inscrição Estadual (IE)](#inscrição-estadual-ie--all-27-ufs) · Index: [IE-STATE-ALGORITHMS.md](IE-STATE-ALGORITHMS.md) | Check digits only — no SEFAZ registration lookup. `getIeOfficialSourceUrl(uf)` / `IE_OFFICIAL_SOURCE_URLS`. SP rural `P…` out of scope. |
+| **IE — SP produtor rural** | SEFAZ-SP / SINTEGRA | [cad_SP.html Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) | 13 chars `P0MMMSSSSD000`; DV at position 10; weights `1,3,4,5,6,7,8,10` on `0MMMSSSS`. Golden: **`P-01100424.3/002`**. Vector: `inscricao-estadual-produtor-rural.official.json`. Cadastro: [CADESP produtor rural](https://portal.fazenda.sp.gov.br/servicos/cadesp/Paginas/Produtor-Rural-abertura,-baixa-e-outras-alteracoes.aspx). |
+| **IE — all 27 UFs** | Per-state SEFAZ | Full table: [§ Inscrição Estadual (IE)](#inscrição-estadual-ie--all-27-ufs) · Index: [IE-STATE-ALGORITHMS.md](IE-STATE-ALGORITHMS.md) | Check digits only — no SEFAZ registration lookup. `getIeOfficialSourceUrl(uf)` / `IE_OFFICIAL_SOURCE_URLS`. SP produtor rural: `validateIeProdutorRural` / `getIeProdutorRuralOfficialSourceUrl()`. |
 
 ---
 
@@ -63,6 +68,89 @@
 | **TO** | SEFAZ-TO | [sefaz.to.gov.br](https://www.sefaz.to.gov.br/) | [cad_TO.html](http://www.sintegra.gov.br/Cad_Estados/cad_TO.html) | `27035910938` | `ie.to.official.json` |
 
 Negative cross-UF cases: `ie.negative.official.json`.
+
+---
+
+## CNH — reference index
+
+> **Vectors:** `packages/br-validators/tests/vectors/cnh.official.json`  
+> **Caveat:** CONTRAN 511/2014 defines structure (9 base + 2 DVs) but not the step-by-step DV formula. Algorithm sources below are **cross-checks**, not normative acts.
+
+| Role | Source | URL |
+|------|--------|-----|
+| **Normative** | CONTRAN Resolução 511/2014 | https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf |
+| **Normative** | CONTRAN Resolução 886/2021 | https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao8862021.pdf |
+| **System** | SENATRAN — Validar CNH (gov.br) | https://www.gov.br/pt-br/servicos/validar-cnh |
+| **Algorithm cross-check** | AdvPL — Validação de CNH | https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/ |
+| **Implementation cross-check** | GeraValida — Validador de CNH | https://www.geravalida.com.br/validador-cnh |
+| **Implementation cross-check** | GeradorBR — Validador de CNH | https://geradorbr.com/validador-de-cnh/ |
+
+---
+
+## RENAVAM — reference index
+
+> **Vectors:** `packages/br-validators/tests/vectors/renavam.official.json`  
+> **Caveat:** Portaria DENATRAN 27/2013 defines structure and “módulo 11, peso 9” but not the step-by-step DV formula. Algorithm sources below are **cross-checks**, not normative acts.
+
+| Role | Source | URL |
+|------|--------|-----|
+| **Normative** | Portaria DENATRAN 27/2013 | https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf |
+| **System** | SENATRAN — Consultar veículo na base RENAVAM | https://www.gov.br/pt-br/servicos/consultar-dados-de-veiculo-na-base-renavam |
+| **Algorithm cross-check** | AdvPL — Validação de RENAVAM | https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-renavam/ |
+| **Implementation cross-check** | GeraValida — Gerador de RENAVAM | https://www.geravalida.com.br/gerador-de-renavam |
+| **Implementation cross-check** | GeradorFácil — Gerador de RENAVAM | https://geradorfacil.com/geradores/renavam |
+
+---
+
+## Título de Eleitor — reference index
+
+> **Vectors:** `packages/br-validators/tests/vectors/titulo-eleitor.official.json`  
+> **Caveat:** Resolução TSE 20.132/1998 (Art. 10) defines structure and modulo 11 but **not** exact weights or the SP/MG remainder-zero rule. Those come from algorithm cross-checks below.
+
+| Role | Source | URL |
+|------|--------|-----|
+| **Normative** | Resolução TSE 20.132/1998 — Art. 10 | https://www.tse.jus.br/legislacao/compilada/res/1998/resolucao-no-20-132-de-19-de-marco-de-1998 |
+| **Normative** | Resolução TSE 23.659/2021 — Cadastro Eleitoral | https://www.tse.jus.br/legislacao/compilada/res/2021/resolucao-no-23-659-de-26-de-outubro-de-2021 |
+| **Algorithm weights** | Wikipedia PT — Cálculo do DV | https://pt.wikipedia.org/wiki/T%C3%ADtulo_eleitoral#C%C3%A1lculo_do_d%C3%ADgito_verificador |
+| **Algorithm cross-check** | Ghiorzi — DV Título Eleitoral | http://ghiorzi.org/DVnew.htm#e |
+| **Institutional** | TSE — Portal | https://www.tse.jus.br/ |
+| **System** | TSE — e-Título | https://www.tse.jus.br/eleitor/servicos/aplicativo-e-titulo |
+
+### Normative vs. algorithm detail
+
+| Aspect | Res. 20.132/1998 | Implementation source |
+|--------|------------------|------------------------|
+| 12 digits (up to) | ✅ Art. 10 | `TITULO_ELEITOR_LENGTH` |
+| 8 seq + 2 UF + 2 DV | ✅ Art. 10 | `parseTituloEleitorParts` |
+| Modulo 11 | ✅ Art. 10 | `check-digits.ts` |
+| DV1 on sequential | ✅ Art. 10 | `computeTituloEleitorFirstCheckDigit` |
+| DV2 on UF + DV1 | ✅ Art. 10 | `computeTituloEleitorSecondCheckDigit` |
+| Weights `[2…9]` / `[7,8,9]` | ❌ Not in text | Wikipedia PT + Ghiorzi |
+| SP/MG remainder 0 → DV=1 | ❌ Not in text | Wikipedia PT + Ghiorzi |
+| UF code table 01–28 | ❌ Referenced, not reproduced | Wikipedia PT + Ghiorzi |
+
+---
+
+## NF-e / NFC-e chave de acesso — reference index
+
+> **Vectors:** `packages/br-validators/tests/vectors/nfe-chave.official.json`  
+> **Caveat:** MOC DANFE NFC-e QR page chave `281708…0824` is illustrative only — DV fails §2.2.6.2 (computed DV=8, stored=4). Use MOC §2.2.6.2 worked example as primary golden.
+
+| Role | Source | URL |
+|------|--------|-----|
+| **Normative index** | Portal Nacional NF-e — MOC 7.0 | https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=ndIjl+iEFdE%3D |
+| **Normative** | MOC 7.0 Visão Geral (CONFAZ PDF) — §2.2.6.1–2.2.6.2 | https://www.confaz.fazenda.gov.br/legislacao/arquivo-manuais/moc7-visao-geral.pdf |
+| **Normative (online)** | MOC espelho SEFAZ-PR — §2.2.6 | http://moc.sped.fazenda.pr.gov.br/ |
+| **Algorithm** | MOC §2.2.6.2 — Cálculo do DV | http://moc.sped.fazenda.pr.gov.br/#2.2.6.2. Cálculo do Dígito Verificador da Chave de Acesso da NF-e |
+| **Supplementary** | DFe Portal SVRS — NTs / Anexos | https://dfe-portal.svrs.rs.gov.br/NFe/Documentos |
+| **Illustrative only** | MOC DANFE NFC-e QR Code page | http://moc.sped.fazenda.pr.gov.br/DanfeQrCodeNFCe.html |
+
+### Golden vectors
+
+| Vector | Chave (44 digits) | Source |
+|--------|-------------------|--------|
+| **Primary** | `52060433009911002506550120000007800267301615` | MOC §2.2.6.2 — sum=644, remainder=6, DV=5 |
+| **Secondary** | `41180678393592000146558900000006041028190697` | MOC online valid example |
 
 ---
 

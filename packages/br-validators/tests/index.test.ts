@@ -4,6 +4,8 @@ import * as cnpjEntry from '../src/cnpj.js';
 import * as cpfEntry from '../src/cpf.js';
 import * as cepEntry from '../src/cep.js';
 import * as telefoneEntry from '../src/telefone.js';
+import * as cnhEntry from '../src/cnh.js';
+import * as renavamEntry from '../src/renavam.js';
 import * as brcodeEntry from '../src/brcode.js';
 import * as placaEntry from '../src/placa.js';
 import * as pisPasepEntry from '../src/pis-pasep.js';
@@ -34,6 +36,18 @@ describe('package exports', () => {
     expect(root.validateTelefone).toBeTypeOf('function');
     expect(root.stripTelefone).toBeTypeOf('function');
     expect(root.formatTelefone).toBeTypeOf('function');
+  });
+
+  it('re-exports CNH API from index', () => {
+    expect(root.validateCnh).toBeTypeOf('function');
+    expect(root.stripCnh).toBeTypeOf('function');
+    expect(root.formatCnh).toBeTypeOf('function');
+  });
+
+  it('re-exports RENAVAM API from index', () => {
+    expect(root.validateRenavam).toBeTypeOf('function');
+    expect(root.stripRenavam).toBeTypeOf('function');
+    expect(root.formatRenavam).toBeTypeOf('function');
   });
 
   it('re-exports BR Code API from index', () => {
@@ -99,6 +113,14 @@ describe('package exports', () => {
 
   it('re-exports Telefone API from telefone entry', () => {
     expect(telefoneEntry.validateTelefone).toBe(root.validateTelefone);
+  });
+
+  it('re-exports CNH API from cnh entry', () => {
+    expect(cnhEntry.validateCnh).toBe(root.validateCnh);
+  });
+
+  it('re-exports RENAVAM API from renavam entry', () => {
+    expect(renavamEntry.validateRenavam).toBe(root.validateRenavam);
   });
 
   it('re-exports BR Code API from brcode entry', () => {

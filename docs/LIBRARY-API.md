@@ -19,6 +19,10 @@
 | `@br-validators/core/cnpj` | CNPJ numeric + alphanumeric |
 | `@br-validators/core/cep` | CEP |
 | `@br-validators/core/telefone` | Brazilian telephone (fixo + celular) |
+| `@br-validators/core/cnh` | CNH — Registro Nacional |
+| `@br-validators/core/renavam` | RENAVAM — vehicle registry code |
+| `@br-validators/core/titulo-eleitor` | Título de Eleitor — voter registration |
+| `@br-validators/core/nfe-chave` | NF-e / NFC-e chave de acesso — 44-digit access key |
 | `@br-validators/core/brcode` | BR Code PIX QR payload (EMV TLV + CRC16) |
 | `@br-validators/core/placa` | License plates |
 | `@br-validators/core/pis-pasep` | PIS / PASEP / NIS / NIT |
@@ -26,6 +30,10 @@
 | `@br-validators/core/boleto` | Boleto (linha digitável + código de barras) |
 | `@br-validators/core/cartao-credito` | Credit card PAN (Luhn / ISO 7812) |
 | `@br-validators/core/inscricao-estadual` | Inscrição Estadual — all 27 UFs |
+| `@br-validators/core/inscricao-estadual-produtor-rural` | SP produtor rural IE (Regra II) |
+| `@br-validators/core/detect` | Unified type detection router |
+| `@br-validators/core/sanitize` | ETL fixes + validate pipeline |
+| `@br-validators/core/generate` | Synthetic test document generation |
 
 ---
 
@@ -136,6 +144,69 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 **Success result:** `{ ok: true, value: Telefone, tipo: 'celular' | 'fixo', format: 'telefone' }`
 
 **Official source:** [Anatel — Plano de Numeração Brasileiro](https://www.gov.br/anatel/pt-br/regulado/numeracao/plano-de-numeracao-brasileiro) · `TELEFONE_OFFICIAL_SOURCE_URL` · `tests/vectors/telefone.official.json` · Golden celular: `11999999999`, fixo: `1133333333`
+
+---
+
+## Core API — CNH
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `validateCnh` | `(input: string) => ValidationResult<Cnh>` | Registro Nacional modulo 11 with inter-DV desconto |
+| `formatCnh` | `(input: string) => FormatResult` | Official system format: 11 contiguous digits |
+| `stripCnh` | `(input: string) => string` | Digits only |
+| `isValidCnh` | `(input: string) => boolean` | Convenience wrapper |
+
+**Success result:** `{ ok: true, value: Cnh, format: 'numeric' }`
+
+**Official sources:** [OFFICIAL-SOURCES.md § CNH](OFFICIAL-SOURCES.md#cnh--reference-index) — [CONTRAN 511/2014](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [Validar CNH — gov.br](https://www.gov.br/pt-br/servicos/validar-cnh) · [AdvPL CNH](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-cnh/) · [GeraValida](https://www.geravalida.com.br/validador-cnh) · [GeradorBR](https://geradorbr.com/validador-de-cnh/) · `CNH_OFFICIAL_SOURCE_URL` · `tests/vectors/cnh.official.json` · Golden: `62472927637`
+
+---
+
+## Core API — RENAVAM
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `validateRenavam` | `(input: string) => ValidationResult<Renavam>` | Modulo 11, peso 9 (single check digit) |
+| `formatRenavam` | `(input: string) => FormatResult` | Official system format: 11 contiguous digits |
+| `stripRenavam` | `(input: string) => string` | Digits only |
+| `isValidRenavam` | `(input: string) => boolean` | Convenience wrapper |
+
+**Success result:** `{ ok: true, value: Renavam, format: 'numeric' }`
+
+**Official sources:** [OFFICIAL-SOURCES.md § RENAVAM](OFFICIAL-SOURCES.md#renavam--reference-index) — [Portaria DENATRAN 27/2013](https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf) · [Consultar veículo RENAVAM — gov.br](https://www.gov.br/pt-br/servicos/consultar-dados-de-veiculo-na-base-renavam) · [AdvPL RENAVAM](https://siga0984.wordpress.com/2019/05/01/algoritmos-validacao-de-renavam/) · [GeraValida](https://www.geravalida.com.br/gerador-de-renavam) · [GeradorFácil](https://geradorfacil.com/geradores/renavam) · `RENAVAM_OFFICIAL_SOURCE_URL` · `tests/vectors/renavam.official.json` · Golden: `63977791104`
+
+---
+
+## Core API — Título de Eleitor
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `validateTituloEleitor` | `(input: string) => TituloEleitorValidationResult` | Modulo 11, TSE UF codes 01–28 |
+| `formatTituloEleitor` | `(input: string) => FormatResult` | Display mask `XXXX XXXX XXXX` |
+| `stripTituloEleitor` | `(input: string) => string` | Digits only |
+| `isValidTituloEleitor` | `(input: string) => boolean` | Convenience wrapper |
+
+**Success result:** `{ ok: true, value: TituloEleitor, format: 'numeric', ufCode: number, uf?: UfCode, exterior?: true }`
+
+**Official sources:** [OFFICIAL-SOURCES.md § Título de Eleitor](OFFICIAL-SOURCES.md#título-de-eleitor--reference-index) — [Resolução TSE 20.132/1998](https://www.tse.jus.br/legislacao/compilada/res/1998/resolucao-no-20-132-de-19-de-marco-de-1998) · [Res. 23.659/2021](https://www.tse.jus.br/legislacao/compilada/res/2021/resolucao-no-23-659-de-26-de-outubro-de-2021) · Weights: [Wikipedia PT](https://pt.wikipedia.org/wiki/T%C3%ADtulo_eleitoral#C%C3%A1lculo_do_d%C3%ADgito_verificador) · [Ghiorzi](http://ghiorzi.org/DVnew.htm#e) · `TITULO_ELEITOR_OFFICIAL_SOURCE_URL` · `TITULO_ELEITOR_ALGORITHM_WEIGHTS_REF_URL` · `tests/vectors/titulo-eleitor.official.json` · Golden: `004356870906`
+
+---
+
+## Core API — NF-e chave de acesso
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `validateNfeChave` | `(input: string) => NfeChaveValidationResult` | Full validation — length, cUF, mod, DV |
+| `parseNfeChave` | `(input: string) => NfeChaveValidationResult` | Same as `validateNfeChave`; returns `parsed` fields on success |
+| `isValidNfeChave` | `(input: string) => boolean` | Convenience wrapper |
+| `formatNfeChave` | `(input: string) => FormatResult` | Grouped display — 11×4 digits |
+| `stripNfeChave` | `(input: string) => string` | Digits only |
+| `parseNfeChaveParts` | `(stripped: string) => NfeChaveParts \| null` | Low-level field extraction |
+| `computeNfeChaveCheckDigit` | `(base43: string) => number` | DV from 43-digit base (MOC §2.2.6.2) |
+
+**Success result:** `{ ok: true, value: NfeChave, format: 'numeric', parsed: NfeChaveParsed, uf?: UfCode }`
+
+**Official sources:** [OFFICIAL-SOURCES.md § NF-e chave](OFFICIAL-SOURCES.md#nf-e--nfc-e-chave-de-acesso--reference-index) — [Portal NF-e MOC](https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=ndIjl+iEFdE%3D) · [MOC online §2.2.6.2](http://moc.sped.fazenda.pr.gov.br/#2.2.6.2. Cálculo do Dígito Verificador da Chave de Acesso da NF-e) · [MOC 7.0 PDF](https://www.confaz.fazenda.gov.br/legislacao/arquivo-manuais/moc7-visao-geral.pdf) · `NFE_CHAVE_OFFICIAL_SOURCE_URL` · `tests/vectors/nfe-chave.official.json` · Golden: `52060433009911002506550120000007800267301615`
 
 ---
 
@@ -288,6 +359,30 @@ Golden vectors: Visa `4111111111111111`, Mastercard `5555555555554444`, Amex `37
 | `formatInscricaoEstadual` | `(input, { uf }) => FormatResult` | SP/DF mask; other UFs return canonical digits |
 | `getIeOfficialSourceUrl` | `(uf: UfCode) => string` | Primary SEFAZ URL per UF |
 
+### IE produtor rural (SP only)
+
+| Function | Signature | Behavior |
+|----------|-----------|----------|
+| `stripIeSpRural` | `(input: string) => string` | Preserve `P`, strip punctuation |
+| `isValidIeProdutorRural` | `(uf, input) => boolean` | Boolean wrapper |
+| `validateIeProdutorRural` | `(uf, input) => IeProdutorRuralValidationResult` | SP Regra II only; non-SP → `UNSUPPORTED_FORMAT` |
+| `validateIeSpRural` | `(input: string) => IeProdutorRuralValidationResult` | Direct SP rural validator |
+| `formatIeProdutorRural` | `(input: string) => FormatResult` | Mask `P-0MMMSSSS.D/000` |
+| `getIeProdutorRuralOfficialSourceUrl` | `() => string` | [SINTEGRA cad_SP.html](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) |
+| `isSpRuralIeInput` | `(input: string) => boolean` | Detect `P` prefix for CLI/playground routing |
+
+```typescript
+type InscricaoEstadualProdutorRural = string & { readonly __brand: 'InscricaoEstadualProdutorRural' };
+
+type IeProdutorRuralValidationResult =
+  | { ok: true; value: InscricaoEstadualProdutorRural; uf: 'SP'; format: 'inscricao-estadual-produtor-rural' }
+  | { ok: false; code: ValidationErrorCode; message: string; uf?: UfCode };
+```
+
+**Golden:** `P011004243002` (masked `P-01100424.3/002`) — `tests/vectors/inscricao-estadual-produtor-rural.official.json`
+
+**CLI:** `br-validators ie validate P-01100424.3/002 --uf SP` auto-routes to produtor rural when input starts with `P`.
+
 ```typescript
 type UfCode =
   | 'AC' | 'AL' | 'AM' | 'AP' | 'BA' | 'CE' | 'DF' | 'ES' | 'GO' | 'MA' | 'MG' | 'MS' | 'MT'
@@ -352,6 +447,114 @@ function isFormattableDocumentType(type: string): type is FormattableDocumentTyp
 Per-type formatters: `formatCpf`, `formatCnpj`, `formatCep`, `formatPlaca`, `formatPisPasep`, `formatPixKey`, `formatBoleto`, `formatCartaoCredito`.
 
 Implementation: `strip → validate → apply mask`. See [use-cases/UC-003-format-document.md](use-cases/UC-003-format-document.md).
+
+---
+
+---
+
+## Platform APIs (Phases 17–19)
+
+Cross-cutting helpers that compose existing per-type validators — **never duplicate check-digit logic**.
+
+### `detect(raw, options?)`
+
+Import: `@br-validators/core/detect` or barrel.
+
+```typescript
+type DetectableDocumentType =
+  | 'cpf' | 'cnpj' | 'cep' | 'placa' | 'pis-pasep' | 'pix'
+  | 'telefone' | 'boleto' | 'cartao-credito' | 'cnh' | 'renavam'
+  | 'nfe-chave' | 'titulo-eleitor' | 'inscricao-estadual'
+  | 'inscricao-estadual-produtor-rural' | 'brcode' | 'unknown';
+
+type DetectOptions = { uf?: UfCode };
+
+type DetectResult =
+  | { type: DetectableDocumentType; ok: true; value: string; format?: DocumentFormat; meta?: Record<string, unknown> }
+  | { type: DetectableDocumentType; ok: false; code: ValidationErrorCode; message: string };
+
+function detect(raw: string, options?: DetectOptions): DetectResult;
+```
+
+**Priority router (first structural match + `validate*` success wins):** boleto (skip 48-digit arrecadação) → NF-e chave → BR Code → CNPJ alphanumeric → CNPJ numeric → 11-digit bucket (CPF → CNH → PIS) → título eleitor (12 digits) → CEP → placa → PIX → telefone → cartão → IE (only when `options.uf` set).
+
+**11-digit note:** PIS and RENAVAM share equivalent modulo-11 math; valid RENAVAM values that also pass PIS validation are classified as `pis-pasep`.
+
+```typescript
+import { detect } from '@br-validators/core/detect';
+
+detect('123.456.789-09');
+// → { type: 'cpf', ok: true, value: '12345678909', format: 'numeric' }
+
+detect('P123456789012', { uf: 'SP' });
+// → { type: 'inscricao-estadual-produtor-rural', ok: true, ... }
+```
+
+### `sanitize(raw, type, options?)`
+
+Import: `@br-validators/core/sanitize` or barrel.
+
+```typescript
+type SanitizableDocumentType =
+  | 'cpf' | 'cnpj' | 'cep' | 'placa' | 'pis-pasep' | 'telefone'
+  | 'cnh' | 'renavam' | 'titulo-eleitor' | 'nfe-chave' | 'boleto'
+  | 'cartao-credito' | 'inscricao-estadual' | 'inscricao-estadual-produtor-rural';
+
+type SanitizeOptions = { uf?: UfCode };
+
+type SanitizeResult =
+  | { ok: true; value: string; fixes: string[] }
+  | { ok: false; code: ValidationErrorCode; message: string };
+
+function sanitize(raw: string, type: SanitizableDocumentType, options?: SanitizeOptions): SanitizeResult;
+```
+
+Applies ETL fixes (`trimmed`, `removed_non_digits`, `uppercased`, telefone national normalization, etc.) then runs the matching `validate*`. **Unlike `strip*`**, always validates — never bypasses check digits. `inscricao-estadual` requires `options.uf`.
+
+```typescript
+import { sanitize } from '@br-validators/core/sanitize';
+
+sanitize(' 123.456.789-09 ', 'cpf');
+// → { ok: true, value: '12345678909', fixes: ['trimmed', 'removed_non_digits'] }
+```
+
+### `generate(type, options?)`
+
+Import: `@br-validators/core/generate` or barrel.
+
+**Synthetic test fixtures only** — not for production IDs or impersonation.
+
+```typescript
+type GeneratableDocumentType =
+  | 'cpf' | 'cnpj' | 'cep' | 'placa' | 'pis-pasep'
+  | 'renavam' | 'cnh' | 'telefone' | 'cartao-credito';
+
+type GenerateOptions = {
+  format?: 'numeric' | 'alphanumeric' | 'legacy' | 'mercosul' | 'celular' | 'fixo';
+  masked?: boolean;
+  seed?: number;
+};
+
+function generate(type: GeneratableDocumentType, options?: GenerateOptions): string;
+```
+
+Uses Mulberry32 when `seed` is set; reuses official DV helpers (RFB modulo 11, CONTRAN placa patterns, Anatel DDDs, ISO 7812 Luhn). Excludes boleto, NF-e chave, IE, BR Code, PIX.
+
+```typescript
+import { generate } from '@br-validators/core/generate';
+import { validateCpf } from '@br-validators/core/cpf';
+
+const cpf = generate('cpf', { seed: 42 });
+validateCpf(cpf).ok; // true
+```
+
+### CLI mirror (platform)
+
+```bash
+br-validators detect [value] [--uf SP] [--json] [--quiet] [--file]
+br-validators sanitize <type> [value] [--uf SP] [--json] [--quiet] [--file]
+br-validators generate <type> [--masked] [--format mercosul] [--seed 42] [--json] [--quiet]
+```
 
 ---
 

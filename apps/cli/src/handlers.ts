@@ -2,6 +2,10 @@ import { readFileSync } from 'node:fs';
 import { runBrCode, type BrCodeAction } from './commands/brcode.js';
 import { runCep, type CepAction } from './commands/cep.js';
 import { runTelefone, type TelefoneAction } from './commands/telefone.js';
+import { runCnh, type CnhAction } from './commands/cnh.js';
+import { runRenavam, type RenavamAction } from './commands/renavam.js';
+import { runTituloEleitor, type TituloEleitorAction } from './commands/titulo-eleitor.js';
+import { runNfeChave, type NfeChaveAction } from './commands/nfe-chave.js';
 import { runCnpj, type CnpjAction } from './commands/cnpj.js';
 import { runCpf, type CpfAction } from './commands/cpf.js';
 import { runPlaca, type PlacaAction } from './commands/placa.js';
@@ -11,6 +15,9 @@ import { runBoleto, type BoletoAction, type BoletoConvertDirection } from './com
 import { runCartao, type CartaoAction } from './commands/cartao.js';
 import { runCartaoCredito, type CartaoCreditoAction } from './commands/cartao-credito.js';
 import { runIe, type IeAction } from './commands/ie.js';
+import { runDetect } from './commands/detect.js';
+import { runSanitize } from './commands/sanitize.js';
+import { runGenerate } from './commands/generate.js';
 import { listSupportedTypes } from './commands/list.js';
 import { EXIT } from './constants.js';
 
@@ -26,6 +33,14 @@ export type CpfCliOptions = CnpjCliOptions;
 export type CepCliOptions = CnpjCliOptions;
 
 export type TelefoneCliOptions = CnpjCliOptions;
+
+export type CnhCliOptions = CnpjCliOptions;
+
+export type RenavamCliOptions = CnpjCliOptions;
+
+export type TituloEleitorCliOptions = CnpjCliOptions;
+
+export type NfeChaveCliOptions = CnpjCliOptions;
 
 export type BrCodeCliOptions = CnpjCliOptions;
 
@@ -47,6 +62,22 @@ export type CartaoCreditoCliOptions = CnpjCliOptions;
 
 export type IeCliOptions = CnpjCliOptions & {
   uf?: string;
+};
+
+export type DetectCliOptions = CnpjCliOptions & {
+  uf?: string;
+};
+
+export type SanitizeCliOptions = CnpjCliOptions & {
+  uf?: string;
+};
+
+export type GenerateCliOptions = {
+  json?: boolean;
+  quiet?: boolean;
+  masked?: boolean;
+  format?: string;
+  seed?: number;
 };
 
 export type CliIo = { stdout: string[]; stderr: string[] };
@@ -164,6 +195,34 @@ export function handleTelefoneCli(
   }
 
   return runTelefone(
+    action,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      source: Boolean(opts.source),
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleCnhCli(
+  action: CnhAction,
+  value: string | undefined,
+  opts: CnhCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runCnh(
     action,
     value,
     {
@@ -348,6 +407,90 @@ export function handleCartaoCreditoCli(
   );
 }
 
+export function handleRenavamCli(
+  action: RenavamAction,
+  value: string | undefined,
+  opts: RenavamCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runRenavam(
+    action,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      source: Boolean(opts.source),
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleTituloEleitorCli(
+  action: TituloEleitorAction,
+  value: string | undefined,
+  opts: TituloEleitorCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runTituloEleitor(
+    action,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      source: Boolean(opts.source),
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleNfeChaveCli(
+  action: NfeChaveAction,
+  value: string | undefined,
+  opts: NfeChaveCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runNfeChave(
+    action,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      source: Boolean(opts.source),
+      file: fileContent,
+    },
+    io,
+  );
+}
+
 export function handleBrCodeCli(
   action: BrCodeAction,
   value: string | undefined,
@@ -400,6 +543,78 @@ export function handleIeCli(
       source: Boolean(opts.source),
       uf: opts.uf,
       file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleDetectCli(
+  value: string | undefined,
+  opts: DetectCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runDetect(
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      uf: opts.uf,
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleSanitizeCli(
+  type: string,
+  value: string | undefined,
+  opts: SanitizeCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runSanitize(
+    type,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      uf: opts.uf,
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleGenerateCli(
+  type: string,
+  opts: GenerateCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  return runGenerate(
+    type,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      masked: Boolean(opts.masked),
+      format: opts.format,
+      seed: opts.seed,
     },
     io,
   );

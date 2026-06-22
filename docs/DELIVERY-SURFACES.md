@@ -39,6 +39,10 @@ As each module ships, **all three** must be updated:
 | CPF | `@br-validators/core/cpf` | `br-validators cpf …` | CPF | [RFB CPF](OFFICIAL-SOURCES.md) |
 | CEP | `@br-validators/core/cep` | `br-validators cep …` | CEP | [Correios](OFFICIAL-SOURCES.md) |
 | Telefone | `@br-validators/core/telefone` | `br-validators telefone …` | `/telefone` | [Anatel — Plano de Numeração](OFFICIAL-SOURCES.md) |
+| CNH | `@br-validators/core/cnh` | `br-validators cnh …` | `/cnh` | [OFFICIAL-SOURCES § CNH](OFFICIAL-SOURCES.md#cnh--reference-index) |
+| RENAVAM | `@br-validators/core/renavam` | `br-validators renavam …` | `/renavam` | [OFFICIAL-SOURCES § RENAVAM](OFFICIAL-SOURCES.md#renavam--reference-index) |
+| Título de Eleitor | `@br-validators/core/titulo-eleitor` | `br-validators titulo-eleitor …` | `/titulo-eleitor` | [OFFICIAL-SOURCES § Título de Eleitor](OFFICIAL-SOURCES.md#título-de-eleitor--reference-index) |
+| NF-e chave de acesso | `@br-validators/core/nfe-chave` | `br-validators nfe-chave …` | `/nfe-chave` | [OFFICIAL-SOURCES § NF-e chave](OFFICIAL-SOURCES.md#nf-e--nfc-e-chave-de-acesso--reference-index) |
 | BR Code | `@br-validators/core/brcode` | `br-validators brcode …` | `/brcode` | [Bacen Manual BR Code](OFFICIAL-SOURCES.md) |
 | Placa | `@br-validators/core/placa` | `br-validators placa …` | Placa | [CONTRAN 729/2018](OFFICIAL-SOURCES.md) |
 | PIS/PASEP | `@br-validators/core/pis-pasep` | `br-validators pis-pasep …` | PIS/PASEP | [SIPREV RV_03](OFFICIAL-SOURCES.md) |
@@ -46,6 +50,10 @@ As each module ships, **all three** must be updated:
 | Boleto | `@br-validators/core/boleto` | `br-validators boleto …` | Boleto | [FEBRABAN](OFFICIAL-SOURCES.md) |
 | Credit card | `@br-validators/core/cartao-credito` | `br-validators cartao …` / `cartao-credito …` | Credit Card | [ISO/IEC 7812-1](OFFICIAL-SOURCES.md) |
 | IE (27 UFs) | `@br-validators/core/inscricao-estadual` | `br-validators ie … --uf <UF>` | `/ie` | [OFFICIAL-SOURCES § IE](OFFICIAL-SOURCES.md#inscrição-estadual-ie--all-27-ufs) |
+| IE produtor rural (SP) | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie … --uf SP` (auto `P` prefix) | `/ie` badge | [SINTEGRA cad_SP Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) |
+| **detect()** | `@br-validators/core/detect` | `br-validators detect …` | `/detect` | Composes per-type [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
+| **sanitize()** | `@br-validators/core/sanitize` | `br-validators sanitize <type> …` | `/sanitize` | Same validators as per-type rows |
+| **generate()** | `@br-validators/core/generate` | `br-validators generate <type> …` | `/generate` | DV sources per generatable type — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
 
 **Definition of done per module:** library tests green + CLI command + playground section + source link.
 
@@ -75,6 +83,20 @@ Every type implements the same actions where applicable:
 br-validators <type> validate <value>
 br-validators <type> format <value>
 br-validators <type> strip <value>
+```
+
+### Platform commands (Phases 17–19)
+
+| Command | Description |
+|---------|-------------|
+| `detect [value]` | Classify raw input; `--uf` required for IE detection |
+| `sanitize <type> [value]` | Apply ETL fixes then validate; `--uf` for `inscricao-estadual` |
+| `generate <type>` | Synthetic valid document; `--seed`, `--masked`, `--format` |
+
+```bash
+br-validators detect '123.456.789-09' --json
+br-validators sanitize cpf ' 123.456.789-09 ' --json
+br-validators generate cpf --seed 42 --masked
 ```
 
 ### Flags (all types)
@@ -118,6 +140,9 @@ Production: [doc-raiz-playground.vercel.app](https://doc-raiz-playground.vercel.
 | Route | Content |
 |-------|---------|
 | `/` | Landing + type selector |
+| `/detect` | Live type detection demo |
+| `/sanitize` | Sanitize + fixes display |
+| `/generate` | Synthetic document generator |
 | `/cnpj` | CNPJ tester |
 | `/cpf` | CPF tester |
 | `/[type]` | Generic layout for each doc type |

@@ -26,6 +26,9 @@ Requires Node ≥ 18. ESM only (`"type": "module"`).
 | CNPJ | `validateCnpj`, `formatCnpj`, `stripCnpj` | `12ABC34501DE35` |
 | CPF | `validateCpf`, `formatCpf`, `stripCpf` | `12345678909` |
 | CEP | `validateCep`, `formatCep`, `stripCep` | `01310100` |
+| Telefone | `validateTelefone`, `formatTelefone`, `stripTelefone` | `11999999999` |
+| CNH | `validateCnh`, `formatCnh`, `stripCnh` | `62472927637` (11 digits, no CPF mask) |
+| RENAVAM | `validateRenavam`, `formatRenavam`, `stripRenavam` | `63977791104` (11 digits, modulo 11 peso 9) |
 | Placa | `validatePlaca`, `formatPlaca`, `convertPlacaToMercosul` | `ABC1D23` |
 | PIS/PASEP | `validatePisPasep`, `formatPisPasep` | `10027230888` |
 | PIX key | `validatePixKey`, `formatPixKey` | `pix@bcb.gov.br` |

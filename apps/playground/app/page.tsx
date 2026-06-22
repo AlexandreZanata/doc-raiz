@@ -5,6 +5,10 @@ const types = [
   { slug: 'cpf', label: 'CPF' },
   { slug: 'cep', label: 'CEP' },
   { slug: 'telefone', label: 'Telefone' },
+  { slug: 'cnh', label: 'CNH' },
+  { slug: 'renavam', label: 'RENAVAM' },
+  { slug: 'titulo-eleitor', label: 'Título de Eleitor' },
+  { slug: 'nfe-chave', label: 'NF-e Chave de Acesso' },
   { slug: 'placa', label: 'Placa' },
   { slug: 'pis', label: 'PIS/PASEP' },
   { slug: 'pix', label: 'PIX Key' },
@@ -12,6 +16,9 @@ const types = [
   { slug: 'boleto', label: 'Boleto' },
   { slug: 'cartao', label: 'Credit Card' },
   { slug: 'ie', label: 'Inscrição Estadual (27 UFs)' },
+  { slug: 'detect', label: 'detect() — type router' },
+  { slug: 'sanitize', label: 'sanitize() — ETL fixes' },
+  { slug: 'generate', label: 'generate() — synthetic docs' },
 ];
 
 export default function HomePage() {
