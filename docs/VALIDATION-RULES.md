@@ -361,6 +361,17 @@
 - **WHEN** `parseBrCode`
 - **THEN** succeed with `pixInitiationUrl`; `validateBrCode` rejects with `UNSUPPORTED_FORMAT`
 
+### BR-BRC-005 — Static PIX QR builder
+
+- **GIVEN** `StaticPixBrCodeInput` with `pixKey`, `merchantName` (max 25), `merchantCity` (max 15, uppercased)
+- **WHEN** calling `buildStaticPixBrCode`
+- **THEN** emit EMV TLV per BR-BRC-002: tag 00 = `01`, tag 26 (GUI `br.gov.bcb.pix` + key subfield `01`), tags 52/53, tag 58 = `BR`, tags 59/60, tag 62 subfield `05` (txid, default `***`), tag 63 CRC16 per BR-BRC-001
+- **AND** omit tag `54` when `amount` is absent → permanent static QR (payer sets value)
+- **AND** include tag `54` when `amount` is a valid decimal (up to 2 fraction digits); ignore invalid `amount` strings
+- **AND** output must pass `validateBrCode` for static PIX keys
+
+**Official source:** [Bacen Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) · `tests/vectors/brcode.official.json` · `BRCODE_GOLDEN_STATIC_*`
+
 ---
 
 ## Placa
