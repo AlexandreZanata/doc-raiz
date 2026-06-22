@@ -1,0 +1,245 @@
+import { describe, expect, it } from 'vitest';
+import {
+  BOLETO_GOLDEN_LINHA_STRIPPED,
+  CARTAO_GOLDEN_VISA,
+  CEP_GOLDEN_PRIMARY,
+  CNPJ_GOLDEN_ALPHANUMERIC,
+  CPF_GOLDEN_PRIMARY,
+  CPF_GOLDEN_PRIMARY_MASKED,
+  IE_SP_GOLDEN,
+  NFE_CHAVE_GOLDEN_PRIMARY,
+  PIX_GOLDEN_EMAIL,
+  PLACA_GOLDEN_MERCOSUL,
+  TELEFONE_GOLDEN_CELULAR,
+  TITULO_ELEITOR_GOLDEN_PRIMARY,
+} from '@br-validators/core';
+import { dispatchArgv, parseArgv } from '../src/argv-dispatch.js';
+import { EXIT } from '../src/constants.js';
+
+function io() {
+  return { stdout: [] as string[], stderr: [] as string[] };
+}
+
+describe('parseArgv', () => {
+  it('parses global flags and positional tokens', () => {
+    expect(
+      parseArgv([
+        'cpf',
+        'validate',
+        CPF_GOLDEN_PRIMARY,
+        '--json',
+        '-q',
+        '--source',
+        '--masked',
+        '-f',
+        'input.txt',
+        '--uf',
+        'SP',
+        '--format',
+        'legacy',
+        '--seed',
+        '42',
+        '--kind',
+        'linha',
+        '--type',
+        'email',
+        '--unknown-flag',
+      ]),
+    ).toEqual({
+      positionals: ['cpf', 'validate', CPF_GOLDEN_PRIMARY],
+      opts: {
+        json: true,
+        quiet: true,
+        source: true,
+        masked: true,
+        file: 'input.txt',
+        uf: 'SP',
+        format: 'legacy',
+        seed: 42,
+        kind: 'linha',
+        type: 'email',
+      },
+    });
+  });
+
+  it('parses --quiet long form', () => {
+    const { opts } = parseArgv(['list', '--quiet']);
+    expect(opts.quiet).toBe(true);
+  });
+});
+
+describe('dispatchArgv', () => {
+  it('prints help for empty argv and -h', () => {
+    const empty = io();
+    expect(dispatchArgv([], empty)).toBe(EXIT.OK);
+    expect(empty.stdout.join('\n')).toContain('Usage');
+
+    const help = io();
+    expect(dispatchArgv(['--help'], help)).toBe(EXIT.OK);
+    expect(help.stdout.join('\n')).toContain('generate');
+  });
+
+  it('prints version', () => {
+    const out = io();
+    expect(dispatchArgv(['--version'], out)).toBe(EXIT.OK);
+    expect(out.stdout[0]).toMatch(/\d+\.\d+/);
+  });
+
+  it('returns usage when command missing', () => {
+    const out = io();
+    expect(dispatchArgv(['--json'], out)).toBe(EXIT.USAGE);
+    expect(out.stderr[0]).toContain('Missing command');
+  });
+
+  it('returns usage for unknown command', () => {
+    const out = io();
+    expect(dispatchArgv(['not-a-command'], out)).toBe(EXIT.USAGE);
+    expect(out.stderr[0]).toContain('Unknown command');
+  });
+
+  it('dispatches list', () => {
+    const out = io();
+    expect(dispatchArgv(['list'], out)).toBe(EXIT.OK);
+    expect(out.stdout).toContain('cpf');
+  });
+
+  it('dispatches standard validate commands', () => {
+    const cases: [string[], number][] = [
+      [['cnpj', 'validate', CNPJ_GOLDEN_ALPHANUMERIC, '--quiet'], EXIT.OK],
+      [['cpf', 'validate', CPF_GOLDEN_PRIMARY, '--quiet'], EXIT.OK],
+      [['cep', 'validate', CEP_GOLDEN_PRIMARY, '--quiet'], EXIT.OK],
+      [['telefone', 'validate', TELEFONE_GOLDEN_CELULAR, '--quiet'], EXIT.OK],
+      [['cnh', 'validate', '62472927637', '--quiet'], EXIT.OK],
+      [['renavam', 'validate', '63977791104', '--quiet'], EXIT.OK],
+      [['titulo-eleitor', 'validate', TITULO_ELEITOR_GOLDEN_PRIMARY, '--quiet'], EXIT.OK],
+      [['pis-pasep', 'validate', '10027230888', '--quiet'], EXIT.OK],
+      [['cartao-credito', 'validate', CARTAO_GOLDEN_VISA, '--quiet'], EXIT.OK],
+      [['ie', 'validate', IE_SP_GOLDEN, '--uf', 'SP', '--quiet'], EXIT.OK],
+    ];
+    for (const [tokens, expected] of cases) {
+      const out = io();
+      expect(dispatchArgv(tokens, out)).toBe(expected);
+    }
+  });
+
+  it('returns usage for invalid standard action', () => {
+    const out = io();
+    expect(dispatchArgv(['cpf', 'bad-action'], out)).toBe(EXIT.USAGE);
+    expect(out.stderr[0]).toContain('validate | format | strip');
+  });
+
+  it('dispatches nfe-chave actions', () => {
+    const validate = io();
+    expect(
+      dispatchArgv(['nfe-chave', 'validate', NFE_CHAVE_GOLDEN_PRIMARY, '--quiet'], validate),
+    ).toBe(EXIT.OK);
+
+    const invalid = io();
+    expect(dispatchArgv(['nfe-chave', 'bad'], invalid)).toBe(EXIT.USAGE);
+  });
+
+  it('dispatches brcode actions', () => {
+    const payload =
+      '00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-4266554400005204000053039865802BR5913Fulano de Tal6008BRASILIA62070503***63041D3D';
+    const out = io();
+    expect(dispatchArgv(['brcode', 'validate', payload, '--quiet'], out)).toBe(EXIT.OK);
+
+    const invalid = io();
+    expect(dispatchArgv(['brcode', 'bad'], invalid)).toBe(EXIT.USAGE);
+  });
+
+  it('dispatches placa actions', () => {
+    const out = io();
+    expect(dispatchArgv(['placa', 'validate', PLACA_GOLDEN_MERCOSUL, '--quiet'], out)).toBe(EXIT.OK);
+
+    const invalid = io();
+    expect(dispatchArgv(['placa', 'bad'], invalid)).toBe(EXIT.USAGE);
+  });
+
+  it('dispatches pix actions', () => {
+    const out = io();
+    expect(dispatchArgv(['pix', 'detect', PIX_GOLDEN_EMAIL, '--quiet'], out)).toBe(EXIT.OK);
+
+    const invalid = io();
+    expect(dispatchArgv(['pix', 'bad'], invalid)).toBe(EXIT.USAGE);
+  });
+
+  it('dispatches boleto actions including convert', () => {
+    const detect = io();
+    expect(
+      dispatchArgv(['boleto', 'detect', BOLETO_GOLDEN_LINHA_STRIPPED, '--quiet'], detect),
+    ).toBe(EXIT.OK);
+
+    const convert = io();
+    expect(
+      dispatchArgv(
+        ['boleto', 'convert', 'linha-to-barras', BOLETO_GOLDEN_LINHA_STRIPPED, '--quiet'],
+        convert,
+      ),
+    ).toBe(EXIT.OK);
+
+    const missingDirection = io();
+    expect(dispatchArgv(['boleto', 'convert'], missingDirection)).toBe(EXIT.USAGE);
+
+    const badDirection = io();
+    expect(dispatchArgv(['boleto', 'convert', 'bad-direction'], badDirection)).toBe(EXIT.USAGE);
+
+    const badAction = io();
+    expect(dispatchArgv(['boleto', 'bad'], badAction)).toBe(EXIT.USAGE);
+  });
+
+  it('dispatches cartao actions with multi-word value', () => {
+    const out = io();
+    expect(dispatchArgv(['cartao', 'detect', CARTAO_GOLDEN_VISA, '--quiet'], out)).toBe(EXIT.OK);
+
+    const invalid = io();
+    expect(dispatchArgv(['cartao', 'bad'], invalid)).toBe(EXIT.USAGE);
+  });
+
+  it('dispatches detect sanitize and generate', () => {
+    const detect = io();
+    expect(dispatchArgv(['detect', CPF_GOLDEN_PRIMARY, '--quiet'], detect)).toBe(EXIT.OK);
+
+    const detectEmpty = io();
+    expect(dispatchArgv(['detect'], detectEmpty)).toBe(EXIT.USAGE);
+
+    const sanitize = io();
+    expect(
+      dispatchArgv(['sanitize', 'cpf', CPF_GOLDEN_PRIMARY_MASKED, '--quiet'], sanitize),
+    ).toBe(EXIT.OK);
+
+    const sanitizeEmpty = io();
+    expect(dispatchArgv(['sanitize'], sanitizeEmpty)).toBe(EXIT.USAGE);
+
+    const generate = io();
+    expect(dispatchArgv(['generate', 'cpf', '--quiet', '--seed', '42', '--uf', 'SP'], generate)).toBe(
+      EXIT.OK,
+    );
+
+    const generateEmpty = io();
+    expect(dispatchArgv(['generate'], generateEmpty)).toBe(EXIT.USAGE);
+  });
+
+  it('allows optional values for action commands', () => {
+    const nfe = io();
+    expect(dispatchArgv(['nfe-chave', 'validate'], nfe)).toBe(EXIT.USAGE);
+
+    const brcode = io();
+    expect(dispatchArgv(['brcode', 'validate'], brcode)).toBe(EXIT.USAGE);
+
+    const placa = io();
+    expect(dispatchArgv(['placa', 'validate'], placa)).toBe(EXIT.USAGE);
+
+    const pix = io();
+    expect(dispatchArgv(['pix', 'validate'], pix)).toBe(EXIT.USAGE);
+
+    const cpf = io();
+    expect(dispatchArgv(['cpf', 'validate'], cpf)).toBe(EXIT.USAGE);
+
+    const boletoConvert = io();
+    expect(dispatchArgv(['boleto', 'convert', 'linha-to-barras'], boletoConvert)).toBe(EXIT.USAGE);
+
+    const boletoDetect = io();
+    expect(dispatchArgv(['boleto', 'detect'], boletoDetect)).toBe(EXIT.USAGE);
+  });
+});

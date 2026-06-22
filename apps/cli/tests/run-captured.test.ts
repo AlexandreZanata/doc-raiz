@@ -34,4 +34,16 @@ describe('runCaptured', () => {
     expect(result.exitCode).not.toBe(EXIT.OK);
     expect(result.stderr.length + result.stdout.length).toBeGreaterThan(0);
   });
+
+  it('accepts br-validators-prefixed argv', () => {
+    const result = runCaptured(['br-validators', 'list']);
+    expect(result.exitCode).toBe(EXIT.OK);
+    expect(result.stdout).toContain('cpf');
+  });
+
+  it('accepts raw command tokens', () => {
+    const result = runCaptured(['list']);
+    expect(result.exitCode).toBe(EXIT.OK);
+    expect(result.stdout).toContain('cpf');
+  });
 });
