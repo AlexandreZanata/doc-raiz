@@ -220,13 +220,33 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 |----------|-----------|-------------|
 | `parseBrCode` | `(input: string) => BrCodeValidationResult` | Parse EMV TLV payload; extract merchant, amount, txid, PIX key or initiation URL |
 | `validateBrCode` | `(input: string) => BrCodeValidationResult` | Same as `parseBrCode` but requires static PIX key (subfield 01) |
+| `buildStaticPixBrCode` | `(input: StaticPixBrCodeInput) => string` | Build static PIX QR EMV payload + CRC16; omit `amount` for permanent static QR |
 | `isValidBrCode` | `(input: string) => boolean` | Convenience wrapper over `validateBrCode` |
 | `verifyBrCodeCrc` | `(payload: string) => { ok: true } \| { ok: false; message: string }` | CRC16-CCITT check (tag 63) |
 | `parseBrCodePayload` | `(input: string) => BrCodeParseResult` | Lower-level parse (no branded result wrapper) |
 
 **Success result:** `{ ok: true, value: BrCodePayload, format: 'brcode', merchantName, merchantCity, pixKey?, pixKeyType?, amount?, txid?, pixInitiationUrl? }`
 
-**Official source:** [Bacen Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões para Iniciação do Pix (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) · `BRCODE_OFFICIAL_SOURCE_URL` · `tests/vectors/brcode.official.json` · Golden static EVP payload in `BRCODE_GOLDEN_STATIC_EVP`
+```typescript
+type StaticPixBrCodeInput = {
+  pixKey: string;
+  merchantName: string;  // max 25 chars
+  merchantCity: string;    // max 15 chars, uppercased
+  amount?: string;         // omit → permanent static QR; else fixed value (tag 54)
+  txid?: string;           // default '***'
+};
+
+import { buildStaticPixBrCode, validateBrCode } from '@br-validators/core/brcode';
+
+const permanent = buildStaticPixBrCode({
+  pixKey: 'pix@bcb.gov.br',
+  merchantName: 'Fulano de Tal',
+  merchantCity: 'BRASILIA',
+});
+validateBrCode(permanent).ok; // true — matches BRCODE_GOLDEN_STATIC_EMAIL when inputs match golden vector
+```
+
+**Official source:** [Bacen Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões para Iniciação do Pix (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) · `BRCODE_OFFICIAL_SOURCE_URL` · `tests/vectors/brcode.official.json` · Golden static payloads in `BRCODE_GOLDEN_STATIC_*`
 
 ---
 

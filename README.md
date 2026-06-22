@@ -174,7 +174,7 @@ The **[playground `/pix`](https://doc-raiz-playground.vercel.app/pix)** builds *
 
 Payload is validated with `validateBrCode` before rendering the QR image. Official sources: [Bacen Manual BR Code](docs/OFFICIAL-SOURCES.md), [Manual de Padrões PIX](docs/OFFICIAL-SOURCES.md).
 
-Core library ships **`validateBrCode` / `parseBrCode`** and **`computeCrc16Ccitt`**; QR image rendering is playground-only (`apps/playground/lib/pix/build-static-brcode.ts`).
+Core library ships **`buildStaticPixBrCode`**, **`validateBrCode` / `parseBrCode`**, and **`computeCrc16Ccitt`** via `@br-validators/core/brcode`. QR image rendering remains playground-only (`QrCodePanel` on `/pix`).
 
 Official sources per type: [docs/OFFICIAL-SOURCES.md](docs/OFFICIAL-SOURCES.md)
 
@@ -236,7 +236,6 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes.
 |-----|--------|
 | Alphanumeric CPF | Blocked — RFB spec not published |
 | `compare` / `batch` / `diff` CLI commands | Library-only — use `@br-validators/core` |
-| PIX QR **builder** in library | Playground `/pix` only — core validates/parses BR Code |
 | `@br-validators/adapters-correios` | Planned — CEP HTTP lookup |
 
 ---

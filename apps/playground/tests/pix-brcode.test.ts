@@ -3,9 +3,9 @@ import {
   BRCODE_GOLDEN_STATIC_CPF,
   BRCODE_GOLDEN_STATIC_EMAIL,
   BRCODE_GOLDEN_STATIC_EVP,
+  buildStaticPixBrCode,
   validateBrCode,
 } from '@br-validators/core';
-import { buildStaticPixBrCode } from '../lib/pix/build-static-brcode';
 
 describe('buildStaticPixBrCode', () => {
   it('matches golden static EVP vector', () => {

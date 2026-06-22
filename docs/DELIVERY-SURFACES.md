@@ -59,7 +59,7 @@ As each module ships, **all three** must be updated:
 | **batch()** | `@br-validators/core/batch` | — | — | Bulk validate + summary |
 | **diff()** | `@br-validators/core/diff` | — | — | Field-level diff per official structures |
 | **generate()** | `@br-validators/core/generate` | `br-validators generate <type> …` | `/generate` | DV sources per generatable type — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
-| **PIX static QR** | `computeCrc16Ccitt` + `validateBrCode` (core) | — | `/pix` QR panel | [Bacen Manual BR Code](OFFICIAL-SOURCES.md) — builder in `apps/playground` |
+| **PIX static QR** | `buildStaticPixBrCode` (core) | — | `/pix` QR panel | [Bacen Manual BR Code](OFFICIAL-SOURCES.md) + [Manual de Padrões PIX](OFFICIAL-SOURCES.md) |
 
 **Definition of done per module:** library tests green + CLI command + playground section + source link.
 

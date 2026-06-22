@@ -140,6 +140,7 @@ describe('package exports', () => {
   it('re-exports BR Code API from brcode entry', () => {
     expect(brcodeEntry.parseBrCode).toBe(root.parseBrCode);
     expect(brcodeEntry.validateBrCode).toBe(root.validateBrCode);
+    expect(brcodeEntry.buildStaticPixBrCode).toBe(root.buildStaticPixBrCode);
   });
 
   it('re-exports Placa API from placa entry', () => {

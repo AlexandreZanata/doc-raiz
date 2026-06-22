@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`compare()` / `batch()` / `diff()`** — platform equality, bulk validation, field diff
 - **Boleto arrecadação** — `validateArrecadacao` (FEBRABAN Layout v7); wired in `validateBoleto` + `detect()`
 - **Playground PIX static QR** — permanent (no amount) or fixed-value BR Code on `/pix`
+- **`buildStaticPixBrCode()`** — static PIX BR Code builder in `@br-validators/core/brcode` (golden vectors: `BRCODE_GOLDEN_STATIC_*`)
 
 ### Changed
 

@@ -121,13 +121,33 @@ const result = validateNfeChave('52060433009911002506550120000007800267301615');
 ### BR Code (PIX QR payload)
 
 ```typescript
-import { validateBrCode, parseBrCode, computeCrc16Ccitt } from '@br-validators/core/brcode';
+import {
+  buildStaticPixBrCode,
+  parseBrCode,
+  validateBrCode,
+} from '@br-validators/core/brcode';
 
-parseBrCode('00020126580014br.gov.bcb.pix0136...');
+// Permanent static QR (no amount — payer sets value at payment time)
+const payload = buildStaticPixBrCode({
+  pixKey: 'pix@bcb.gov.br',
+  merchantName: 'Fulano de Tal',
+  merchantCity: 'BRASILIA',
+});
+validateBrCode(payload).ok; // true
+
+// Fixed-value static QR
+buildStaticPixBrCode({
+  pixKey: 'pix@bcb.gov.br',
+  merchantName: 'Fulano de Tal',
+  merchantCity: 'BRASILIA',
+  amount: '10.50',
+});
+
+parseBrCode(payload);
 // { ok: true, pixKey, pixKeyType, merchantName, merchantCity, amount, txid }
 ```
 
-**Static PIX QR (playground):** [doc-raiz-playground.vercel.app/pix](https://doc-raiz-playground.vercel.app/pix) builds EMV payloads from a validated PIX key. Leave **amount** empty for a **permanent static QR** (payer sets value); fill amount for a fixed-value QR. Uses Bacen [Manual BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) + [Manual de Padrões PIX](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf).
+**Playground:** [doc-raiz-playground.vercel.app/pix](https://doc-raiz-playground.vercel.app/pix) renders the QR image from `buildStaticPixBrCode` output. Official sources: [Bacen Manual BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões PIX](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf).
 
 ### Boleto — cobrança + arrecadação
 
@@ -210,7 +230,7 @@ br-validators generate cartao-credito --brand visa --seed 42
 | Placa (Mercosul + legada) | `@br-validators/core/placa` | `br-validators placa …` | `/placa` |
 | PIS / PASEP / NIS | `@br-validators/core/pis-pasep` | `br-validators pis-pasep …` | `/pis` |
 | PIX key | `@br-validators/core/pix` | `br-validators pix …` | `/pix` |
-| BR Code (PIX QR payload) | `@br-validators/core/brcode` | `br-validators brcode …` | `/brcode` |
+| BR Code (PIX QR payload + builder) | `@br-validators/core/brcode` | `br-validators brcode …` | `/brcode` |
 | Boleto cobrança (Situação 1 + 2) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
 | Boleto arrecadação (48/44) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
 | NF-e / NFC-e chave (44 digits) | `@br-validators/core/nfe-chave` | `br-validators nfe-chave …` | `/nfe-chave` |
@@ -224,7 +244,7 @@ br-validators generate cartao-credito --brand visa --seed 42
 | **batch()** | `@br-validators/core/batch` | — | — |
 | **diff()** | `@br-validators/core/diff` | — | — |
 | **generate()** | `@br-validators/core/generate` | `br-validators generate …` | `/generate` |
-| **PIX static QR builder** | — (playground helper) | — | `/pix` (QR panel) |
+| **buildStaticPixBrCode()** | `@br-validators/core/brcode` | — | `/pix` (QR panel) |
 
 Full official sources per type: [docs/OFFICIAL-SOURCES.md](https://github.com/AlexandreZanata/br-validators/blob/main/docs/OFFICIAL-SOURCES.md)
 
