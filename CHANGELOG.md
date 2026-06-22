@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.10.0-alpha.1] - 2026-06-21
+
+### Fixed
+
+- **`@br-validators/cli`:** duplicate `#!/usr/bin/env node` in bundled `dist/index.js` broke global install on Node 22 ESM (`SyntaxError` at line 2)
+
+---
+
 ## [0.10.0-alpha.0] - 2026-06-21
 
 Inscrição Estadual — remaining 24 UFs (Phase 8b). Full Brazil coverage: 27 states.
