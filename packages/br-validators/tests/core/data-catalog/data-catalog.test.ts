@@ -11,9 +11,11 @@ import vectors from '../../vectors/ibge.official.json';
 describe('Data catalog — transparency API', () => {
   it('lists registered datasets including IBGE, bancos, telefone-ddd, feriados, and fiscal reference data', () => {
     const catalog = getDataCatalog();
-    expect(catalog.length).toBeGreaterThanOrEqual(9);
+    expect(catalog.length).toBeGreaterThanOrEqual(11);
     expect(catalog.some((entry) => entry.id === 'ibge')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'bancos')).toBe(true);
+    expect(catalog.some((entry) => entry.id === 'aeroportos')).toBe(true);
+    expect(catalog.some((entry) => entry.id === 'tse-municipios')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'telefone-ddd')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'feriados')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'cnaes')).toBe(true);

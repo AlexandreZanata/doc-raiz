@@ -35,6 +35,8 @@
 | **NCM** | Receita / Siscomex | [NCM JSON download](https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Mercosur nomenclature leaf codes (8 digits). Golden: **`01012100`** (purebred horses). Vector: `ncm.official.json`. |
 | **CBO** | MTE | [CBO 2002 downloads](https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Occupation codes (eSocial / HR). Golden: **`212405`** (systems analyst). Vector: `cbo.official.json`. |
 | **CEP prefix lookup** | IBGE CNEFE | [CNEFE Censo 2022 UF CSV](https://ftp.ibge.gov.br/Cadastro_Nacional_de_Enderecos_para_Fins_Estatisticos/Censo_Demografico_2022/Arquivos_CNEFE/CSV/UF/) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | 5-digit prefix → UF + IBGE municipality. Golden: **`01310`** (São Paulo/SP), **`20040`** (Rio/RJ). Extends `@br-validators/core/cep`. Vector: `cep-faixa.official.json`. |
+| **Aeroportos (ANAC)** | ANAC | [Lista aeródromos públicos CSV](https://www.anac.gov.br/acesso-a-informacao/dados-abertos/areas-de-atuacao/aerodromos/lista-de-aerodromos-publicos/aerodromospublicosv1.csv/@@download/file/aerodromospublicosv1.csv) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Public aerodromos (ICAO/OACI + IATA where assigned). Golden: **`GRU`/`SBGR`**, **`GIG`/`SBGL`**, **`BSB`/`SBBR`**, **`SSA`/`SBSV`**, **`CGB`/`SBCY`**. Vector: `aeroportos.official.json`. IATA enrichment from ICAO standard assignment (supplemental to ANAC). |
+| **TSE ↔ IBGE municipios** | TSE | [municipio_tse_ibge.zip](https://cdn.tse.jus.br/estatistica/sead/odsele/municipio_tse_ibge/municipio_tse_ibge.zip) · [Portal dados abertos](https://dadosabertos.tse.jus.br/dataset/codigos-oficiais-de-uf-e-municipios-segundo-o-tse-e-o-ibge) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Electoral municipality codes cross-walk to IBGE `codigo`. Golden: TSE **`71072`** → IBGE **`3550308`** (São Paulo/SP). Vector: `tse-municipios.official.json`. Lookup-only — does not change `titulo-eleitor` validation. |
 
 ---
 
@@ -244,6 +246,34 @@ Before merging a validator:
 | STR participants | Banco Central | https://www.bcb.gov.br/content/estabilidadefinanceira/str1/ParticipantesSTR.csv |
 
 Golden: COMPE `001` / ISPB `00000000` (Banco do Brasil), `341` / `60701190` (Itaú), `260` / `18236120` (Nubank).
+
+---
+
+## Aeroportos {#aeroportos}
+
+> **Vectors:** `packages/br-validators/tests/vectors/aeroportos.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| Public aerodromos CSV | ANAC | https://www.anac.gov.br/acesso-a-informacao/dados-abertos/areas-de-atuacao/aerodromos/lista-de-aerodromos-publicos/aerodromospublicosv1.csv/@@download/file/aerodromospublicosv1.csv |
+| Municipality cross-ref | IBGE (embedded) | https://servicodados.ibge.gov.br/api/v1/localidades/municipios |
+
+Golden: IATA **`GRU`** (ICAO `SBGR`, Guarulhos/SP), **`GIG`** (`SBGL`), **`BSB`** (`SBBR`), **`SSA`** (`SBSV`), **`CGB`** (`SBCY`). IATA codes are enriched from ICAO location identifiers where ANAC CSV provides OACI only.
+
+---
+
+## TSE municipality codes {#tse-municipios}
+
+> **Vectors:** `packages/br-validators/tests/vectors/tse-municipios.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| TSE ↔ IBGE zip | TSE CDN | https://cdn.tse.jus.br/estatistica/sead/odsele/municipio_tse_ibge/municipio_tse_ibge.zip |
+| Dataset page | TSE dados abertos | https://dadosabertos.tse.jus.br/dataset/codigos-oficiais-de-uf-e-municipios-segundo-o-tse-e-o-ibge |
+
+Golden: TSE **`71072`** → IBGE **`3550308`** (São Paulo/SP); also verified for RJ, DF, BA, MT capitals in vector file. **Lookup-only** — `@br-validators/core/titulo-eleitor` check-digit validation is unchanged.
 
 ---
 

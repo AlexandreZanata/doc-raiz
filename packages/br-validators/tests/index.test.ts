@@ -14,6 +14,8 @@ import * as boletoEntry from '../src/boleto.js';
 import * as cartaoCreditoEntry from '../src/cartao-credito.js';
 import * as ibgeEntry from '../src/ibge.js';
 import * as bancosEntry from '../src/bancos.js';
+import * as aeroportosEntry from '../src/aeroportos.js';
+import * as tseMunicipiosEntry from '../src/tse-municipios.js';
 import * as feriadosEntry from '../src/feriados.js';
 import * as cnaesEntry from '../src/cnaes.js';
 import * as cfopEntry from '../src/cfop.js';
@@ -192,6 +194,21 @@ describe('package exports', () => {
     expect(bancosEntry.getBancoPorCodigo).toBeTypeOf('function');
     expect(bancosEntry.getBancoPorIspb).toBeTypeOf('function');
     expect(bancosEntry.BANCOS_DATA_VERSION.id).toBe('bancos');
+  });
+
+  it('re-exports Aeroportos API from aeroportos entry', () => {
+    expect(aeroportosEntry.getAeroportos).toBeTypeOf('function');
+    expect(aeroportosEntry.getAeroportoPorIata).toBeTypeOf('function');
+    expect(aeroportosEntry.getAeroportoPorIcao).toBeTypeOf('function');
+    expect(aeroportosEntry.getAeroportosPorMunicipio).toBeTypeOf('function');
+    expect(aeroportosEntry.AEROPORTOS_DATA_VERSION.id).toBe('aeroportos');
+  });
+
+  it('re-exports TSE municipios API from tse-municipios entry', () => {
+    expect(tseMunicipiosEntry.getMapeamentoTseIbge).toBeTypeOf('function');
+    expect(tseMunicipiosEntry.getMunicipioIbgePorCodigoTse).toBeTypeOf('function');
+    expect(tseMunicipiosEntry.getCodigosTsePorMunicipio).toBeTypeOf('function');
+    expect(tseMunicipiosEntry.TSE_MUNICIPIOS_DATA_VERSION.id).toBe('tse-municipios');
   });
 
   it('re-exports Feriados API from feriados entry', () => {

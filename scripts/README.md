@@ -7,6 +7,8 @@
 ```bash
 pnpm fetch:data:ibge      # IBGE estados + municípios → packages/br-validators/src/ibge/data/
 pnpm fetch:data:bancos    # Bacen STR participants → packages/br-validators/src/bancos/data/
+pnpm fetch:data:aeroportos # ANAC public aerodromos → packages/br-validators/src/aeroportos/data/
+pnpm fetch:data:tse-municipios # TSE ↔ IBGE municipality codes → packages/br-validators/src/tse-municipios/data/
 pnpm fetch:data:ddd       # Anatel DDD lookup → packages/br-validators/src/core/telefone/data/
 pnpm fetch:data:cnaes     # IBGE CNAE subclasses → packages/br-validators/src/cnaes/data/
 pnpm fetch:data:cfop      # CONFAZ CFOP table → packages/br-validators/src/cfop/data/

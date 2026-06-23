@@ -1,6 +1,6 @@
 {
   "name": "@br-validators/core",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "The Brazilian document validation library for TypeScript — CPF, CNPJ (alphanumeric), NF-e, PIX, boleto, IE (27 UFs), and 15+ more. Zero deps, fully typed, never throws.",
   "homepage": "https://www.npmjs.com/package/@br-validators/core",
   "license": "MIT",
@@ -40,6 +40,8 @@
     "diff",
     "ibge",
     "bancos",
+    "aeroportos",
+    "tse-municipios",
     "feriados",
     "cnaes",
     "cfop",
@@ -158,6 +160,14 @@
     "./bancos": {
       "types": "./dist/bancos.d.ts",
       "import": "./dist/bancos.js"
+    },
+    "./aeroportos": {
+      "types": "./dist/aeroportos.d.ts",
+      "import": "./dist/aeroportos.js"
+    },
+    "./tse-municipios": {
+      "types": "./dist/tse-municipios.d.ts",
+      "import": "./dist/tse-municipios.js"
     },
     "./feriados": {
       "types": "./dist/feriados.d.ts",

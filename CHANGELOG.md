@@ -13,6 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.0] - 2026-06-23
+
+### Added
+
+- **`@br-validators/core/aeroportos`** — `getAeroportos()`, `getAeroportoPorIata()`, `getAeroportoPorIcao()`, `getAeroportosPorMunicipio()`; ANAC public aerodromos embedded offline; `AEROPORTOS_DATA_VERSION`
+- **`@br-validators/core/tse-municipios`** — `getMapeamentoTseIbge()`, `getMunicipioIbgePorCodigoTse()`, `getCodigosTsePorMunicipio()`; TSE ↔ IBGE municipality cross-walk; `TSE_MUNICIPIOS_DATA_VERSION` (lookup-only — `titulo-eleitor` validation unchanged)
+- **Fetch scripts** — `pnpm fetch:data:aeroportos`, `pnpm fetch:data:tse-municipios`; registered in weekly `data-refresh-bot`
+
+---
+
 ## [1.3.1] - 2026-06-23
 
 ### Added
@@ -349,7 +359,9 @@ Documentation, governance, and agent harness bootstrap (no npm code yet).
 
 See [docs/VERSIONING.md](docs/VERSIONING.md) for versioning rules.
 
-[Unreleased]: https://github.com/AlexandreZanata/br-validators/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/AlexandreZanata/br-validators/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/AlexandreZanata/br-validators/compare/v1.3.1...v1.4.0
+[1.3.1]: https://github.com/AlexandreZanata/br-validators/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/AlexandreZanata/br-validators/releases/tag/v1.3.0
 [1.1.0]: https://github.com/AlexandreZanata/br-validators/releases/tag/v1.1.0
 [1.0.0]: https://github.com/AlexandreZanata/br-validators/releases/tag/v1.0.0

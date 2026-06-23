@@ -1,5 +1,7 @@
 import ibgeMetadata from '../ibge/data/metadata.json';
 import bancosMetadata from '../bancos/data/metadata.json';
+import aeroportosMetadata from '../aeroportos/data/metadata.json';
+import tseMunicipiosMetadata from '../tse-municipios/data/metadata.json';
 import telefoneDddMetadata from '../core/telefone/data/ddd-metadata.json';
 import feriadosMetadata from '../feriados/data/metadata.json';
 import cnaesMetadata from '../cnaes/data/metadata.json';
@@ -17,6 +19,8 @@ export interface DatasetRegistryEntry {
 export const DATASET_REGISTRY: readonly DatasetRegistryEntry[] = [
   { id: 'ibge', metadata: ibgeMetadata as DatasetMetadata },
   { id: 'bancos', metadata: bancosMetadata as DatasetMetadata },
+  { id: 'aeroportos', metadata: aeroportosMetadata as DatasetMetadata },
+  { id: 'tse-municipios', metadata: tseMunicipiosMetadata as DatasetMetadata },
   { id: 'telefone-ddd', metadata: telefoneDddMetadata as DatasetMetadata },
   { id: 'feriados', metadata: feriadosMetadata as DatasetMetadata },
   { id: 'cnaes', metadata: cnaesMetadata as DatasetMetadata },

@@ -27,6 +27,8 @@ const ROOT = path.resolve(__dirname, '..');
 const DATASET_METADATA_PATHS = [
   path.join(ROOT, 'packages/br-validators/src/ibge/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/bancos/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/aeroportos/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/tse-municipios/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/core/telefone/data/ddd-metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/feriados/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/cnaes/data/metadata.json'),
@@ -39,6 +41,8 @@ const DATASET_METADATA_PATHS = [
 const FETCH_DATASET_IDS = [
   'ibge',
   'bancos',
+  'aeroportos',
+  'tse-municipios',
   'telefone-ddd',
   'cnaes',
   'cfop',
@@ -54,6 +58,8 @@ const PROBE_ONLY_METADATA_PATHS = [
 const FETCH_SCRIPTS = [
   'scripts/fetch-ibge.ts',
   'scripts/fetch-bancos.ts',
+  'scripts/fetch-aeroportos.ts',
+  'scripts/fetch-tse-municipios.ts',
   'scripts/fetch-ddd.ts',
   'scripts/fetch-cnaes.ts',
   'scripts/fetch-cfop.ts',
