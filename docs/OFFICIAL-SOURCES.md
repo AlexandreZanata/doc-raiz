@@ -29,6 +29,10 @@
 | **IE — SP produtor rural** | SEFAZ-SP / SINTEGRA | [cad_SP.html Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) | 13 chars `P0MMMSSSSD000`; DV at position 10; weights `1,3,4,5,6,7,8,10` on `0MMMSSSS`. Golden: **`P-01100424.3/002`**. Vector: `inscricao-estadual-produtor-rural.official.json`. Cadastro: [CADESP produtor rural](https://portal.fazenda.sp.gov.br/servicos/cadesp/Paginas/Produtor-Rural-abertura,-baixa-e-outras-alteracoes.aspx). |
 | **IE — all 27 UFs** | Per-state SEFAZ | Full table: [§ Inscrição Estadual (IE)](#inscrição-estadual-ie--all-27-ufs) · Index: [IE-STATE-ALGORITHMS.md](IE-STATE-ALGORITHMS.md) | Check digits only — no SEFAZ registration lookup. `getIeOfficialSourceUrl(uf)` / `IE_OFFICIAL_SOURCE_URLS`. SP produtor rural: `validateIeProdutorRural` / `getIeProdutorRuralOfficialSourceUrl()`. |
 | **IBGE localities** | IBGE | [Serviço de Dados — localidades](https://servicodados.ibge.gov.br/api/docs/localidades) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Estados + municípios embedded offline. Golden: **`3550308`** (São Paulo/SP), **`5107925`** (Sorriso/MT), **`5300108`** (Brasília/DF), **`5101837`** (Boa Esperança do Norte/MT — null `microrregiao` fallback). Vector: `ibge.official.json`. Weekly refresh via `data-refresh-bot.yml`. |
+| **CNAE** | IBGE CONCLA | [IBGE CNAE API v2](https://servicodados.ibge.gov.br/api/docs/cnae) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Economic activity subclasses (CNAE 2.3). Golden: **`6201501`** (software development). Vector: `cnaes.official.json`. |
+| **CFOP** | CONFAZ | [CFOP SINIEF vigente](https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Fiscal operation codes. Golden: **`1102`** (purchase for resale), **`5102`** (third-party sale). Vector: `cfop.official.json`. |
+| **NCM** | Receita / Siscomex | [NCM JSON download](https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Mercosur nomenclature leaf codes (8 digits). Golden: **`01012100`** (purebred horses). Vector: `ncm.official.json`. |
+| **CBO** | MTE | [CBO 2002 downloads](https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Occupation codes (eSocial / HR). Golden: **`212405`** (systems analyst). Vector: `cbo.official.json`. |
 
 ---
 
@@ -273,6 +277,64 @@ Golden: COMPE `001` / ISPB `00000000` (Banco do Brasil), `341` / `60701190` (Ita
 **Pontos facultativos federais (9 in 2026, `getPontosFacultativosFederais`):** Carnaval (16–17 Feb), Quarta de Cinzas (18 Feb, until 14:00), 20 Apr, Corpus Christi (4 Jun), 5 Jun, Dia do Servidor (28 Oct), Véspera Natal (24 Dec after 13:00), Véspera Ano Novo (31 Dec after 13:00). Year-specific bridge days come from embedded portaria data (`portaria-extras.json`).
 
 Out of scope: state/municipal holidays, BACEN banking calendar.
+
+---
+
+## CNAE economic activity {#cnae-economic-activity}
+
+> **Vectors:** `packages/br-validators/tests/vectors/cnaes.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| API docs | IBGE Serviço de Dados | https://servicodados.ibge.gov.br/api/docs/cnae |
+| Subclasses | IBGE API v2 | https://servicodados.ibge.gov.br/api/v2/cnae/subclasses |
+
+Golden: `6201501` (custom software development), `6201502` (web design).
+
+---
+
+## CFOP fiscal operations {#cfop-fiscal-operations}
+
+> **Vectors:** `packages/br-validators/tests/vectors/cfop.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| CFOP table | CONFAZ SINIEF | https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente |
+
+Golden: `1102` (purchase for resale), `5102` (sale of goods acquired from third parties).
+
+Lookup only — CFOP business-rule validation is out of scope.
+
+---
+
+## NCM Mercosur nomenclature {#ncm-mercosur-nomenclature}
+
+> **Vectors:** `packages/br-validators/tests/vectors/ncm.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| JSON download | Siscomex / Receita Federal | https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json |
+| Official page | Receita Federal | https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/classificacao-fiscal-de-mercadorias/download-ncm-nomenclatura-comum-do-mercosul |
+
+Golden: `01012100` (purebred horse breeders), `12011000` (soybean seeds for sowing).
+
+Tax rates (IPI/ICMS) are out of scope — code + description lookup only.
+
+---
+
+## CBO occupations {#cbo-occupations}
+
+> **Vectors:** `packages/br-validators/tests/vectors/cbo.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| Occupations CSV | MTE CBO 2002 | https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads/cbo2002-ocupacao.csv |
+
+Golden: `212405` (systems development analyst), `010105` (air force general officer).
 
 ---
 

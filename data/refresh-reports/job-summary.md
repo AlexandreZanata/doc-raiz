@@ -1,7 +1,7 @@
 ### Data refresh report
 
-- Datasets checked: 4
-- Datasets changed: 0
+- Datasets checked: 8
+- Datasets changed: 4
 - Source alerts: 0
 
-✅ No dataset drift. All official sources responded successfully.
+Dataset drift: +15230 −0 ~0

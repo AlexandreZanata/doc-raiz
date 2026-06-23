@@ -1,5 +1,5 @@
 {
-  "executadoEm": "2026-06-23T15:50:13.718Z",
+  "executadoEm": "2026-06-23T16:21:09.358Z",
   "agendamento": "semanal",
   "datasets": [
     {
@@ -56,13 +56,65 @@
         "feriadosNacionaisMoveis": 1,
         "pontosFacultativosFederais": 9
       }
+    },
+    {
+      "id": "cnaes",
+      "status": "changed",
+      "alteracoes": {
+        "adicionados": 1332,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "cnaes": 1332
+      }
+    },
+    {
+      "id": "cfop",
+      "status": "changed",
+      "alteracoes": {
+        "adicionados": 689,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "cfop": 689
+      }
+    },
+    {
+      "id": "ncm",
+      "status": "changed",
+      "alteracoes": {
+        "adicionados": 10515,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "ncm": 10515
+      }
+    },
+    {
+      "id": "cbo",
+      "status": "changed",
+      "alteracoes": {
+        "adicionados": 2694,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "cbo": 2694
+      }
     }
   ],
   "sourceAlerts": [],
   "resumo": {
-    "datasetsVerificados": 4,
-    "datasetsAlterados": 0,
-    "totalAdicionados": 0,
+    "datasetsVerificados": 8,
+    "datasetsAlterados": 4,
+    "totalAdicionados": 15230,
     "totalRemovidos": 0,
     "totalAlterados": 0,
     "sourceAlerts": 0

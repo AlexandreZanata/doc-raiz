@@ -41,6 +41,10 @@
     "ibge",
     "bancos",
     "feriados",
+    "cnaes",
+    "cfop",
+    "ncm",
+    "cbo",
     "data-catalog",
     "typescript"
   ],
@@ -158,6 +162,22 @@
     "./feriados": {
       "types": "./dist/feriados.d.ts",
       "import": "./dist/feriados.js"
+    },
+    "./cnaes": {
+      "types": "./dist/cnaes.d.ts",
+      "import": "./dist/cnaes.js"
+    },
+    "./cfop": {
+      "types": "./dist/cfop.d.ts",
+      "import": "./dist/cfop.js"
+    },
+    "./ncm": {
+      "types": "./dist/ncm.d.ts",
+      "import": "./dist/ncm.js"
+    },
+    "./cbo": {
+      "types": "./dist/cbo.d.ts",
+      "import": "./dist/cbo.js"
     },
     "./data-catalog": {
       "types": "./dist/data-catalog.d.ts",

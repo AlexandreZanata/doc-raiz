@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **`@br-validators/core/cnaes`** — `getCnaePorCodigo()`, `searchCnaes()`, `CNAES_DATA_VERSION`; IBGE CNAE 2.3 subclasses
+- **`@br-validators/core/cfop`** — `getCfopPorCodigo()`, `searchCfop()`, `CFOP_DATA_VERSION`; CONFAZ CFOP table
+- **`@br-validators/core/ncm`** — `getNcmPorCodigo()`, `searchNcm()`, `NCM_DATA_VERSION`; Siscomex NCM leaf codes
+- **`@br-validators/core/cbo`** — `getCboPorCodigo()`, `searchCbo()`, `CBO_DATA_VERSION`; MTE CBO 2002 occupations
 - **`@br-validators/core/feriados`** — `isFeriadoNacional()`, `getFeriadosNacionais(year)`, `getProximoDiaUtil()`, `getPontosFacultativosFederais(year)`; ten federal national holidays (nine Lei 662 fixed + Paixão de Cristo); nine facultative days per Portaria MGI 11.460/2025 (2026); `FERIADOS_DATA_VERSION`
 - **Data refresh bot** — source health policy: 3 HTTP retries (2 s apart), retain embedded JSON on failure, `sourceAlerts` in weekly reports, [docs/DATA-SOURCE-MAINTENANCE.md](docs/DATA-SOURCE-MAINTENANCE.md)
 

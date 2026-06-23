@@ -41,8 +41,11 @@
 | `@br-validators/core/ibge` | IBGE states + municipalities (offline reference data) |
 | `@br-validators/core/bancos` | Bacen STR participants with COMPE / ISPB lookup |
 | `@br-validators/core/feriados` | Brazilian national federal holidays (fixed dates) + optional facultative days |
+| `@br-validators/core/cnaes` | IBGE CNAE 2.3 economic activity subclass lookup |
+| `@br-validators/core/cfop` | CONFAZ CFOP fiscal operation code lookup |
+| `@br-validators/core/ncm` | Siscomex NCM Mercosur nomenclature lookup |
+| `@br-validators/core/cbo` | MTE CBO 2002 occupation lookup |
 | `@br-validators/core/data-catalog` | Aggregated dataset transparency metadata |
-| `@br-validators/core/data-catalog` | Aggregated dataset metadata / transparency API |
 
 ---
 
@@ -567,6 +570,86 @@ import {
   getPontosFacultativosFederais,
   FERIADOS_DATA_VERSION,
 } from '@br-validators/core/feriados';
+```
+
+---
+
+## Core API — CNAE (reference data)
+
+> **Offline embedded data** from [IBGE CNAE API v2](https://servicodados.ibge.gov.br/api/docs/cnae).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Function | Returns |
+|----------|---------|
+| `getCnaes()` | All CNAE 2.3 subclasses |
+| `getCnaePorCodigo(codigo)` | Single subclass or `undefined` (7-digit code) |
+| `searchCnaes(query, { limit? })` | Description search (default limit 10) |
+| `CNAES_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: `6201501` (custom software development), `6201502` (web design).
+
+```typescript
+import { getCnaePorCodigo, searchCnaes, CNAES_DATA_VERSION } from '@br-validators/core/cnaes';
+```
+
+---
+
+## Core API — CFOP (reference data)
+
+> **Offline embedded data** from [CONFAZ CFOP SINIEF](https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Function | Returns |
+|----------|---------|
+| `getCfops()` | All CFOP codes |
+| `getCfopPorCodigo(codigo)` | Single CFOP or `undefined` (4-digit code) |
+| `searchCfop(query, { limit? })` | Description search (default limit 10) |
+| `CFOP_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: `1102` (purchase for resale), `5102` (third-party sale).
+
+```typescript
+import { getCfopPorCodigo, searchCfop, CFOP_DATA_VERSION } from '@br-validators/core/cfop';
+```
+
+---
+
+## Core API — NCM (reference data)
+
+> **Offline embedded data** from [Siscomex NCM JSON](https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Function | Returns |
+|----------|---------|
+| `getNcms()` | All 8-digit leaf NCM codes |
+| `getNcmPorCodigo(codigo)` | Single NCM or `undefined` (accepts dotted input) |
+| `searchNcm(query, { limit? })` | Description search (default limit 10) |
+| `NCM_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: `01012100` (purebred horses), `12011000` (soybean seeds).
+
+```typescript
+import { getNcmPorCodigo, searchNcm, NCM_DATA_VERSION } from '@br-validators/core/ncm';
+```
+
+---
+
+## Core API — CBO (reference data)
+
+> **Offline embedded data** from [MTE CBO 2002 CSV](https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads/cbo2002-ocupacao.csv).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Function | Returns |
+|----------|---------|
+| `getCbos()` | All CBO 2002 occupations |
+| `getCboPorCodigo(codigo)` | Single occupation or `undefined` (6-digit code) |
+| `searchCbo(query, { limit? })` | Description search (default limit 10) |
+| `CBO_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: `212405` (systems analyst), `010105` (air force general).
+
+```typescript
+import { getCboPorCodigo, searchCbo, CBO_DATA_VERSION } from '@br-validators/core/cbo';
 ```
 
 ---

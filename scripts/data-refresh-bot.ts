@@ -29,9 +29,21 @@ const DATASET_METADATA_PATHS = [
   path.join(ROOT, 'packages/br-validators/src/bancos/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/core/telefone/data/ddd-metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/feriados/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/cnaes/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/cfop/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/ncm/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/cbo/data/metadata.json'),
 ] as const;
 
-const FETCH_DATASET_IDS = ['ibge', 'bancos', 'telefone-ddd'] as const;
+const FETCH_DATASET_IDS = [
+  'ibge',
+  'bancos',
+  'telefone-ddd',
+  'cnaes',
+  'cfop',
+  'ncm',
+  'cbo',
+] as const;
 
 const PROBE_ONLY_METADATA_PATHS = [
   path.join(ROOT, 'packages/br-validators/src/feriados/data/metadata.json'),
@@ -41,6 +53,10 @@ const FETCH_SCRIPTS = [
   'scripts/fetch-ibge.ts',
   'scripts/fetch-bancos.ts',
   'scripts/fetch-ddd.ts',
+  'scripts/fetch-cnaes.ts',
+  'scripts/fetch-cfop.ts',
+  'scripts/fetch-ncm.ts',
+  'scripts/fetch-cbo.ts',
 ] as const;
 
 const REPORT_DIR = path.join(ROOT, 'data/refresh-reports');

@@ -15,6 +15,10 @@ import * as cartaoCreditoEntry from '../src/cartao-credito.js';
 import * as ibgeEntry from '../src/ibge.js';
 import * as bancosEntry from '../src/bancos.js';
 import * as feriadosEntry from '../src/feriados.js';
+import * as cnaesEntry from '../src/cnaes.js';
+import * as cfopEntry from '../src/cfop.js';
+import * as ncmEntry from '../src/ncm.js';
+import * as cboEntry from '../src/cbo.js';
 import * as dataCatalogEntry from '../src/data-catalog.js';
 
 describe('package exports', () => {
@@ -193,6 +197,34 @@ describe('package exports', () => {
     expect(feriadosEntry.getFeriadosNacionais).toBeTypeOf('function');
     expect(feriadosEntry.getProximoDiaUtil).toBeTypeOf('function');
     expect(feriadosEntry.FERIADOS_DATA_VERSION.id).toBe('feriados');
+  });
+
+  it('re-exports CNAE API from cnaes entry', () => {
+    expect(cnaesEntry.getCnaes).toBeTypeOf('function');
+    expect(cnaesEntry.getCnaePorCodigo).toBeTypeOf('function');
+    expect(cnaesEntry.searchCnaes).toBeTypeOf('function');
+    expect(cnaesEntry.CNAES_DATA_VERSION.id).toBe('cnaes');
+  });
+
+  it('re-exports CFOP API from cfop entry', () => {
+    expect(cfopEntry.getCfops).toBeTypeOf('function');
+    expect(cfopEntry.getCfopPorCodigo).toBeTypeOf('function');
+    expect(cfopEntry.searchCfop).toBeTypeOf('function');
+    expect(cfopEntry.CFOP_DATA_VERSION.id).toBe('cfop');
+  });
+
+  it('re-exports NCM API from ncm entry', () => {
+    expect(ncmEntry.getNcms).toBeTypeOf('function');
+    expect(ncmEntry.getNcmPorCodigo).toBeTypeOf('function');
+    expect(ncmEntry.searchNcm).toBeTypeOf('function');
+    expect(ncmEntry.NCM_DATA_VERSION.id).toBe('ncm');
+  });
+
+  it('re-exports CBO API from cbo entry', () => {
+    expect(cboEntry.getCbos).toBeTypeOf('function');
+    expect(cboEntry.getCboPorCodigo).toBeTypeOf('function');
+    expect(cboEntry.searchCbo).toBeTypeOf('function');
+    expect(cboEntry.CBO_DATA_VERSION.id).toBe('cbo');
   });
 
   it('re-exports data catalog API from data-catalog entry', () => {

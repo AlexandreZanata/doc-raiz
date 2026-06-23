@@ -6,8 +6,12 @@
 | bancos | 468 bancos | 0 | 0 | 0 | 2026-06-23 | [official](https://www.bcb.gov.br/content/estabilidadefinanceira/str1/ParticipantesSTR.csv) |
 | telefone-ddd | 67 ddds | 0 | 0 | 0 | 2026-06-23 | [official](https://informacoes.anatel.gov.br/paineis/areas-tarifarias/codigos-nacionais) |
 | feriados | 9 feriadosNacionaisFixos / 1 feriadosNacionaisMoveis / 9 pontosFacultativosFederais | 0 | 0 | 0 | 2026-06-23 | [official](https://www.planalto.gov.br/ccivil_03/leis/l0662.htm) |
+| cnaes | 1332 cnaes | 1332 | 0 | 0 | 2026-06-23 | [official](https://servicodados.ibge.gov.br/api/v2/cnae/subclasses) |
+| cfop | 689 cfop | 689 | 0 | 0 | 2026-06-23 | [official](https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente) |
+| ncm | 10515 ncm | 10515 | 0 | 0 | 2026-06-23 | [official](https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json) |
+| cbo | 2694 cbo | 2694 | 0 | 0 | 2026-06-23 | [official](https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads/cbo2002-ocupacao.csv) |
 
-**Totals:** +0 −0 ~0
+**Totals:** +15230 −0 ~0
 
 ### Source health
 
