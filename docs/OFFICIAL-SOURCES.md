@@ -161,7 +161,31 @@ Negative cross-UF cases: `ie.negative.official.json`.
 |-----------|------|-------------------|
 | SEFAZ homologation window opens | April 2026 | Consumers need dual-format validation in test environments |
 | Production rollout | July 2026 | Both formats must work in production |
-| Alphanumeric CPF spec | TBD 2026 | Do not implement until RFB publishes official algorithm |
+| Alphanumeric CPF spec | TBD 2026 | `generate('cpf', { format: 'alphanumeric' })` throws `CPF_ALPHA_SPEC_PENDING`; validation numeric-only until RFB publishes algorithm |
+
+---
+
+## `generate()` — synthetic fixtures (BR-GENERATE-001)
+
+> Test fixtures only — each output passes the matching `validate*` before return. Normative DV/CRC sources:
+
+| Generatable type | Official source for algorithm |
+|------------------|-------------------------------|
+| `cpf`, `cnpj` | [RFB CPF portal](https://www.gov.br/receitafederal/pt-br/assuntos/cpf) · [CNPJ alfanumérico FAQ (PDF)](https://www.gov.br/receitafederal/pt-br/centrais-de-conteudo/publicacoes/perguntas-e-respostas/cnpj/cnpj-alfanumerico.pdf) |
+| `cep` | [Correios Busca CEP](https://www.correios.com.br/atendimento/developers/manuais/manual-api-busca-cep) |
+| `placa` | [CONTRAN 729/2018](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao7292018consolidada.pdf) |
+| `telefone` | [Anatel Plano de Numeração](https://www.gov.br/anatel/pt-br/regulado/numeracao/plano-de-numeracao-brasileiro) |
+| `cnh`, `renavam` | [CONTRAN 511/2014](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [DENATRAN 27/2013](https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf) |
+| `titulo-eleitor` | [TSE Res. 20.132/1998](https://www.tse.jus.br/legislacao/compilada/res/1998/resolucao-no-20-132-de-19-de-marco-de-1998) |
+| `pis-pasep` | [SIPREV RV_03 (PDF)](https://www.gov.br/previdencia/pt-br/outros/imagens/2015/07/rgrva_RegrasValidacao.pdf) |
+| `cartao-credito` | [ISO/IEC 7812-1:2017](https://www.iso.org/standard/70484.html) (Luhn) |
+| `inscricao-estadual` | Per-UF SEFAZ — [IE table](#inscrição-estadual-ie--all-27-ufs) |
+| `inscricao-estadual-produtor-rural` | [SINTEGRA cad_SP.html Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) |
+| `pix` | [Bacen DICT API](https://aprendervalor.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT_v2-9-0.html) (EVP UUID) |
+| `nfe-chave` | [MOC §2.2.6.2 DV](http://moc.sped.fazenda.pr.gov.br/#2.2.6.2. Cálculo do Dígito Verificador da Chave de Acesso da NF-e) |
+| `brcode` | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) |
+| `boleto` | [FEBRABAN Cobrança FB-0061/2021 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf) |
+| `boleto-arrecadacao` | [FEBRABAN Arrecadação Layout v7 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Layout%20-%20C%C3%B3digo%20de%20Barras%20-%20Vers%C3%A3o%207%20-%2001_03_2023_mn.pdf) |
 
 ---
 

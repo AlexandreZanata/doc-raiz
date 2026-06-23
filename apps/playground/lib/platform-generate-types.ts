@@ -19,6 +19,7 @@ export const PLATFORM_GENERATABLE: readonly PlatformGeneratableEntry[] = [
   { value: 'cnh', label: 'CNH' },
   { value: 'renavam', label: 'RENAVAM' },
   { value: 'inscricao-estadual', label: 'Inscrição Estadual (IE)', ufSelector: true },
+  { value: 'inscricao-estadual-produtor-rural', label: 'IE Produtor Rural (SP)' },
   { value: 'titulo-eleitor', label: 'Título de Eleitor', ufSelector: true },
   {
     value: 'cartao-credito',
@@ -26,6 +27,11 @@ export const PLATFORM_GENERATABLE: readonly PlatformGeneratableEntry[] = [
     formats: ['visa', 'mastercard', 'amex', 'elo', 'hipercard'],
     brandSelector: true,
   },
+  { value: 'pix', label: 'PIX EVP' },
+  { value: 'nfe-chave', label: 'NF-e Chave' },
+  { value: 'brcode', label: 'BR Code (static PIX)' },
+  { value: 'boleto', label: 'Boleto cobrança' },
+  { value: 'boleto-arrecadacao', label: 'Boleto arrecadação' },
 ] as const;
 
 export function findPlatformGeneratable(type: GeneratableDocumentType): PlatformGeneratableEntry | undefined {

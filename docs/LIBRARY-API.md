@@ -700,7 +700,9 @@ Import: `@br-validators/core/generate` or barrel.
 type GeneratableDocumentType =
   | 'cpf' | 'cnpj' | 'cep' | 'placa' | 'pis-pasep'
   | 'renavam' | 'cnh' | 'telefone' | 'cartao-credito'
-  | 'inscricao-estadual' | 'titulo-eleitor';
+  | 'inscricao-estadual' | 'titulo-eleitor'
+  | 'pix' | 'nfe-chave' | 'brcode' | 'boleto'
+  | 'boleto-arrecadacao' | 'inscricao-estadual-produtor-rural';
 
 type GenerateOptions = {
   format?: 'numeric' | 'alphanumeric' | 'legacy' | 'mercosul' | 'celular' | 'fixo';
@@ -708,12 +710,17 @@ type GenerateOptions = {
   seed?: number;
   uf?: UfCode;
   brand?: 'visa' | 'mastercard' | 'amex' | 'elo' | 'hipercard';
+  pixKey?: string;
+  merchantName?: string;
+  merchantCity?: string;
+  amount?: string;
+  txid?: string;
 };
 
 function generate(type: GeneratableDocumentType, options?: GenerateOptions): string;
 ```
 
-Uses Mulberry32 when `seed` is set; reuses official DV helpers (RFB modulo 11, CONTRAN placa patterns, Anatel DDDs, ISO 7812 Luhn, per-UF IE modulo helpers). Excludes boleto, NF-e chave, BR Code, PIX.
+Uses Mulberry32 when `seed` is set; reuses official DV helpers per type. See [OFFICIAL-SOURCES.md](OFFICIAL-SOURCES.md) for normative references. Alphanumeric CPF generation returns `CPF_ALPHA_SPEC_PENDING` until RFB publishes spec.
 
 ```typescript
 import { generate } from '@br-validators/core/generate';

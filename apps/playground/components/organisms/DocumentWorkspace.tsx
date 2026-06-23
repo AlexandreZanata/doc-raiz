@@ -14,7 +14,6 @@ import { CAPABILITIES, enabledTabs, type ActionTab } from '@/lib/capabilities';
 import { buildCliCommand, computeDocumentResults } from '@/lib/document-results';
 import type { DocumentSlug } from '@/lib/nav';
 import {
-  goldenSample,
   generateValidDocument,
   initialWorkspaceInput,
   randomSeed,
@@ -67,10 +66,6 @@ export function DocumentWorkspace({ slug, renderAfter }: Props) {
     const selectedFormat = overrides?.format ?? resolveFormat();
 
     if (!supportsValidGeneration(slug)) {
-      const sample = goldenSample(slug);
-      if (sample) {
-        setInput(sample);
-      }
       return;
     }
 

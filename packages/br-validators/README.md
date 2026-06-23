@@ -93,9 +93,16 @@ generate('cnh');
 generate('inscricao-estadual', { uf: 'SP', seed: 42 });
 generate('titulo-eleitor', { uf: 'SC', seed: 42 });
 generate('cartao-credito', { brand: 'visa', seed: 42 });
+generate('pix', { seed: 42 });           // EVP UUID — Bacen DICT
+generate('nfe-chave', { seed: 42 });     // MOC §2.2.6 modulo-11 DV
+generate('brcode', { seed: 42 });        // static PIX EMV + CRC16
+generate('boleto', { masked: true });    // FEBRABAN cobrança Situação 1
+generate('boleto-arrecadacao');          // FEBRABAN Layout v7
+generate('inscricao-estadual-produtor-rural', { masked: true }); // SP SINTEGRA Bloco II
 ```
 
-> `generate()` is for test fixtures and seed data only — never use in production.
+> `generate()` is for test fixtures and seed data only — never use in production.  
+> Alphanumeric CPF: `generate('cpf', { format: 'alphanumeric' })` throws `CPF_ALPHA_SPEC_PENDING` until RFB publishes the official algorithm ([OFFICIAL-SOURCES.md](https://github.com/AlexandreZanata/br-validators/blob/main/docs/OFFICIAL-SOURCES.md)).
 
 ### ETL / data cleanup
 

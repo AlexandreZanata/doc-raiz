@@ -23,6 +23,12 @@ const GENERATABLE_TYPES: GeneratableDocumentType[] = [
   'cartao-credito',
   'inscricao-estadual',
   'titulo-eleitor',
+  'pix',
+  'nfe-chave',
+  'brcode',
+  'boleto',
+  'boleto-arrecadacao',
+  'inscricao-estadual-produtor-rural',
 ];
 
 export function isGeneratableType(type: string): type is GeneratableDocumentType {

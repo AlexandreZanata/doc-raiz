@@ -7,7 +7,7 @@ describe('platform-generate-types', () => {
     expect(values).toContain('inscricao-estadual');
     expect(values).toContain('titulo-eleitor');
     expect(values).toContain('cartao-credito');
-    expect(values).toHaveLength(11);
+    expect(values).toHaveLength(17);
   });
 
   it('marks UF-dependent types', () => {

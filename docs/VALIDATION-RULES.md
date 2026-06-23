@@ -764,13 +764,15 @@ Official sources: per detected type — [OFFICIAL-SOURCES.md](OFFICIAL-SOURCES.m
 
 ### BR-GENERATE-001 — Synthetic-only generation
 
-- **GIVEN** `GeneratableDocumentType` and optional `{ format, masked, seed }`
+- **GIVEN** `GeneratableDocumentType` and optional `{ format, masked, seed, uf, brand, pixKey, merchantName, merchantCity, amount, txid }`
 - **WHEN** calling `generate(type, options?)`
-- **THEN** build random base via PRNG (Mulberry32 when `seed` set); compute check digits using existing official helpers (RFB modulo 11, CONTRAN placa, Anatel DDD, ISO 7812 Luhn)
+- **THEN** build random base via PRNG (Mulberry32 when `seed` set); compute check digits using existing official helpers (RFB modulo 11, CONTRAN placa, Anatel DDD, ISO 7812 Luhn, MOC NF-e DV, FEBRABAN boleto modulo 10/11, Bacen BR Code CRC16, SINTEGRA SP rural IE)
 - **AND** reject all-same-digit bases for CPF/CNPJ where applicable
 - **AND** assert output passes `validate*` before return
 - **AND** document as **test fixtures only** — not for production or impersonation
-- **NOT** generatable: boleto, NF-e chave, IE, BR Code, PIX
+- **AND** `generate('cpf', { format: 'alphanumeric' })` throws `CPF_ALPHA_SPEC_PENDING` until RFB publishes spec
+
+**Generatable types (17):** `cpf`, `cnpj`, `cep`, `placa`, `pis-pasep`, `renavam`, `cnh`, `telefone`, `cartao-credito`, `inscricao-estadual`, `titulo-eleitor`, `pix` (EVP), `nfe-chave`, `brcode`, `boleto`, `boleto-arrecadacao`, `inscricao-estadual-produtor-rural`.
 
 DV sources per type: [OFFICIAL-SOURCES.md](OFFICIAL-SOURCES.md).
 

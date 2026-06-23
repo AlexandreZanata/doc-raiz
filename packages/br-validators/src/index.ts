@@ -172,6 +172,12 @@ export { diff } from './diff.js';
 export type { DiffField, DiffResult } from './diff.js';
 export { generate } from './generate.js';
 export type { GenerateOptions, GeneratableDocumentType, GeneratableCardBrand } from './generate.js';
+export {
+  CPF_ALPHA_GENERATE_STUB,
+  assertCpfAlphanumericGenerateAllowed,
+  rejectCpfAlphanumericGenerate,
+  applyArrecadacaoLinhaMask,
+} from './generate.js';
 export { isGeneratableCardBrand, GENERATABLE_CARD_BRANDS } from './generate.js';
 export type {
   IeProdutorRuralValidationResult,

@@ -1,41 +1,17 @@
 import {
-  BRCODE_GOLDEN_STATIC_EVP,
-  formatPixKey,
-} from '@br-validators/core';
-import {
   generate,
   type GenerateOptions,
   type GeneratableDocumentType,
 } from '@br-validators/core';
-import { generatePixEvp } from './generators/pix';
 import { generateIeDocument } from './generators/ie';
-import { generateBoletoDocument } from './generators/boleto';
 import { generateTituloEleitorDocument } from './generators/titulo-eleitor';
-import { generateNfeChaveDocument } from './generators/nfe-chave';
 import { generateTelefoneDocument } from './generators/telefone';
 import { applyPlaygroundDisplayMask } from './format-display';
 import { DOCUMENT_META } from './document-meta';
 import type { GeneratableCardBrand, UfCode } from '@br-validators/core';
-import { generateCreditCard } from './generators/cartao';
 import type { DocumentSlug } from './nav';
 
-function resolveCoreFormat(
-  slug: DocumentSlug,
-  format: string | undefined,
-): GenerateOptions['format'] | undefined {
-  if (slug === 'placa') {
-    return format === 'legacy' ? 'legacy' : 'mercosul';
-  }
-  if (slug === 'cnpj') {
-    return format === 'alphanumeric' ? 'alphanumeric' : 'numeric';
-  }
-  if (slug === 'telefone') {
-    return format === 'fixo' ? 'fixo' : 'celular';
-  }
-  return format as GenerateOptions['format'] | undefined;
-}
-
-const GENERATE_TYPE: Partial<Record<DocumentSlug, GeneratableDocumentType>> = {
+const CORE_GENERATE_SLUG: Partial<Record<DocumentSlug, GeneratableDocumentType>> = {
   cpf: 'cpf',
   cnpj: 'cnpj',
   cep: 'cep',
@@ -43,6 +19,10 @@ const GENERATE_TYPE: Partial<Record<DocumentSlug, GeneratableDocumentType>> = {
   pis: 'pis-pasep',
   cnh: 'cnh',
   renavam: 'renavam',
+  pix: 'pix',
+  boleto: 'boleto',
+  'nfe-chave': 'nfe-chave',
+  brcode: 'brcode',
 };
 
 export type PlaygroundGenerateOptions = {
@@ -66,29 +46,30 @@ export function workspaceSeedForSlug(slug: DocumentSlug): number {
   return (hash >>> 0) || 1;
 }
 
-export function goldenSample(slug: DocumentSlug): string | null {
-  const samples: Partial<Record<DocumentSlug, string>> = {
-    brcode: BRCODE_GOLDEN_STATIC_EVP,
-  };
-  return samples[slug] ?? null;
-}
-
 export function supportsValidGeneration(slug: DocumentSlug): boolean {
   return (
-    slug in GENERATE_TYPE ||
-    slug === 'pix' ||
+    slug in CORE_GENERATE_SLUG ||
     slug === 'ie' ||
-    slug === 'boleto' ||
     slug === 'titulo-eleitor' ||
-    slug === 'nfe-chave' ||
     slug === 'telefone' ||
-    slug === 'cartao' ||
-    goldenSample(slug) !== null
+    slug === 'cartao'
   );
 }
 
-function goldenSampleRaw(_slug: DocumentSlug, formatted: string): string {
-  return formatted;
+function resolveCoreFormat(
+  slug: DocumentSlug,
+  format: string | undefined,
+): GenerateOptions['format'] | undefined {
+  if (slug === 'placa') {
+    return format === 'legacy' ? 'legacy' : 'mercosul';
+  }
+  if (slug === 'cnpj') {
+    return format === 'alphanumeric' ? 'alphanumeric' : 'numeric';
+  }
+  if (slug === 'telefone') {
+    return format === 'fixo' ? 'fixo' : 'celular';
+  }
+  return format as GenerateOptions['format'] | undefined;
 }
 
 export function generateValidDocument(
@@ -96,20 +77,6 @@ export function generateValidDocument(
   options: PlaygroundGenerateOptions & { masked: boolean },
 ): string {
   const seed = options.seed ?? randomSeed();
-  const golden = goldenSample(slug);
-
-  if (golden && !(slug in GENERATE_TYPE) && slug !== 'pix' && slug !== 'ie' && slug !== 'boleto' && slug !== 'titulo-eleitor' && slug !== 'nfe-chave' && slug !== 'cartao') {
-    return options.masked ? golden : goldenSampleRaw(slug, golden);
-  }
-
-  if (slug === 'pix') {
-    const raw = generatePixEvp(seed);
-    if (!options.masked) {
-      return raw;
-    }
-    const formatted = formatPixKey(raw);
-    return formatted.ok ? formatted.formatted : raw;
-  }
 
   if (slug === 'ie') {
     if (!options.uf) {
@@ -118,19 +85,11 @@ export function generateValidDocument(
     return generateIeDocument(options.uf, options.masked, seed);
   }
 
-  if (slug === 'boleto') {
-    return generateBoletoDocument(options.masked, seed);
-  }
-
   if (slug === 'titulo-eleitor') {
     if (!options.uf) {
       throw new Error('UF is required for titulo-eleitor generation');
     }
     return generateTituloEleitorDocument(options.uf, options.masked, seed);
-  }
-
-  if (slug === 'nfe-chave') {
-    return generateNfeChaveDocument(options.masked, seed);
   }
 
   if (slug === 'telefone') {
@@ -143,10 +102,10 @@ export function generateValidDocument(
 
   if (slug === 'cartao') {
     const brand = (options.format ?? 'visa') as GeneratableCardBrand;
-    return generateCreditCard(brand, options.masked, seed);
+    return generate('cartao-credito', { brand, masked: options.masked, seed });
   }
 
-  const type = GENERATE_TYPE[slug];
+  const type = CORE_GENERATE_SLUG[slug];
   if (!type) {
     throw new Error(`Generate not supported for ${slug}`);
   }

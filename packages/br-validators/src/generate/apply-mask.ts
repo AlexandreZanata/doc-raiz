@@ -3,8 +3,12 @@ import { formatCep } from '../format/cep.js';
 import { formatCnh } from '../format/cnh.js';
 import { formatCnpj } from '../format/cnpj.js';
 import { formatCpf } from '../format/cpf.js';
+import { formatBoleto } from '../format/boleto.js';
+import { formatIeProdutorRural } from '../format/inscricao-estadual-produtor-rural.js';
+import { formatNfeChave } from '../format/nfe-chave.js';
 import { formatPisPasep } from '../format/pis-pasep.js';
 import { formatPlaca } from '../format/placa.js';
+import { formatPixKey } from '../format/pix.js';
 import { formatRenavam } from '../format/renavam.js';
 import { formatTelefone } from '../format/telefone.js';
 import { formatTituloEleitor } from '../format/titulo-eleitor.js';
@@ -52,6 +56,26 @@ export function applyMask(type: GeneratableDocumentType, value: string): string 
       return value;
     case 'titulo-eleitor': {
       const result = formatTituloEleitor(value);
+      return result.ok ? result.formatted : value;
+    }
+    case 'pix': {
+      const result = formatPixKey(value);
+      return result.ok ? result.formatted : value;
+    }
+    case 'nfe-chave': {
+      const result = formatNfeChave(value);
+      return result.ok ? result.formatted : value;
+    }
+    case 'boleto': {
+      const result = formatBoleto(value);
+      return result.ok ? result.formatted : value;
+    }
+    case 'boleto-arrecadacao':
+      return value;
+    case 'brcode':
+      return value;
+    case 'inscricao-estadual-produtor-rural': {
+      const result = formatIeProdutorRural(value);
       return result.ok ? result.formatted : value;
     }
     default: {
