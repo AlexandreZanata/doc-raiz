@@ -2,7 +2,7 @@
 
 > Phased delivery. Each module ships in **library + CLI + playground** (see [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md)).
 > **TypeScript first** — [TECH-STACK.md](TECH-STACK.md).
-> **npm:** `@br-validators/core` + `@br-validators/cli` + `@br-validators/zod` + `@br-validators/react-hook-form` · **Current:** `v0.12.0-alpha.3+`
+> **npm:** `@br-validators/core` + `@br-validators/cli` + `@br-validators/zod` + `@br-validators/react-hook-form` · **Current:** `v1.0.0`
 
 ---
 
@@ -70,19 +70,16 @@
 
 ---
 
-## v1.0.0 target (next milestone)
+## v1.0.0 ✅
 
 | Module / requirement | Library | CLI | Playground | Status |
 |----------------------|---------|-----|------------|--------|
-| **Telefone (F-01)** | ✓ `@br-validators/core/telefone` | ✓ `telefone …` | ✓ `/telefone` | Shipped — [Anatel](OFFICIAL-SOURCES.md) |
-| **BR Code (F-03)** | ✓ `@br-validators/core/brcode` | ✓ `brcode …` | ✓ `/brcode` | Shipped — [Bacen Manual BR Code](OFFICIAL-SOURCES.md) |
-| **Boleto arrecadação (F-02)** | ✓ | via `boleto` | via `boleto` | Shipped — [FEBRABAN Layout v7](OFFICIAL-SOURCES.md) |
-| npm publish `@br-validators/core` + `@br-validators/cli` | — | — | — | `v0.12.0-alpha.3` |
-| npm publish `@br-validators/zod` + `@br-validators/react-hook-form` | — | — | — | `v0.12.0-alpha.3` (release.yml) |
-| Platform APIs: `detect`, `sanitize`, `mask`, `compare`, `batch`, `diff`, `generate` | ✓ | partial | partial | Shipped in core |
-| API freeze (SemVer guarantees) | — | — | — | Pending |
+| **18 validators** | ✓ | ✓ | ✓ | Shipped — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
+| **Platform APIs** | ✓ | partial | partial | `detect`, `sanitize`, `mask`, `compare`, `batch`, `diff`, `generate` (17 types) |
+| **Integrations** | `@br-validators/zod`, `@br-validators/react-hook-form` | — | — | Shipped |
+| **API freeze** | — | — | — | ✅ [VERSIONING.md](VERSIONING.md#api-freeze-100) |
 
-**Deferred to post-v1.0 or v1.1:**
+**Deferred to post-v1.0:**
 
 - Alphanumeric CPF (when RFB publishes spec)
 - IE SP rural `P…` format — shipped in `validateIeProdutorRural`

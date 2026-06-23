@@ -217,8 +217,12 @@ br-validators cnpj validate "$CNPJ" --quiet || exit 1
 br-validators ie validate "$IE" --uf SP --json
 br-validators detect '123.456.789-09' --json
 br-validators generate cpf --seed 42 --masked
-br-validators generate inscricao-estadual --uf SP --seed 42
-br-validators generate cartao-credito --brand visa --seed 42
+br-validators generate pix --seed 42
+br-validators generate nfe-chave --seed 42
+br-validators generate brcode --seed 42
+br-validators generate boleto --masked --seed 42
+br-validators generate boleto-arrecadacao --seed 42
+br-validators generate inscricao-estadual-produtor-rural --masked --seed 42
 ```
 
 ---

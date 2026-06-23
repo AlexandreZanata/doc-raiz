@@ -221,12 +221,12 @@ Every shipped type exists in **library + CLI + playground**. See [docs/DELIVERY-
 
 | Package | npm | Version |
 |---------|-----|---------|
-| `@br-validators/core` | [npm](https://www.npmjs.com/package/@br-validators/core) | `0.12.0-alpha.3` |
-| `@br-validators/cli` | [npm](https://www.npmjs.com/package/@br-validators/cli) | `0.12.0-alpha.3` |
-| `@br-validators/zod` | [npm](https://www.npmjs.com/package/@br-validators/zod) | `0.12.0-alpha.3` |
-| `@br-validators/react-hook-form` | [npm](https://www.npmjs.com/package/@br-validators/react-hook-form) | `0.12.0-alpha.3` |
+| `@br-validators/core` | [npm](https://www.npmjs.com/package/@br-validators/core) | `1.0.0` |
+| `@br-validators/cli` | [npm](https://www.npmjs.com/package/@br-validators/cli) | `1.0.0` |
+| `@br-validators/zod` | [npm](https://www.npmjs.com/package/@br-validators/zod) | `1.0.0` |
+| `@br-validators/react-hook-form` | [npm](https://www.npmjs.com/package/@br-validators/react-hook-form) | `1.0.0` |
 
-Pre-1.0 — API may change. Pin exact version in production.
+**v1.0.0** — API frozen until v2.0.0. See [docs/VERSIONING.md](docs/VERSIONING.md#api-freeze-100).
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

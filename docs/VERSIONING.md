@@ -35,7 +35,31 @@ Planned milestones:
 | `0.1.0-alpha` | CNPJ (dual) + CPF + pipeline |
 | `0.2.0` | Placa + PIX keys |
 | `0.3.0` | Boleto / BR Code (partial) |
-| `1.0.0` | Stable API contract — SemVer guarantees apply fully |
+| `1.0.0` | **Stable API contract** — SemVer guarantees apply fully (see [API freeze](#api-freeze-100)) |
+
+---
+
+## API freeze (1.0.0)
+
+**Effective:** v1.0.0 (2026-06-23)
+
+Until **v2.0.0**, the following are **frozen**:
+
+| Surface | Frozen items |
+|---------|----------------|
+| `@br-validators/core` | All exports in [LIBRARY-API.md](LIBRARY-API.md); `ValidationErrorCode` values; validator result shapes |
+| Subpaths | `cpf`, `cnpj`, `cep`, `telefone`, `cnh`, `renavam`, `titulo-eleitor`, `nfe-chave`, `placa`, `pis-pasep`, `pix`, `brcode`, `boleto`, `cartao-credito`, `inscricao-estadual`, `inscricao-estadual-produtor-rural`, `detect`, `sanitize`, `mask`, `compare`, `batch`, `diff`, `generate` |
+| `@br-validators/cli` | Command names and `--json` / `--uf` flags for shipped types |
+| `@br-validators/zod` | Schema export names |
+| `@br-validators/react-hook-form` | `*Rule()` / `*Resolver()` export names |
+
+**Allowed without MAJOR bump:**
+
+- PATCH: validation bug fixes aligned with official sources (documented in CHANGELOG Security/Fixed)
+- MINOR: new optional exports, new validator modules, new `generate()` types
+- Official spec changes (RFB/Bacen) — follow [Algorithm versioning](#algorithm-versioning-domain-specific)
+
+**Breaking changes** → v2.0.0 only.
 
 ---
 
