@@ -307,6 +307,7 @@ describe('package exports', () => {
     expect(pncpReferenceEntry.getPncpModalidades).toBeTypeOf('function');
     expect(pncpReferenceEntry.getPncpModalidadePorId).toBeTypeOf('function');
     expect(pncpReferenceEntry.getPncpReferenceTable).toBeTypeOf('function');
+    expect(pncpReferenceEntry.normalizePncpCnpj).toBeTypeOf('function');
     expect(pncpReferenceEntry.PNCP_REFERENCE_DATA_VERSION.id).toBe('pncp-reference');
   });
 
@@ -314,6 +315,8 @@ describe('package exports', () => {
     expect(transparenciaSnapshotsEntry.getTransparenciaEndpoints).toBeTypeOf('function');
     expect(transparenciaSnapshotsEntry.getTransparenciaEndpointPorId).toBeTypeOf('function');
     expect(transparenciaSnapshotsEntry.getTransparenciaRegistry).toBeTypeOf('function');
+    expect(transparenciaSnapshotsEntry.normalizeTransparenciaCpf).toBeTypeOf('function');
+    expect(transparenciaSnapshotsEntry.normalizeTransparenciaCnpj).toBeTypeOf('function');
     expect(transparenciaSnapshotsEntry.TRANSPARENCIA_SNAPSHOTS_DATA_VERSION.id).toBe(
       'transparencia-snapshots',
     );

@@ -6,6 +6,10 @@ export {
   getTransparenciaQueryAdapterEndpoints,
 } from './lookup.js';
 export {
+  normalizeTransparenciaCpf,
+  normalizeTransparenciaCnpj,
+} from './normalize.js';
+export {
   TRANSPARENCIA_ADAPTER_PACKAGE,
   TRANSPARENCIA_CADASTRO_URL,
   TRANSPARENCIA_GOLDEN_CEIS_PATH,

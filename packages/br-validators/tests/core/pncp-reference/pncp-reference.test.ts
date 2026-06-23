@@ -7,7 +7,9 @@ import {
   getPncpModalidades,
   getPncpReferenceItem,
   getPncpReferenceTable,
+  normalizePncpCnpj,
   PNCP_CADASTRO_BASE_URL,
+  PNCP_CONSULTA_OPENAPI_URL,
   PNCP_GOLDEN_MODALIDADE_ID,
   PNCP_REFERENCE_DATA_VERSION,
   searchPncpReference,
@@ -72,6 +74,14 @@ describe('PNCP reference — table coverage', () => {
   });
 });
 
+describe('PNCP reference — CNPJ normalization', () => {
+  it('normalizes CNPJ for adapter query via stripCnpj', () => {
+    expect(normalizePncpCnpj(vectors.golden.cnpjQuery.formatted)).toBe(
+      vectors.golden.cnpjQuery.canonical,
+    );
+  });
+});
+
 describe('PNCP reference — metadata', () => {
   it('exposes PNCP cadastro API in metadata', () => {
     expect(PNCP_REFERENCE_DATA_VERSION.id).toBe('pncp-reference');
@@ -79,5 +89,6 @@ describe('PNCP reference — metadata', () => {
       PNCP_REFERENCE_DATA_VERSION.endpoints.some((endpoint) => endpoint.includes(PNCP_CADASTRO_BASE_URL)),
     ).toBe(true);
     expect(PNCP_REFERENCE_DATA_VERSION.contagens.modalidades).toBe(getPncpModalidades().length);
+    expect(PNCP_CONSULTA_OPENAPI_URL).toContain('/api/consulta/');
   });
 });

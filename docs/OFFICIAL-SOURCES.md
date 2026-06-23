@@ -496,7 +496,7 @@ Golden: **`BRSSZ`** (Santos organized port), **`BRADR`** (Angra dos Reis), **`BR
 
 ---
 
-## PNCP reference {#pncp-reference}
+## PNCP reference {#pncp-reference} {#pncp}
 
 > **Vectors:** `packages/br-validators/tests/vectors/pncp-reference.official.json`  
 > **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
@@ -504,10 +504,11 @@ Golden: **`BRSSZ`** (Santos organized port), **`BRADR`** (Angra dos Reis), **`BR
 | Role | Source | URL |
 |------|--------|-----|
 | Cadastro domain tables | PNCP API | https://pncp.gov.br/api/pncp/v1/modalidades (and sibling `/v1/*` tables) |
-| OpenAPI | Serpro / PNCP | https://pncp.gov.br/api/pncp/v3/api-docs |
+| Cadastro OpenAPI | Serpro / PNCP | https://pncp.gov.br/api/pncp/v3/api-docs |
 | Consulta API (adapter) | PNCP | https://pncp.gov.br/api/consulta/swagger-ui/index.html |
+| Consulta OpenAPI | Serpro / PNCP | https://pncp.gov.br/api/consulta/v3/api-docs |
 
-Golden: modalidade id **`6`** → Pregão Eletrônico. Embedded tables: modalidades, amparos legais, modos de disputa, tipos de instrumento convocatório, tipos de contrato, critérios de julgamento, tipos de instrumento de cobrança, fontes orçamentárias.
+Golden: modalidade id **`6`** → Pregão Eletrônico. CNPJ adapter normalization: `normalizePncpCnpj` (RFB FAQ Q14 example). Embedded tables: modalidades, amparos legais, modos de disputa, tipos de instrumento convocatório, tipos de contrato, critérios de julgamento, tipos de instrumento de cobrança, fontes orçamentárias.
 
 Live contract/procurement queries belong in `@br-validators/adapters-pncp` — see [ADAPTERS-PNCP-RFC.md](ADAPTERS-PNCP-RFC.md).
 

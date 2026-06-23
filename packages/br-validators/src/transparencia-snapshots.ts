@@ -4,6 +4,8 @@ export {
   getTransparenciaEndpointPorId,
   getTransparenciaEndpointsPorDominio,
   getTransparenciaQueryAdapterEndpoints,
+  normalizeTransparenciaCpf,
+  normalizeTransparenciaCnpj,
   TRANSPARENCIA_ADAPTER_PACKAGE,
   TRANSPARENCIA_CADASTRO_URL,
   TRANSPARENCIA_GOLDEN_CEIS_PATH,

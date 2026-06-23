@@ -6,6 +6,8 @@ import {
   getTransparenciaEndpointsPorDominio,
   getTransparenciaQueryAdapterEndpoints,
   getTransparenciaRegistry,
+  normalizeTransparenciaCnpj,
+  normalizeTransparenciaCpf,
   TRANSPARENCIA_GOLDEN_CEIS_PATH,
   TRANSPARENCIA_SNAPSHOTS_DATA_VERSION,
   TRANSPARENCIA_SWAGGER_URL,
@@ -50,6 +52,20 @@ describe('Transparencia snapshots — registry coverage', () => {
     const registry = getTransparenciaRegistry();
     expect(registry.adapterPackage).toContain('adapters-transparencia');
     expect(typeof registry.swaggerOk).toBe('boolean');
+  });
+});
+
+describe('Transparencia snapshots — identifier normalization', () => {
+  it('normalizes CPF for adapter query via stripCpf', () => {
+    expect(normalizeTransparenciaCpf(vectors.golden.cpfQuery.formatted)).toBe(
+      vectors.golden.cpfQuery.canonical,
+    );
+  });
+
+  it('normalizes CNPJ for adapter query via stripCnpj', () => {
+    expect(normalizeTransparenciaCnpj(vectors.golden.cnpjQuery.formatted)).toBe(
+      vectors.golden.cnpjQuery.canonical,
+    );
   });
 });
 
