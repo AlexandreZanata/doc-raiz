@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`@br-validators/core/ibge`** — offline IBGE states + municipalities lookup (`getEstados`, `getMunicipios`, `getMunicipioPorCodigo`); `IBGE_DATA_VERSION` transparency metadata
+- **`@br-validators/core/bancos`** — offline Bacen STR participants (`getBancos`, `getBancoPorCodigo`, `getBancoPorIspb`); `BANCOS_DATA_VERSION` metadata
+- **`@br-validators/core/telefone`** — `getDddInfo(ddd)` geographic lookup (Anatel DDD + IBGE municipalities); `TELEFONE_DDD_DATA_VERSION`
+- **`@br-validators/core/data-catalog`** — `getDataCatalog()`, `getDatasetMetadata(id)` aggregating embedded dataset metadata
+- **Data refresh bot** — `scripts/data-refresh-bot.ts`, `pnpm fetch:data`, weekly `.github/workflows/data-refresh-bot.yml`, auto-generated [docs/DATA-FRESHNESS.md](docs/DATA-FRESHNESS.md)
+
 ---
 
 ## [1.0.0] - 2026-06-23

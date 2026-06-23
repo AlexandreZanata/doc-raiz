@@ -1,0 +1,27 @@
+{
+  "id": "ibge",
+  "nome": "IBGE Localidades",
+  "fonte": "IBGE API v1 /localidades",
+  "endpoints": [
+    "https://servicodados.ibge.gov.br/api/v1/localidades/estados",
+    "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
+  ],
+  "capturadoEm": "2026-06-23",
+  "atualizadoEm": "2026-06-23T14:16:50.155Z",
+  "contagens": {
+    "estados": 27,
+    "municipios": 5571
+  },
+  "alteracoes": {
+    "adicionados": 5598,
+    "removidos": 0,
+    "alterados": 0,
+    "comparadoCom": null
+  },
+  "verificacao": {
+    "agendamento": "semanal",
+    "workflow": "data-refresh-bot.yml",
+    "ultimaExecucao": "2026-06-23T14:16:50.155Z"
+  },
+  "documentacao": "docs/OFFICIAL-SOURCES.md#ibge-localities"
+}

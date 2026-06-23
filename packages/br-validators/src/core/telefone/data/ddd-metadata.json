@@ -1,0 +1,26 @@
+{
+  "id": "telefone-ddd",
+  "nome": "Anatel DDD Geographic Lookup",
+  "fonte": "Anatel Plano de Numeração + IBGE municipios",
+  "endpoints": [
+    "https://informacoes.anatel.gov.br/paineis/areas-tarifarias/codigos-nacionais",
+    "packages/br-validators/src/ibge/data/municipios.json"
+  ],
+  "capturadoEm": "2026-06-23",
+  "atualizadoEm": "2026-06-23T14:34:40.909Z",
+  "contagens": {
+    "ddds": 67
+  },
+  "alteracoes": {
+    "adicionados": 67,
+    "removidos": 0,
+    "alterados": 0,
+    "comparadoCom": null
+  },
+  "verificacao": {
+    "agendamento": "semanal",
+    "workflow": "data-refresh-bot.yml",
+    "ultimaExecucao": "2026-06-23T14:34:40.909Z"
+  },
+  "documentacao": "docs/OFFICIAL-SOURCES.md#anatel-ddd-lookup"
+}

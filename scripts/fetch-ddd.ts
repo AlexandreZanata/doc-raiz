@@ -1,0 +1,124 @@
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { ANATEL_DDDS } from '../packages/br-validators/src/core/telefone/constants.js';
+import { DDD_TO_UF, UF_TO_REGIAO } from './lib/ddd-uf-map.js';
+import { diffRecordsByKey } from './lib/diff-dataset.js';
+import { exitWithError } from './lib/errors.js';
+import { todayIsoDate } from './lib/fetch-utils.js';
+import { buildMetadata } from './lib/metadata-writer.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, '..');
+const TELEFONE_DATA_DIR = path.join(ROOT, 'packages/br-validators/src/core/telefone/data');
+const IBGE_MUNICIPIOS_PATH = path.join(ROOT, 'packages/br-validators/src/ibge/data/municipios.json');
+
+const ANATEL_DDD_PANEL_URL =
+  'https://informacoes.anatel.gov.br/paineis/areas-tarifarias/codigos-nacionais';
+
+interface MunicipioRecord {
+  codigo: number;
+  nome: string;
+  uf: string;
+}
+
+interface DddRecord {
+  ddd: string;
+  uf: string;
+  regiao: string;
+  municipios: string[];
+}
+
+function buildDddRecords(municipios: MunicipioRecord[]): DddRecord[] {
+  const municipiosByUf = new Map<string, string[]>();
+
+  for (const municipio of municipios) {
+    const list = municipiosByUf.get(municipio.uf) ?? [];
+    list.push(municipio.nome);
+    municipiosByUf.set(municipio.uf, list);
+  }
+
+  for (const [uf, names] of municipiosByUf) {
+    names.sort((left, right) => left.localeCompare(right, 'pt-BR'));
+    municipiosByUf.set(uf, names);
+  }
+
+  const records: DddRecord[] = [];
+
+  for (const ddd of ANATEL_DDDS) {
+    const uf = DDD_TO_UF[ddd];
+    const regiao = UF_TO_REGIAO[uf];
+
+    records.push({
+      ddd,
+      uf,
+      regiao,
+      municipios: municipiosByUf.get(uf) ?? [],
+    });
+  }
+
+  return records.sort((left, right) => left.ddd.localeCompare(right.ddd));
+}
+
+async function readJsonIfExists<T>(filePath: string): Promise<T | null> {
+  try {
+    const raw = await readFile(filePath, 'utf8');
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
+async function main(): Promise<void> {
+  const municipiosRaw = await readFile(IBGE_MUNICIPIOS_PATH, 'utf8');
+  const municipios = JSON.parse(municipiosRaw) as MunicipioRecord[];
+  const dddRecords = buildDddRecords(municipios);
+
+  if (dddRecords.length !== ANATEL_DDDS.length) {
+    throw new Error(
+      `Expected ${String(ANATEL_DDDS.length)} DDD records, got ${String(dddRecords.length)}`,
+    );
+  }
+
+  await mkdir(TELEFONE_DATA_DIR, { recursive: true });
+
+  const dddPath = path.join(TELEFONE_DATA_DIR, 'ddd-municipios.json');
+  const metadataPath = path.join(TELEFONE_DATA_DIR, 'ddd-metadata.json');
+
+  const previousRecords = await readJsonIfExists<DddRecord[]>(dddPath);
+  const previousMetadata = await readJsonIfExists<{ capturadoEm: string }>(metadataPath);
+  const comparadoCom = previousMetadata?.capturadoEm ?? null;
+
+  const changes = diffRecordsByKey(
+    previousRecords ?? [],
+    dddRecords,
+    (record) => record.ddd,
+    comparadoCom,
+  );
+
+  const metadata = buildMetadata(
+    {
+      id: 'telefone-ddd',
+      nome: 'Anatel DDD Geographic Lookup',
+      fonte: 'Anatel Plano de Numeração + IBGE municipios',
+      endpoints: [ANATEL_DDD_PANEL_URL, 'packages/br-validators/src/ibge/data/municipios.json'],
+      contagens: { ddds: dddRecords.length },
+      documentacao: 'docs/OFFICIAL-SOURCES.md#anatel-ddd-lookup',
+    },
+    changes,
+  );
+
+  const jsonIndent = 2;
+  await writeFile(dddPath, `${JSON.stringify(dddRecords, null, jsonIndent)}\n`);
+  await writeFile(metadataPath, `${JSON.stringify(metadata, null, jsonIndent)}\n`);
+
+  console.log(
+    `DDD data written (${todayIsoDate()}): ${String(dddRecords.length)} area codes`,
+  );
+  console.log(
+    `Changes: +${String(metadata.alteracoes.adicionados)} -${String(metadata.alteracoes.removidos)} ~${String(metadata.alteracoes.alterados)}`,
+  );
+}
+
+main().catch(exitWithError);

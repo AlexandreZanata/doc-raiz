@@ -47,6 +47,16 @@ export default tseslint.config(
     extends: [tseslint.configs.disableTypeChecked],
   },
   {
+    files: ['scripts/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: './scripts/tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
+        projectService: false,
+      },
+    },
+  },
+  {
     files: ['apps/playground/**/*.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-misused-promises': 'off',

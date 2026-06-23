@@ -38,6 +38,9 @@
     "compare",
     "batch",
     "diff",
+    "ibge",
+    "bancos",
+    "data-catalog",
     "typescript"
   ],
   "publishConfig": {
@@ -142,6 +145,18 @@
     "./diff": {
       "types": "./dist/diff.d.ts",
       "import": "./dist/diff.js"
+    },
+    "./ibge": {
+      "types": "./dist/ibge.d.ts",
+      "import": "./dist/ibge.js"
+    },
+    "./bancos": {
+      "types": "./dist/bancos.d.ts",
+      "import": "./dist/bancos.js"
+    },
+    "./data-catalog": {
+      "types": "./dist/data-catalog.d.ts",
+      "import": "./dist/data-catalog.js"
     }
   },
   "files": [

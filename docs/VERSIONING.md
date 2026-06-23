@@ -152,11 +152,22 @@ Requires GitHub secret `NPM_TOKEN` (granular publish token for `@br-validators/*
 ```bash
 npm login
 pnpm verify
-pnpm --filter @br-validators/core publish --access public --tag alpha
-pnpm --filter @br-validators/cli publish --access public --tag alpha
+pnpm --filter @br-validators/core publish --access public --tag latest
+pnpm --filter @br-validators/cli publish --access public --tag latest
+pnpm --filter @br-validators/zod publish --access public --tag latest
+pnpm --filter @br-validators/react-hook-form publish --access public --tag latest
 ```
 
-Published packages: `@br-validators/core` (library) and `@br-validators/cli` (terminal). See [README](../README.md#install).
+Published packages (same semver on each tag):
+
+| Package | Path |
+|---------|------|
+| `@br-validators/core` | `packages/br-validators/` |
+| `@br-validators/cli` | `apps/cli/` |
+| `@br-validators/zod` | `packages/br-validators-zod/` |
+| `@br-validators/react-hook-form` | `packages/br-validators-rhf/` |
+
+See [README](../README.md#install).
 
 ### 5. GitHub Release
 

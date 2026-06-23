@@ -1,0 +1,53 @@
+{
+  "executadoEm": "2026-06-23T14:39:41.963Z",
+  "agendamento": "semanal",
+  "datasets": [
+    {
+      "id": "ibge",
+      "status": "changed",
+      "alteracoes": {
+        "adicionados": 5598,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "estados": 27,
+        "municipios": 5571
+      }
+    },
+    {
+      "id": "bancos",
+      "status": "changed",
+      "alteracoes": {
+        "adicionados": 468,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "bancos": 468
+      }
+    },
+    {
+      "id": "telefone-ddd",
+      "status": "changed",
+      "alteracoes": {
+        "adicionados": 67,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "ddds": 67
+      }
+    }
+  ],
+  "resumo": {
+    "datasetsVerificados": 3,
+    "datasetsAlterados": 3,
+    "totalAdicionados": 6133,
+    "totalRemovidos": 0,
+    "totalAlterados": 0
+  }
+}
