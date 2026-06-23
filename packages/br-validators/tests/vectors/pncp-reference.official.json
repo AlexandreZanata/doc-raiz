@@ -1,0 +1,12 @@
+{
+  "source": "https://pncp.gov.br/api/pncp/v1/modalidades",
+  "golden": {
+    "pregaoEletronico": {
+      "id": 6,
+      "nomeContains": "Pregão - Eletrônico"
+    }
+  },
+  "minModalidades": 15,
+  "maxModalidades": 25,
+  "minAmparosLegais": 150
+}

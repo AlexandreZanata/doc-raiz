@@ -1,0 +1,10 @@
+{
+  "source": "https://iccwbo.org/resources-for-business/incoterms-rules/",
+  "golden": {
+    "fob": {
+      "codigo": "FOB",
+      "nome": "Free On Board"
+    }
+  },
+  "count": 11
+}

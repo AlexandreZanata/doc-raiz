@@ -13,6 +13,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] - 2026-06-23
+
+### Added
+
+- **`@br-validators/core/natureza-juridica`** — `getNaturezaJuridicaPorCodigo()`; RFB CNPJ legal nature codes
+- **`@br-validators/core/nbs`** — `getNbsPorCodigo()`, `searchNbs()`; NFSe Nacional Anexo B leaf codes
+- **`@br-validators/core/cest`** — `getCestPorCodigo()`, `getCestPorNcm()`, `searchCest()`; CONFAZ ICMS 142/2018 ST codes
+- **`@br-validators/core/moedas`** — `getMoedaPorCodigo()`, `searchMoedas()`; ISO 4217 + Bacen PTAX enrichment
+- **`@br-validators/core/paises-bacen`** — `getPaisPorCodigoBacen()`; NF-e Bacen country table
+- **`@br-validators/core/incoterms`** — `getIncotermPorCodigo()`; ICC Incoterms 2020 static list
+- **`@br-validators/core/portos`** — `getPortoPorCodigo()`, `getPortosPorMunicipio()`, `searchPortos()`; ANTAQ port installations
+- **`@br-validators/core/pncp-reference`** — PNCP domain tables (modalidades, amparos legais, etc.)
+- **`@br-validators/core/transparencia-snapshots`** — Portal da Transparência endpoint registry (query-adapter classification)
+- **Fetch scripts** — `pnpm fetch:data:{natureza-juridica,nbs,cest,portos,pncp-reference,transparencia}`; registered in weekly `data-refresh-bot`
+- **Adapter RFCs** — [docs/ADAPTERS-PNCP-RFC.md](docs/ADAPTERS-PNCP-RFC.md), [docs/ADAPTERS-TRANSPARENCIA-RFC.md](docs/ADAPTERS-TRANSPARENCIA-RFC.md)
+
+---
+
 ## [1.4.0] - 2026-06-23
 
 ### Added

@@ -1,0 +1,17 @@
+{
+  "source": "https://api.portaldatransparencia.gov.br/swagger-ui/index.html",
+  "golden": {
+    "ceis": {
+      "id": "ceis",
+      "path": "/api-de-dados/ceis",
+      "delivery": "query-adapter"
+    },
+    "peps": {
+      "id": "peps",
+      "path": "/api-de-dados/peps",
+      "delivery": "query-adapter"
+    }
+  },
+  "minEndpoints": 6,
+  "minQueryAdapter": 5
+}
