@@ -1,10 +1,10 @@
 # BR Validators
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![npm @br-validators/core](https://img.shields.io/npm/v/@br-validators/core)](https://www.npmjs.com/package/@br-validators/core)
-[![npm @br-validators/cli](https://img.shields.io/npm/v/@br-validators/cli)](https://www.npmjs.com/package/@br-validators/cli)
-[![npm @br-validators/zod](https://img.shields.io/npm/v/@br-validators/zod)](https://www.npmjs.com/package/@br-validators/zod)
-[![npm @br-validators/react-hook-form](https://img.shields.io/npm/v/@br-validators/react-hook-form)](https://www.npmjs.com/package/@br-validators/react-hook-form)
+[![core](https://img.shields.io/npm/v/@br-validators/core?label=core)](https://www.npmjs.com/package/@br-validators/core)
+[![cli](https://img.shields.io/npm/v/@br-validators/cli?label=cli)](https://www.npmjs.com/package/@br-validators/cli)
+[![zod](https://img.shields.io/npm/v/@br-validators/zod?label=zod)](https://www.npmjs.com/package/@br-validators/zod)
+[![rhf](https://img.shields.io/npm/v/@br-validators/react-hook-form?label=rhf)](https://www.npmjs.com/package/@br-validators/react-hook-form)
 [![GitHub release](https://img.shields.io/github/v/release/AlexandreZanata/br-validators)](https://github.com/AlexandreZanata/br-validators/releases)
 
 **100% open-source** (MIT) monorepo — TypeScript library, terminal CLI, and web playground for formatting and validating Brazilian document identifiers. Algorithms trace to official primary sources (Receita Federal, Bacen, CONTRAN, Correios, SEFAZ).
