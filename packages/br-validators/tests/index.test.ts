@@ -12,6 +12,9 @@ import * as pisPasepEntry from '../src/pis-pasep.js';
 import * as pixEntry from '../src/pix.js';
 import * as boletoEntry from '../src/boleto.js';
 import * as cartaoCreditoEntry from '../src/cartao-credito.js';
+import * as ibgeEntry from '../src/ibge.js';
+import * as bancosEntry from '../src/bancos.js';
+import * as dataCatalogEntry from '../src/data-catalog.js';
 
 describe('package exports', () => {
   it('re-exports CNPJ API from index', () => {
@@ -127,6 +130,7 @@ describe('package exports', () => {
 
   it('re-exports Telefone API from telefone entry', () => {
     expect(telefoneEntry.validateTelefone).toBe(root.validateTelefone);
+    expect(telefoneEntry.getDddInfo).toBeTypeOf('function');
   });
 
   it('re-exports CNH API from cnh entry', () => {
@@ -167,5 +171,25 @@ describe('package exports', () => {
     expect(cartaoCreditoEntry.validateCartaoCredito).toBe(root.validateCartaoCredito);
     expect(cartaoCreditoEntry.detectCardBrand).toBe(root.detectCardBrand);
     expect(cartaoCreditoEntry.isValidLuhn).toBe(root.isValidLuhn);
+  });
+
+  it('re-exports IBGE API from ibge entry', () => {
+    expect(ibgeEntry.getEstados).toBeTypeOf('function');
+    expect(ibgeEntry.getMunicipios).toBeTypeOf('function');
+    expect(ibgeEntry.getMunicipioPorCodigo).toBeTypeOf('function');
+    expect(ibgeEntry.IBGE_DATA_VERSION.id).toBe('ibge');
+  });
+
+  it('re-exports Bancos API from bancos entry', () => {
+    expect(bancosEntry.getBancos).toBeTypeOf('function');
+    expect(bancosEntry.getBancoPorCodigo).toBeTypeOf('function');
+    expect(bancosEntry.getBancoPorIspb).toBeTypeOf('function');
+    expect(bancosEntry.BANCOS_DATA_VERSION.id).toBe('bancos');
+  });
+
+  it('re-exports data catalog API from data-catalog entry', () => {
+    expect(dataCatalogEntry.getDataCatalog).toBeTypeOf('function');
+    expect(dataCatalogEntry.getDatasetMetadata).toBeTypeOf('function');
+    expect(dataCatalogEntry.DATA_CATALOG_VERSION.totalDatasets).toBeGreaterThan(0);
   });
 });

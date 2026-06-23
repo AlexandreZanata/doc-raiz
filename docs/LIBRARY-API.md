@@ -38,6 +38,10 @@
 | `@br-validators/core/batch` | Batch validation with summary |
 | `@br-validators/core/diff` | Field-level structural diff |
 | `@br-validators/core/generate` | Synthetic test document generation |
+| `@br-validators/core/ibge` | IBGE states + municipalities (offline reference data) |
+| `@br-validators/core/bancos` | Bacen STR participants with COMPE / ISPB lookup |
+| `@br-validators/core/data-catalog` | Aggregated dataset transparency metadata |
+| `@br-validators/core/data-catalog` | Aggregated dataset metadata / transparency API |
 
 ---
 
@@ -471,6 +475,86 @@ type InscricaoEstadualValidationResult =
 | **TO** | [SEFAZ-TO](https://www.sefaz.to.gov.br/) | [cad_TO](http://www.sintegra.gov.br/Cad_Estados/cad_TO.html) | `27035910938` | `ie.to.official.json` |
 
 Constants: `IE_OFFICIAL_SOURCE_URLS` (all UFs), legacy `IE_SP_OFFICIAL_SOURCE_URL`, `IE_MT_OFFICIAL_SOURCE_URL`, `IE_DF_OFFICIAL_SOURCE_URL`. CLI `--source` and `getIeOfficialSourceUrl(uf)` return the primary URL per UF.
+
+---
+
+## Core API — IBGE localities (reference data)
+
+> **Offline embedded data** from [IBGE Serviço de Dados](https://servicodados.ibge.gov.br/api/docs/localidades).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md) · Weekly bot: `.github/workflows/data-refresh-bot.yml`
+
+| Function | Returns |
+|----------|---------|
+| `getEstados()` | All 27 federative units with `codigo`, `sigla`, `nome`, `regiao` |
+| `getMunicipios(options?)` | All municipalities, or filtered by `uf` (case-insensitive) |
+| `getMunicipioPorCodigo(codigo)` | Single municipality or `undefined` |
+| `IBGE_DATA_VERSION` | `DatasetMetadata` — capture date, official endpoints, row counts, weekly delta |
+
+Golden vectors: `3550308` (São Paulo/SP), `5107925` (Sorriso/MT), `5300108` (Brasília/DF), `5101837` (Boa Esperança do Norte/MT).
+
+```typescript
+import {
+  getEstados,
+  getMunicipios,
+  getMunicipioPorCodigo,
+  IBGE_DATA_VERSION,
+} from '@br-validators/core/ibge';
+```
+
+**No runtime fetch** — JSON embedded at build time from official IBGE API via `scripts/fetch-ibge.ts`.
+
+---
+
+## Core API — Bacen banks (reference data)
+
+> **Offline embedded data** from [Bacen Participantes STR CSV](https://www.bcb.gov.br/content/estabilidadefinanceira/str1/ParticipantesSTR.csv).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Function | Returns |
+|----------|---------|
+| `getBancos()` | All institutions with valid 3-digit COMPE codes |
+| `getBancoPorCodigo(codigo)` | Single bank or `undefined` (normalizes `1` → `001`) |
+| `getBancoPorIspb(ispb)` | Single bank or `undefined` (8-digit ISPB) |
+| `BANCOS_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: COMPE `001` (Banco do Brasil), `341` (Itaú), `260` (Nubank).
+
+```typescript
+import { getBancos, getBancoPorCodigo, BANCOS_DATA_VERSION } from '@br-validators/core/bancos';
+```
+
+---
+
+## Core API — Telefone DDD lookup (reference data)
+
+> Extends `@br-validators/core/telefone` — does **not** change `validateTelefone` / `ANATEL_DDDS`.
+
+| Function | Returns |
+|----------|---------|
+| `getDddInfo(ddd)` | `{ ddd, uf, regiao, municipios }` or `undefined` |
+| `TELEFONE_DDD_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: `11` → SP/Sudeste, `66` → MT/Centro-Oeste, `92` → AM/Norte.
+
+```typescript
+import { getDddInfo, validateTelefone, TELEFONE_DDD_DATA_VERSION } from '@br-validators/core/telefone';
+```
+
+---
+
+## Core API — Data catalog (transparency)
+
+Aggregates `DatasetMetadata` for all registered reference datasets.
+
+| Function | Returns |
+|----------|---------|
+| `getDataCatalog()` | All dataset metadata entries |
+| `getDatasetMetadata(id)` | Single entry or `undefined` |
+| `DATA_CATALOG_VERSION` | `{ totalDatasets }` |
+
+```typescript
+import { getDataCatalog, getDatasetMetadata } from '@br-validators/core/data-catalog';
+```
 
 ---
 

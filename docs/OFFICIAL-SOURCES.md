@@ -28,6 +28,7 @@
 | **IE — São Paulo (SP)** | SEFAZ-SP | [Sintegra rotina de consistência](https://portal.fazenda.sp.gov.br/servicos/icms/Paginas/sintegra-rotina-consistencia.aspx) | 12 digits, dual modulo-11 DVs. Golden: **`110042490114`**. Vector: `ie.sp.official.json`. Mirror: [cad_SP.html](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html). |
 | **IE — SP produtor rural** | SEFAZ-SP / SINTEGRA | [cad_SP.html Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) | 13 chars `P0MMMSSSSD000`; DV at position 10; weights `1,3,4,5,6,7,8,10` on `0MMMSSSS`. Golden: **`P-01100424.3/002`**. Vector: `inscricao-estadual-produtor-rural.official.json`. Cadastro: [CADESP produtor rural](https://portal.fazenda.sp.gov.br/servicos/cadesp/Paginas/Produtor-Rural-abertura,-baixa-e-outras-alteracoes.aspx). |
 | **IE — all 27 UFs** | Per-state SEFAZ | Full table: [§ Inscrição Estadual (IE)](#inscrição-estadual-ie--all-27-ufs) · Index: [IE-STATE-ALGORITHMS.md](IE-STATE-ALGORITHMS.md) | Check digits only — no SEFAZ registration lookup. `getIeOfficialSourceUrl(uf)` / `IE_OFFICIAL_SOURCE_URLS`. SP produtor rural: `validateIeProdutorRural` / `getIeProdutorRuralOfficialSourceUrl()`. |
+| **IBGE localities** | IBGE | [Serviço de Dados — localidades](https://servicodados.ibge.gov.br/api/docs/localidades) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Estados + municípios embedded offline. Golden: **`3550308`** (São Paulo/SP), **`5107925`** (Sorriso/MT), **`5300108`** (Brasília/DF), **`5101837`** (Boa Esperança do Norte/MT — null `microrregiao` fallback). Vector: `ibge.official.json`. Weekly refresh via `data-refresh-bot.yml`. |
 
 ---
 
@@ -209,6 +210,48 @@ Before merging a validator:
 2. Add test vectors from the official example or worked calculation.
 3. Cross-check with at least one independent implementation **only after** primary source is satisfied.
 4. Document known edge cases (e.g. CPF/CNPJ with all equal digits — traditionally rejected as invalid).
+
+---
+
+## IBGE localities {#ibge-localities}
+
+> **Vectors:** `packages/br-validators/tests/vectors/ibge.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md) (auto-generated weekly)
+
+| Role | Source | URL |
+|------|--------|-----|
+| API docs | IBGE Serviço de Dados | https://servicodados.ibge.gov.br/api/docs/localidades |
+| Estados | IBGE API v1 | https://servicodados.ibge.gov.br/api/v1/localidades/estados |
+| Municípios | IBGE API v1 | https://servicodados.ibge.gov.br/api/v1/localidades/municipios |
+
+**Edge case:** municipality `5101837` (Boa Esperança do Norte, MT) returns `microrregiao: null` — UF resolved via `regiao-imediata.regiao-intermediaria.UF` in fetch script.
+
+---
+
+## Bacen banks {#bacen-banks}
+
+> **Vectors:** `packages/br-validators/tests/vectors/bancos.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| STR participants | Banco Central | https://www.bcb.gov.br/content/estabilidadefinanceira/str1/ParticipantesSTR.csv |
+
+Golden: COMPE `001` / ISPB `00000000` (Banco do Brasil), `341` / `60701190` (Itaú), `260` / `18236120` (Nubank).
+
+---
+
+## Anatel DDD lookup {#anatel-ddd-lookup}
+
+> **Vectors:** `packages/br-validators/tests/vectors/telefone-ddd.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md)
+
+| Role | Source | URL |
+|------|--------|-----|
+| DDD panel | Anatel | https://informacoes.anatel.gov.br/paineis/areas-tarifarias/codigos-nacionais |
+| Municipality names | IBGE (embedded) | https://servicodados.ibge.gov.br/api/v1/localidades/municipios |
+
+`getDddInfo` validates DDD against `ANATEL_DDD_SET` — same 67 codes as `validateTelefone`.
 
 ---
 

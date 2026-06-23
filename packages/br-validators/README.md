@@ -29,6 +29,7 @@ Every Brazilian SaaS eventually reinvents CPF validation — usually wrong.
 - ✅ **Zero runtime dependencies** — pure TypeScript logic, no HTTP calls
 - ✅ **Never throws** — every function returns `{ ok: true, value } | { ok: false, message, code }`
 - ✅ **Tree-shakeable** — subpath imports per document type
+- ✅ **Reference data** — IBGE, Bacen banks, DDD lookup with weekly freshness ([DATA-FRESHNESS.md](../../docs/DATA-FRESHNESS.md))
 - ✅ **ESM only**, Node ≥ 18, works in browser, Bun, Deno
 
 ---

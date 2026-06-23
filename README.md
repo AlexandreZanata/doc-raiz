@@ -17,6 +17,8 @@
 | **React Hook Form** | [`@br-validators/react-hook-form`](https://www.npmjs.com/package/@br-validators/react-hook-form) on npm |
 | **Playground** | [doc-raiz-playground.vercel.app](https://doc-raiz-playground.vercel.app/) — client-side only, no PII sent to server |
 
+Reference datasets (IBGE, Bacen banks, DDD lookup) are embedded offline and refreshed weekly — see [docs/DATA-FRESHNESS.md](docs/DATA-FRESHNESS.md).
+
 > **Note:** The unscoped npm name [`br-validators`](https://www.npmjs.com/package/br-validators) belongs to another project. Install **`@br-validators/core`** or **`@br-validators/cli`**.
 
 ---

@@ -109,6 +109,31 @@ Required checklist for new/changed validators:
 
 ---
 
+## Reference data contributions (IBGE, Bacen, etc.)
+
+Required checklist for new static lookup modules:
+
+- [ ] Official `.gov.br` source in [docs/OFFICIAL-SOURCES.md](docs/OFFICIAL-SOURCES.md)
+- [ ] `metadata.json` with `DatasetMetadata` fields (see [docs/DATA-FRESHNESS.md](docs/DATA-FRESHNESS.md))
+- [ ] Register in `data-catalog/registry.ts`
+- [ ] Fetch script in `scripts/fetch-*.ts` — **no runtime network** in `src/`
+- [ ] Golden vectors in `tests/vectors/*.official.json` from official API samples
+
+### Test policy — business logic, not coverage theater
+
+Tests MUST prove **observable behavior** that consumers rely on:
+
+| DO | DON'T |
+|----|-------|
+| Assert golden codes from official sources (e.g. IBGE `3550308` → São Paulo/SP) | Mirror implementation line-by-line just to hit 100% |
+| Cover edge cases that occur in real government data (e.g. municipality with null `microrregiao`) | Assert `toBe(true)` on functions under test without independent expected value |
+| Verify metadata transparency (`capturadoEm`, `endpoints`, row counts) | Mock embedded JSON or skip catalog registration |
+| Fail when official vectors break after data refresh | Disable tests or exclude files from coverage to hide gaps |
+
+100% coverage on `packages/br-validators/src/**` is mandatory — but every test must answer a **business question**: “Does this lookup return what IBGE says?” not “Did my function run?”
+
+---
+
 ## Documentation contributions
 
 Docs live in `docs/` and root (`README.md`, `SECURITY.md`, etc.).
