@@ -20,8 +20,9 @@
 | **Título de Eleitor** | TSE | [Resolução TSE 20.132/1998](https://www.tse.jus.br/legislacao/compilada/res/1998/resolucao-no-20-132-de-19-de-marco-de-1998) · [Res. 23.659/2021](https://www.tse.jus.br/legislacao/compilada/res/2021/resolucao-no-23-659-de-26-de-outubro-de-2021) · Full index: [§ Título de Eleitor](#título-de-eleitor--reference-index) | 8 seq + 2 UF + 2 DV = **12 digits** (13 for SP/MG). Modulo 11 per Art. 10. Golden: **`004356870906`**. **Weights/SP-MG rule:** [Wikipedia PT](https://pt.wikipedia.org/wiki/T%C3%ADtulo_eleitoral#C%C3%A1lculo_do_d%C3%ADgito_verificador) + [Ghiorzi](http://ghiorzi.org/DVnew.htm#e). |
 | **NF-e chave de acesso** | ENCAT / SEFAZ | [Portal NF-e — MOC index](https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=ndIjl+iEFdE%3D) · Full index: [§ NF-e chave](#nf-e--nfc-e-chave-de-acesso--reference-index) | **44 digits** — structure + modulo-11 DV on first 43. Models **55** (NF-e) / **65** (NFC-e). Golden: **`52060433009911002506550120000007800267301615`** (MOC §2.2.6.2 worked example, sum=644, DV=5). |
 | **PIX key** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf), [Anexo I — Padrões Iniciação PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf), [DICT API v2.9](https://aprendervalor.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT_v2-9-0.html) | **Key validation (Phase 4):** five types — CPF, CNPJ, email (max 77 lowercase), phone (`+55` mobile), EVP (UUID). Golden: `pix@bcb.gov.br`, `+5510998765432`, `123e4567-e89b-12d3-a456-426655440000`. |
-| **BR Code payload** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) | EMV TLV + CRC16-CCITT (tag 63). `parseBrCode` / `validateBrCode`. Golden vectors: `tests/vectors/brcode.official.json` (≥5 manual examples). Static EVP CRC `1D3D`. |
-| **Boleto** | FEBRABAN | [Convenção da Cobrança FB-0061/2021 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf) | Bank boleto: 47-digit linha digitável (modulo 10 field DVs) + 44-digit código de barras (modulo 11 general DV). **Situação 1** (v1): currency `9`, fator+valor campo 5. **Situação 2** (5b): code `988`, currency `0`, ISPB campo 5. Golden: Santander linha ↔ barcode; synthetic Situação 2 pair in `boleto.situacao2.official.json`. 48-digit arrecadação detected but not validated — Phase 5c. |
+| **BR Code payload** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) | EMV TLV + CRC16-CCITT (tag 63). `parseBrCode` / `validateBrCode` / `buildStaticPixBrCode` (static PIX QR; omit `amount` for permanent QR). Golden: `tests/vectors/brcode.official.json` (≥5 manual examples + `BRCODE_GOLDEN_STATIC_*`). Static EVP CRC `1D3D`. Rule: BR-BRC-005. |
+| **Boleto (cobrança)** | FEBRABAN | [Convenção da Cobrança FB-0061/2021 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf) | Bank boleto: 47-digit linha digitável (modulo 10 field DVs) + 44-digit código de barras (modulo 11 general DV). **Situação 1** (v1): currency `9`, fator+valor campo 5. **Situação 2** (5b): code `988`, currency `0`, ISPB campo 5. Golden: Santander linha ↔ barcode; synthetic Situação 2 pair in `boleto.situacao2.official.json`. |
+| **Boleto (arrecadação)** | FEBRABAN | [Layout Padrão de Arrecadação/Recebimento v7 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Layout%20-%20C%C3%B3digo%20de%20Barras%20-%20Vers%C3%A3o%207%20-%2001_03_2023_mn.pdf) | 48-digit linha (4×11 + field DVs) or 44-digit código de barras; product id `8`; value types `6`/`7` (modulo 10) or `8`/`9` (modulo 11). Golden: `tests/vectors/boleto-arrecadacao.official.json` (Layout v7 §07 modulo 10 walkthrough, §09–10 modulo 11). |
 | **Credit card** | ISO/IEC 7812 | [ISO/IEC 7812-1:2017](https://www.iso.org/standard/70484.html) | PAN 8–19 digits; Luhn modulus-10 per **Annex B**. Golden: Visa `4111111111111111`, Mastercard `5555555555554444`, Amex `378282246310005`, walkthrough `79927398713`. Brand detect (Elo/Hipercard IIN) — best-effort, non-authoritative. No CVV/expiry/authorization. |
 | **PIS / PASEP / NIS** | Dataprev / INSS (CNIS) | [SIPREV Regras de Validação v1.14 — RV_03 (PDF)](https://www.gov.br/previdencia/pt-br/outros/imagens/2015/07/rgrva_RegrasValidacao.pdf) | 11 digits, mask `XXX.XXXXX.XX-X`. Modulo 11 per **padrão do NIT**; weights `[3,2,9,8,7,6,5,4,3,2]` on first 10 digits (NIT implementation). Golden: **`10027230888`** (UC-006), **`12056456402`** (cross-check). PIS (Caixa), PASEP (BB), NIS/NIT (CNIS) share the same checksum. **Caixa PIS gov.br page removed (404, June 2026).** |
 | **IE — São Paulo (SP)** | SEFAZ-SP | [Sintegra rotina de consistência](https://portal.fazenda.sp.gov.br/servicos/icms/Paginas/sintegra-rotina-consistencia.aspx) | 12 digits, dual modulo-11 DVs. Golden: **`110042490114`**. Vector: `ie.sp.official.json`. Mirror: [cad_SP.html](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html). |
@@ -160,7 +161,31 @@ Negative cross-UF cases: `ie.negative.official.json`.
 |-----------|------|-------------------|
 | SEFAZ homologation window opens | April 2026 | Consumers need dual-format validation in test environments |
 | Production rollout | July 2026 | Both formats must work in production |
-| Alphanumeric CPF spec | TBD 2026 | Do not implement until RFB publishes official algorithm |
+| Alphanumeric CPF spec | TBD 2026 | `generate('cpf', { format: 'alphanumeric' })` throws `CPF_ALPHA_SPEC_PENDING`; validation numeric-only until RFB publishes algorithm |
+
+---
+
+## `generate()` — synthetic fixtures (BR-GENERATE-001)
+
+> Test fixtures only — each output passes the matching `validate*` before return. Normative DV/CRC sources:
+
+| Generatable type | Official source for algorithm |
+|------------------|-------------------------------|
+| `cpf`, `cnpj` | [RFB CPF portal](https://www.gov.br/receitafederal/pt-br/assuntos/cpf) · [CNPJ alfanumérico FAQ (PDF)](https://www.gov.br/receitafederal/pt-br/centrais-de-conteudo/publicacoes/perguntas-e-respostas/cnpj/cnpj-alfanumerico.pdf) |
+| `cep` | [Correios Busca CEP](https://www.correios.com.br/atendimento/developers/manuais/manual-api-busca-cep) |
+| `placa` | [CONTRAN 729/2018](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao7292018consolidada.pdf) |
+| `telefone` | [Anatel Plano de Numeração](https://www.gov.br/anatel/pt-br/regulado/numeracao/plano-de-numeracao-brasileiro) |
+| `cnh`, `renavam` | [CONTRAN 511/2014](https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/resolucao5112014.pdf) · [DENATRAN 27/2013](https://www.gov.br/transportes/pt-br/assuntos/transito/arquivos-senatran/portarias/2013/portaria0272013.pdf) |
+| `titulo-eleitor` | [TSE Res. 20.132/1998](https://www.tse.jus.br/legislacao/compilada/res/1998/resolucao-no-20-132-de-19-de-marco-de-1998) |
+| `pis-pasep` | [SIPREV RV_03 (PDF)](https://www.gov.br/previdencia/pt-br/outros/imagens/2015/07/rgrva_RegrasValidacao.pdf) |
+| `cartao-credito` | [ISO/IEC 7812-1:2017](https://www.iso.org/standard/70484.html) (Luhn) |
+| `inscricao-estadual` | Per-UF SEFAZ — [IE table](#inscrição-estadual-ie--all-27-ufs) |
+| `inscricao-estadual-produtor-rural` | [SINTEGRA cad_SP.html Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) |
+| `pix` | [Bacen DICT API](https://aprendervalor.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT_v2-9-0.html) (EVP UUID) |
+| `nfe-chave` | [MOC §2.2.6.2 DV](http://moc.sped.fazenda.pr.gov.br/#2.2.6.2. Cálculo do Dígito Verificador da Chave de Acesso da NF-e) |
+| `brcode` | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) |
+| `boleto` | [FEBRABAN Cobrança FB-0061/2021 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf) |
+| `boleto-arrecadacao` | [FEBRABAN Arrecadação Layout v7 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Layout%20-%20C%C3%B3digo%20de%20Barras%20-%20Vers%C3%A3o%207%20-%2001_03_2023_mn.pdf) |
 
 ---
 

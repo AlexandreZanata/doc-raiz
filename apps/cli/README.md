@@ -74,6 +74,8 @@ br-validators ie validate P-01100424.3/002 --uf SP   # SP produtor rural (auto-d
 | `sanitize <type> [value]` | ETL fixes + validate; `--uf` for `inscricao-estadual` |
 | `generate <type>` | Synthetic test document; `--seed`, `--masked`, `--format` |
 
+> **Library-only platform APIs:** `mask`, `compare`, `batch`, and `diff` are available via `@br-validators/core` subpaths — no dedicated CLI commands yet.
+
 ```bash
 br-validators detect '123.456.789-09' --json
 br-validators detect '110042490114' --uf SP --json

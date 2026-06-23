@@ -2,7 +2,7 @@
 
 > Phased delivery. Each module ships in **library + CLI + playground** (see [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md)).
 > **TypeScript first** — [TECH-STACK.md](TECH-STACK.md).
-> **npm:** `@br-validators/core` + `@br-validators/cli` · **Current:** core `v0.10.0-alpha.0`, CLI `v0.10.0-alpha.1`
+> **npm:** `@br-validators/core` + `@br-validators/cli` + `@br-validators/zod` + `@br-validators/react-hook-form` · **Current:** `v1.0.0`
 
 ---
 
@@ -55,8 +55,8 @@
 | Module | Library | CLI | Playground | Status |
 |--------|---------|-----|------------|--------|
 | **Boleto cobrança** | ✓ | ✓ | `/boleto` | Situação 1 + 2 shipped |
-| **BR Code** | — | — | — | **Backlog** — PIX keys shipped; QR payload parsing deferred to v1.1+ |
-| **Boleto arrecadação** | detect only | — | — | **Backlog** — 48-digit `8…` detected, not validated (Phase 5c) |
+| **BR Code** | ✓ `@br-validators/core/brcode` | ✓ `brcode …` | ✓ `/brcode` | Shipped — [Bacen Manual BR Code](OFFICIAL-SOURCES.md) |
+| **Boleto arrecadação** | ✓ | via `boleto` | via `boleto` | Shipped — [FEBRABAN Layout v7](OFFICIAL-SOURCES.md) |
 
 ---
 
@@ -70,19 +70,17 @@
 
 ---
 
-## v1.0.0 target (next milestone)
+## v1.0.0 ✅
 
 | Module / requirement | Library | CLI | Playground | Status |
 |----------------------|---------|-----|------------|--------|
-| **Telefone (F-01)** | ✓ `@br-validators/core/telefone` | ✓ `telefone …` | ✓ `/telefone` | Shipped — [Anatel](OFFICIAL-SOURCES.md) |
-| **BR Code (F-03)** | ✓ `@br-validators/core/brcode` | ✓ `brcode …` | ✓ `/brcode` | Shipped — [Bacen Manual BR Code](OFFICIAL-SOURCES.md) |
-| **Boleto arrecadação (F-02)** | partial | — | — | detect only — validation backlog |
-| npm publish `@br-validators/core` + `@br-validators/cli` | — | — | — | v0.10.0-alpha.0 |
-| API freeze (SemVer guarantees) | — | — | — | Pending |
+| **18 validators** | ✓ | ✓ | ✓ | Shipped — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
+| **Platform APIs** | ✓ | partial | partial | `detect`, `sanitize`, `mask`, `compare`, `batch`, `diff`, `generate` (17 types) |
+| **Integrations** | `@br-validators/zod`, `@br-validators/react-hook-form` | — | — | Shipped |
+| **API freeze** | — | — | — | ✅ [VERSIONING.md](VERSIONING.md#api-freeze-100) |
 
-**Deferred to post-v1.0 or v1.1:**
+**Deferred to post-v1.0:**
 
-- Boleto arrecadação validation
 - Alphanumeric CPF (when RFB publishes spec)
 - IE SP rural `P…` format — shipped in `validateIeProdutorRural`
 - `@br-validators/adapters-correios` — CEP HTTP lookup (F-06)
@@ -95,8 +93,8 @@
 
 | Module | Package | Status |
 |--------|---------|--------|
-| **Zod schemas (F-04)** | `@br-validators/zod` | Shipped — delegates to core `validate*` |
-| **React Hook Form (F-05)** | `@br-validators/react-hook-form` | Shipped — `*Rule()` + `*Resolver()` |
+| **Zod schemas (F-04)** | `@br-validators/zod` | Shipped + npm publish in release.yml |
+| **React Hook Form (F-05)** | `@br-validators/react-hook-form` | Shipped + npm publish in release.yml |
 | CEP HTTP lookup (F-06) | — | Backlog |
 | React masked inputs (F-07) | — | Backlog |
 | PHP port (F-08) | — | Backlog |

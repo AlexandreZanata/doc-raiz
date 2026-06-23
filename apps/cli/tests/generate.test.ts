@@ -6,7 +6,7 @@ import {
   isGeneratableType,
   buildGenerateOptions,
 } from '../src/commands/generate.js';
-import { validateCpf, validateInscricaoEstadual, validateTituloEleitor, detectCardBrand } from '@br-validators/core';
+import { validateCpf, validateInscricaoEstadual, validateTituloEleitor, validateBoleto, detectCardBrand } from '@br-validators/core';
 
 describe('generate command', () => {
   it('generates CPF', () => {
@@ -16,9 +16,16 @@ describe('generate command', () => {
     expect(validateCpf(parsed.value).ok).toBe(true);
   });
 
+  it('generates boleto cobrança', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(runGenerate('boleto', { json: true, quiet: false, seed: 42 }, io)).toBe(EXIT.OK);
+    const parsed = JSON.parse(io.stdout[0] ?? '{}') as { value: string };
+    expect(validateBoleto(parsed.value).ok).toBe(true);
+  });
+
   it('rejects unknown type', () => {
     const io = { stdout: [] as string[], stderr: [] as string[] };
-    expect(runGenerate('boleto', { json: false, quiet: false }, io)).toBe(EXIT.USAGE);
+    expect(runGenerate('unknown-type', { json: false, quiet: false }, io)).toBe(EXIT.USAGE);
   });
 
   it('generates inscricao-estadual with uf', () => {

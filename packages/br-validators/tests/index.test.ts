@@ -99,6 +99,20 @@ describe('package exports', () => {
     expect(root.isFormattableDocumentType('cpf')).toBe(true);
   });
 
+  it('re-exports mask pipeline from index', () => {
+    expect(root.mask).toBeTypeOf('function');
+    expect(root.maskRuntime).toBeTypeOf('function');
+    expect(root.isMaskableDocumentType('telefone')).toBe(true);
+    expect(root.MASKABLE_DOCUMENT_TYPES).toContain('cpf');
+  });
+
+  it('re-exports compare, batch, diff from index', () => {
+    expect(root.compare).toBeTypeOf('function');
+    expect(root.compareRuntime).toBeTypeOf('function');
+    expect(root.batch).toBeTypeOf('function');
+    expect(root.diff).toBeTypeOf('function');
+  });
+
   it('re-exports CNPJ API from cnpj entry', () => {
     expect(cnpjEntry.validateCnpj).toBe(root.validateCnpj);
   });
@@ -126,6 +140,7 @@ describe('package exports', () => {
   it('re-exports BR Code API from brcode entry', () => {
     expect(brcodeEntry.parseBrCode).toBe(root.parseBrCode);
     expect(brcodeEntry.validateBrCode).toBe(root.validateBrCode);
+    expect(brcodeEntry.buildStaticPixBrCode).toBe(root.buildStaticPixBrCode);
   });
 
   it('re-exports Placa API from placa entry', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@br-validators/core",
-  "version": "0.12.0-alpha.3",
+  "version": "1.0.0",
   "description": "The Brazilian document validation library for TypeScript — CPF, CNPJ (alphanumeric), NF-e, PIX, boleto, IE (27 UFs), and 15+ more. Zero deps, fully typed, never throws.",
   "homepage": "https://www.npmjs.com/package/@br-validators/core",
   "license": "MIT",
@@ -34,6 +34,10 @@
     "detect",
     "sanitize",
     "generate",
+    "mask",
+    "compare",
+    "batch",
+    "diff",
     "typescript"
   ],
   "publishConfig": {
@@ -122,6 +126,22 @@
     "./generate": {
       "types": "./dist/generate.d.ts",
       "import": "./dist/generate.js"
+    },
+    "./mask": {
+      "types": "./dist/mask.d.ts",
+      "import": "./dist/mask.js"
+    },
+    "./compare": {
+      "types": "./dist/compare.d.ts",
+      "import": "./dist/compare.js"
+    },
+    "./batch": {
+      "types": "./dist/batch.d.ts",
+      "import": "./dist/batch.js"
+    },
+    "./diff": {
+      "types": "./dist/diff.d.ts",
+      "import": "./dist/diff.js"
     }
   },
   "files": [

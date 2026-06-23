@@ -6,7 +6,7 @@ import { Input } from '@/components/atoms/Input';
 import { Label } from '@/components/atoms/Label';
 import { QrCodePanel } from '@/components/organisms/QrCodePanel';
 import { useI18n } from '@/components/providers/I18nProvider';
-import { buildStaticPixBrCode } from '@/lib/pix/build-static-brcode';
+import { buildStaticPixBrCode } from '@br-validators/core';
 import styles from './organisms.module.css';
 
 type Props = {

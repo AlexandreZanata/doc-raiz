@@ -18,8 +18,15 @@ import { validateCep } from '../core/cep/index.js';
 import { validatePlaca } from '../core/placa/index.js';
 import { validateTelefone } from '../core/telefone/index.js';
 import { applyMask } from './apply-mask.js';
+import { generateBoletoValue } from './boleto.js';
+import { applyArrecadacaoLinhaMask, generateBoletoArrecadacaoValue } from './boleto-arrecadacao.js';
+import { generateBrcodeValue } from './brcode.js';
 import { generateCartaoCreditoValue, type GeneratableCardBrand } from './cartao-credito.js';
+import { assertCpfAlphanumericGenerateAllowed } from './cpf-alpha.js';
+import { generateIeProdutorRuralValue } from './inscricao-estadual-produtor-rural.js';
 import { generateInscricaoEstadualValue } from './inscricao-estadual.js';
+import { generateNfeChaveValue } from './nfe-chave.js';
+import { generatePixEvpValue } from './pix.js';
 import { generateTituloEleitorValue } from './titulo-eleitor.js';
 import { createRandomSource, hasRepeatedChars, type RandomSource } from './random.js';
 import type { UfCode } from '../types/validation-result.js';
@@ -36,7 +43,13 @@ export type GeneratableDocumentType =
   | 'telefone'
   | 'cartao-credito'
   | 'inscricao-estadual'
-  | 'titulo-eleitor';
+  | 'titulo-eleitor'
+  | 'pix'
+  | 'nfe-chave'
+  | 'brcode'
+  | 'boleto'
+  | 'boleto-arrecadacao'
+  | 'inscricao-estadual-produtor-rural';
 
 export type GenerateFormat =
   | 'numeric'
@@ -52,9 +65,21 @@ export type GenerateOptions = {
   seed?: number;
   uf?: UfCode;
   brand?: GeneratableCardBrand;
+  /** Static BR Code — defaults to synthetic EVP key + test merchant fields. */
+  pixKey?: string;
+  merchantName?: string;
+  merchantCity?: string;
+  amount?: string;
+  txid?: string;
 };
 
 export type { GeneratableCardBrand } from './cartao-credito.js';
+export {
+  CPF_ALPHA_GENERATE_STUB,
+  assertCpfAlphanumericGenerateAllowed,
+  rejectCpfAlphanumericGenerate,
+} from './cpf-alpha.js';
+export { applyArrecadacaoLinhaMask } from './boleto-arrecadacao.js';
 
 const CNPJ_ALNUM_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const MAX_ATTEMPTS = 50;
@@ -188,6 +213,9 @@ export function generate(type: GeneratableDocumentType, options: GenerateOptions
 
   switch (type) {
     case 'cpf':
+      if (options.format === 'alphanumeric') {
+        assertCpfAlphanumericGenerateAllowed();
+      }
       value = generateCpfValue(rng);
       break;
     case 'cnpj':
@@ -228,6 +256,30 @@ export function generate(type: GeneratableDocumentType, options: GenerateOptions
       value = generateTituloEleitorValue(options.uf, rng);
       break;
     }
+    case 'pix':
+      value = generatePixEvpValue(rng);
+      break;
+    case 'nfe-chave':
+      value = generateNfeChaveValue(rng);
+      break;
+    case 'brcode':
+      value = generateBrcodeValue(rng, {
+        pixKey: options.pixKey,
+        merchantName: options.merchantName,
+        merchantCity: options.merchantCity,
+        amount: options.amount,
+        txid: options.txid,
+      });
+      break;
+    case 'boleto':
+      value = generateBoletoValue(rng);
+      break;
+    case 'boleto-arrecadacao':
+      value = generateBoletoArrecadacaoValue(rng);
+      break;
+    case 'inscricao-estadual-produtor-rural':
+      value = generateIeProdutorRuralValue(rng);
+      break;
     default: {
       const _exhaustive: never = type;
       throw new Error(`Unsupported generatable type: ${String(_exhaustive)}`);
@@ -236,6 +288,10 @@ export function generate(type: GeneratableDocumentType, options: GenerateOptions
 
   if (options.masked && type === 'inscricao-estadual') {
     return applyInscricaoEstadualGenerateMask(value, options.uf!);
+  }
+
+  if (options.masked && type === 'boleto-arrecadacao') {
+    return applyArrecadacaoLinhaMask(value);
   }
 
   return options.masked ? applyMask(type, value) : value;
@@ -291,6 +347,13 @@ export const __generateTesting = {
   generateCnhValue: () => generateCnhValue(repeatingRng),
   generateInscricaoEstadualValue: (uf: UfCode) => generateInscricaoEstadualValue(uf, repeatingRng),
   generateTituloEleitorValue: (uf: UfCode) => generateTituloEleitorValue(uf, repeatingRng),
+  generatePixEvpValue: () => generatePixEvpValue(repeatingRng),
+  generateNfeChaveValue: () => generateNfeChaveValue(repeatingRng),
+  generateBrcodeValue: () => generateBrcodeValue(repeatingRng),
+  generateBoletoValue: () => generateBoletoValue(repeatingRng),
+  generateBoletoArrecadacaoValue: () => generateBoletoArrecadacaoValue(repeatingRng),
+  generateIeProdutorRuralValue: () => generateIeProdutorRuralValue(repeatingRng),
+  applyArrecadacaoLinhaMask,
   applyInscricaoEstadualGenerateMask: (value: string, uf: UfCode) =>
     applyInscricaoEstadualGenerateMask(value, uf),
   touchAllRngMethods: () => {

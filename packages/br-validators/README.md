@@ -25,7 +25,7 @@ Every Brazilian SaaS eventually reinvents CPF validation — usually wrong.
 (Receita Federal, Bacen, CONTRAN, TSE, SEFAZ, FEBRABAN, Anatel) so you don't have to.
 
 - ✅ **CNPJ alfanumérico** — new RFB format (effective July 2026), ready now
-- ✅ **18 document types** — CPF, CNPJ, CEP, NF-e chave, BR Code PIX, boleto, CNH, RENAVAM, placa, PIS/PASEP, PIX key, cartão de crédito, IE (27 UFs), IE produtor rural, título de eleitor, telefone, + platform APIs
+- ✅ **18+ document types** — CPF, CNPJ, CEP, NF-e chave, BR Code PIX, boleto (cobrança + arrecadação), CNH, RENAVAM, placa, PIS/PASEP, PIX key, cartão de crédito, IE (27 UFs), IE produtor rural, título de eleitor, telefone, + platform APIs above
 - ✅ **Zero runtime dependencies** — pure TypeScript logic, no HTTP calls
 - ✅ **Never throws** — every function returns `{ ok: true, value } | { ok: false, message, code }`
 - ✅ **Tree-shakeable** — subpath imports per document type
@@ -93,9 +93,16 @@ generate('cnh');
 generate('inscricao-estadual', { uf: 'SP', seed: 42 });
 generate('titulo-eleitor', { uf: 'SC', seed: 42 });
 generate('cartao-credito', { brand: 'visa', seed: 42 });
+generate('pix', { seed: 42 });           // EVP UUID — Bacen DICT
+generate('nfe-chave', { seed: 42 });     // MOC §2.2.6 modulo-11 DV
+generate('brcode', { seed: 42 });        // static PIX EMV + CRC16
+generate('boleto', { masked: true });    // FEBRABAN cobrança Situação 1
+generate('boleto-arrecadacao');          // FEBRABAN Layout v7
+generate('inscricao-estadual-produtor-rural', { masked: true }); // SP SINTEGRA Bloco II
 ```
 
-> `generate()` is for test fixtures and seed data only — never use in production.
+> `generate()` is for test fixtures and seed data only — never use in production.  
+> Alphanumeric CPF: `generate('cpf', { format: 'alphanumeric' })` throws `CPF_ALPHA_SPEC_PENDING` until RFB publishes the official algorithm ([OFFICIAL-SOURCES.md](https://github.com/AlexandreZanata/br-validators/blob/main/docs/OFFICIAL-SOURCES.md)).
 
 ### ETL / data cleanup
 
@@ -121,11 +128,65 @@ const result = validateNfeChave('52060433009911002506550120000007800267301615');
 ### BR Code (PIX QR payload)
 
 ```typescript
-import { validateBrCode, parseBrCode } from '@br-validators/core/brcode';
+import {
+  buildStaticPixBrCode,
+  parseBrCode,
+  validateBrCode,
+} from '@br-validators/core/brcode';
 
-parseBrCode('00020126580014br.gov.bcb.pix0136...');
+// Permanent static QR (no amount — payer sets value at payment time)
+const payload = buildStaticPixBrCode({
+  pixKey: 'pix@bcb.gov.br',
+  merchantName: 'Fulano de Tal',
+  merchantCity: 'BRASILIA',
+});
+validateBrCode(payload).ok; // true
+
+// Fixed-value static QR
+buildStaticPixBrCode({
+  pixKey: 'pix@bcb.gov.br',
+  merchantName: 'Fulano de Tal',
+  merchantCity: 'BRASILIA',
+  amount: '10.50',
+});
+
+parseBrCode(payload);
 // { ok: true, pixKey, pixKeyType, merchantName, merchantCity, amount, txid }
 ```
+
+**Playground:** [doc-raiz-playground.vercel.app/pix](https://doc-raiz-playground.vercel.app/pix) renders the QR image from `buildStaticPixBrCode` output. Official sources: [Bacen Manual BR Code](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões PIX](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf).
+
+### Boleto — cobrança + arrecadação
+
+```typescript
+import { validateBoleto, validateArrecadacao } from '@br-validators/core/boleto';
+
+validateBoleto('03399.02579 08991.834006 71742.301014 6 14500000099668');
+// cobrança Situação 1/2 — FEBRABAN FB-0061/2021
+
+validateArrecadacao('846300000003812345678906123456789015234567890129');
+// arrecadação 48-digit — FEBRABAN Layout v7
+```
+
+### Platform APIs — mask, compare, batch, diff
+
+```typescript
+import { mask, compare, batch, diff } from '@br-validators/core';
+
+mask('12345678909', 'cpf');
+// { ok: true, formatted: '123.456.789-09' }
+
+compare('123.456.789-09', '12345678909', 'cpf');
+// { equal: true }
+
+batch(['12345678909', 'invalid'], 'cpf');
+// { valid: [...], invalid: [...], summary: { total: 2, valid: 1, invalid: 1 } }
+
+diff('12345678909', '12345678901', 'cpf');
+// { changed: true, fields: [{ field: 'dv', a: '09', b: '01' }] }
+```
+
+Per-type rules and official sources: [docs/OFFICIAL-SOURCES.md](https://github.com/AlexandreZanata/br-validators/blob/main/docs/OFFICIAL-SOURCES.md) · API contract: [docs/LIBRARY-API.md](https://github.com/AlexandreZanata/br-validators/blob/main/docs/LIBRARY-API.md)
 
 ### Form handler (React / Next.js)
 
@@ -156,8 +217,12 @@ br-validators cnpj validate "$CNPJ" --quiet || exit 1
 br-validators ie validate "$IE" --uf SP --json
 br-validators detect '123.456.789-09' --json
 br-validators generate cpf --seed 42 --masked
-br-validators generate inscricao-estadual --uf SP --seed 42
-br-validators generate cartao-credito --brand visa --seed 42
+br-validators generate pix --seed 42
+br-validators generate nfe-chave --seed 42
+br-validators generate brcode --seed 42
+br-validators generate boleto --masked --seed 42
+br-validators generate boleto-arrecadacao --seed 42
+br-validators generate inscricao-estadual-produtor-rural --masked --seed 42
 ```
 
 ---
@@ -176,15 +241,21 @@ br-validators generate cartao-credito --brand visa --seed 42
 | Placa (Mercosul + legada) | `@br-validators/core/placa` | `br-validators placa …` | `/placa` |
 | PIS / PASEP / NIS | `@br-validators/core/pis-pasep` | `br-validators pis-pasep …` | `/pis` |
 | PIX key | `@br-validators/core/pix` | `br-validators pix …` | `/pix` |
-| BR Code (PIX QR payload) | `@br-validators/core/brcode` | `br-validators brcode …` | `/brcode` |
-| Boleto (Situação 1 + 2) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
+| BR Code (PIX QR payload + builder) | `@br-validators/core/brcode` | `br-validators brcode …` | `/brcode` |
+| Boleto cobrança (Situação 1 + 2) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
+| Boleto arrecadação (48/44) | `@br-validators/core/boleto` | `br-validators boleto …` | `/boleto` |
 | NF-e / NFC-e chave (44 digits) | `@br-validators/core/nfe-chave` | `br-validators nfe-chave …` | `/nfe-chave` |
 | Cartão de crédito (Luhn) | `@br-validators/core/cartao-credito` | `br-validators cartao …` | `/cartao-credito` |
 | Inscrição Estadual (27 UFs) | `@br-validators/core/inscricao-estadual` | `br-validators ie … --uf SP` | `/ie` |
-| IE Produtor Rural | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie …` (auto-detect `P` prefix) | `/ie` |
+| IE Produtor Rural | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie …` (auto `P`) | `/ie` |
 | **detect()** | `@br-validators/core/detect` | `br-validators detect …` | `/detect` |
 | **sanitize()** | `@br-validators/core/sanitize` | `br-validators sanitize …` | `/sanitize` |
+| **mask()** | `@br-validators/core/mask` | — | via per-type `format` |
+| **compare()** | `@br-validators/core/compare` | — | — |
+| **batch()** | `@br-validators/core/batch` | — | — |
+| **diff()** | `@br-validators/core/diff` | — | — |
 | **generate()** | `@br-validators/core/generate` | `br-validators generate …` | `/generate` |
+| **buildStaticPixBrCode()** | `@br-validators/core/brcode` | — | `/pix` (QR panel) |
 
 Full official sources per type: [docs/OFFICIAL-SOURCES.md](https://github.com/AlexandreZanata/br-validators/blob/main/docs/OFFICIAL-SOURCES.md)
 
@@ -207,8 +278,8 @@ import { parseNfeChave } from '@br-validators/core/nfe-chave';
 | Package | Status |
 |---|---|
 | [`@br-validators/cli`](https://www.npmjs.com/package/@br-validators/cli) | Published |
-| `@br-validators/zod` | Coming soon — Zod schemas |
-| `@br-validators/react-hook-form` | Coming soon — RHF resolvers |
+| [`@br-validators/zod`](https://www.npmjs.com/package/@br-validators/zod) | Published — Zod 3/4 schemas |
+| [`@br-validators/react-hook-form`](https://www.npmjs.com/package/@br-validators/react-hook-form) | Published — RHF resolvers |
 
 ---
 

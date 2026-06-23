@@ -14,6 +14,12 @@ import {
   validateCartaoCredito,
   validateInscricaoEstadual,
   validateTituloEleitor,
+  validatePixKey,
+  validateNfeChave,
+  validateBrCode,
+  validateBoleto,
+  validateArrecadacao,
+  validateIeSpRural,
   detectCardBrand,
   type GeneratableDocumentType,
   type GeneratableCardBrand,
@@ -60,6 +66,18 @@ function confirmValid(type: GeneratableDocumentType, value: string, uf: UfCode):
       return validateInscricaoEstadual(value, { uf }).ok;
     case 'titulo-eleitor':
       return validateTituloEleitor(value).ok;
+    case 'pix':
+      return validatePixKey(value).ok;
+    case 'nfe-chave':
+      return validateNfeChave(value).ok;
+    case 'brcode':
+      return validateBrCode(value).ok;
+    case 'boleto':
+      return validateBoleto(value).ok;
+    case 'boleto-arrecadacao':
+      return validateArrecadacao(value).ok;
+    case 'inscricao-estadual-produtor-rural':
+      return validateIeSpRural(value).ok;
     default:
       return false;
   }

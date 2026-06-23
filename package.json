@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "pnpm --filter @br-validators/core build && pnpm -r --sequential --filter '!@br-validators/core' build",
     "prepare": "pnpm --filter @br-validators/core build",
     "test": "pnpm -r test",
     "test:coverage": "pnpm --filter @br-validators/core test:coverage && pnpm --filter @br-validators/cli test:coverage && pnpm --filter @br-validators/zod test:coverage && pnpm --filter @br-validators/react-hook-form test:coverage",

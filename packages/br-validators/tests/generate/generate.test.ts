@@ -18,6 +18,12 @@ import { validateTelefone } from '../../src/core/telefone/index.js';
 import { validateCartaoCredito } from '../../src/core/cartao-credito/index.js';
 import { validateInscricaoEstadual } from '../../src/core/inscricao-estadual/index.js';
 import { validateTituloEleitor } from '../../src/core/titulo-eleitor/index.js';
+import { validatePixKey } from '../../src/core/pix/index.js';
+import { validateNfeChave } from '../../src/core/nfe-chave/index.js';
+import { validateBrCode } from '../../src/core/brcode/index.js';
+import { validateBoleto } from '../../src/core/boleto/index.js';
+import { validateArrecadacao } from '../../src/core/boleto/arrecadacao.js';
+import { validateIeSpRural } from '../../src/core/inscricao-estadual/sp-rural.js';
 import { detectCardBrand } from '../../src/core/cartao-credito/index.js';
 import ieSpVectors from '../vectors/ie.sp.official.json';
 import cnpjVectors from '../vectors/cnpj.official.json';
@@ -29,6 +35,12 @@ import cnhVectors from '../vectors/cnh.official.json';
 import telefoneVectors from '../vectors/telefone.official.json';
 import tituloVectors from '../vectors/titulo-eleitor.official.json';
 import cartaoVectors from '../vectors/cartao-credito.official.json';
+import nfeVectors from '../vectors/nfe-chave.official.json';
+import pixVectors from '../vectors/pix.official.json';
+import brcodeVectors from '../vectors/brcode.official.json';
+import boletoVectors from '../vectors/boleto.official.json';
+import boletoArrecadacaoVectors from '../vectors/boleto-arrecadacao.official.json';
+import ieSpRuralVectors from '../vectors/inscricao-estadual-produtor-rural.official.json';
 
 const GENERATABLE_TYPES = [
   'cpf',
@@ -42,6 +54,12 @@ const GENERATABLE_TYPES = [
   'cartao-credito',
   'inscricao-estadual',
   'titulo-eleitor',
+  'pix',
+  'nfe-chave',
+  'brcode',
+  'boleto',
+  'boleto-arrecadacao',
+  'inscricao-estadual-produtor-rural',
 ] as const;
 
 const VALIDATORS = {
@@ -56,6 +74,12 @@ const VALIDATORS = {
   'cartao-credito': validateCartaoCredito,
   'inscricao-estadual': (value: string) => validateInscricaoEstadual(value, { uf: 'SP' }),
   'titulo-eleitor': (value: string) => validateTituloEleitor(value),
+  pix: validatePixKey,
+  'nfe-chave': validateNfeChave,
+  brcode: validateBrCode,
+  boleto: validateBoleto,
+  'boleto-arrecadacao': validateArrecadacao,
+  'inscricao-estadual-produtor-rural': validateIeSpRural,
 };
 
 describe('generate()', () => {
@@ -144,6 +168,13 @@ describe('generate()', () => {
     expect(__generateTesting.generateCnhValue()).toHaveLength(11);
     expect(__generateTesting.generateInscricaoEstadualValue('SP')).toHaveLength(12);
     expect(__generateTesting.generateTituloEleitorValue('SP')).toHaveLength(12);
+    expect(__generateTesting.generatePixEvpValue()).toMatch(/^[0-9a-f-]{36}$/);
+    expect(__generateTesting.generateNfeChaveValue()).toHaveLength(44);
+    expect(__generateTesting.generateBrcodeValue().length).toBeGreaterThan(40);
+    expect(__generateTesting.generateBoletoValue()).toHaveLength(47);
+    expect(__generateTesting.generateBoletoArrecadacaoValue()).toHaveLength(48);
+    expect(__generateTesting.generateIeProdutorRuralValue()).toHaveLength(13);
+    expect(__generateTesting.applyArrecadacaoLinhaMask(boletoArrecadacaoVectors.primary.linha)).toContain(' ');
     expect(__generateTesting.applyInscricaoEstadualGenerateMask(ieSpVectors.golden.stripped, 'SP')).toContain('.');
     expect(__generateTesting.applyInscricaoEstadualGenerateMask('123', 'SP')).toBe('123');
     __generateTesting.touchAllRngMethods();
@@ -163,6 +194,12 @@ describe('generate()', () => {
       ['cartao-credito', cartaoVectors.visa.canonical],
       ['inscricao-estadual', ieSpVectors.golden.stripped],
       ['titulo-eleitor', tituloVectors.primary.canonical],
+      ['pix', pixVectors.evp.primary],
+      ['nfe-chave', nfeVectors.primary.canonical],
+      ['brcode', brcodeVectors.staticEvp.payload],
+      ['boleto', boletoVectors.golden.santander.linhaStripped],
+      ['boleto-arrecadacao', boletoArrecadacaoVectors.primary.linha],
+      ['inscricao-estadual-produtor-rural', ieSpRuralVectors.golden.canonical],
     ];
     for (const [type, value] of cases) {
       expect(applyMask(type, value).length).toBeGreaterThan(0);
@@ -182,7 +219,9 @@ describe('generate()', () => {
             ? { masked: true, seed: 77, uf: 'SC' as const }
             : type === 'cartao-credito'
               ? { masked: true, seed: 77, brand: 'visa' as const }
-              : { masked: true, seed: 77 };
+              : type === 'brcode'
+                ? { masked: true, seed: 77, amount: '1.00', txid: 'ABC' }
+                : { masked: true, seed: 77 };
       const value = generate(type, options);
       expect(value.length).toBeGreaterThan(0);
     }
@@ -201,6 +240,12 @@ describe('generate()', () => {
     expect(applyMask('cartao-credito', 'bad')).toBe('bad');
     expect(applyMask('inscricao-estadual', 'bad')).toBe('bad');
     expect(applyMask('titulo-eleitor', 'bad')).toBe('bad');
+    expect(applyMask('pix', 'bad')).toBe('bad');
+    expect(applyMask('nfe-chave', 'bad')).toBe('bad');
+    expect(applyMask('boleto', 'bad')).toBe('bad');
+    expect(applyMask('boleto-arrecadacao', 'bad')).toBe('bad');
+    expect(applyMask('brcode', 'bad')).toBe('bad');
+    expect(applyMask('inscricao-estadual-produtor-rural', 'bad')).toBe('bad');
   });
 
   it('applyMask default branch via cast', async () => {
