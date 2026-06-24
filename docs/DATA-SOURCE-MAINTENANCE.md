@@ -35,6 +35,16 @@ An alert is recorded when:
 
 **Policy:** embedded JSON in `packages/br-validators/src/**/data/` is **never deleted** on fetch failure. The published API keeps serving the last successful capture (`capturadoEm` in `metadata.json`).
 
+### Stale baseline metadata (report accuracy)
+
+If `metadata.json` has `alteracoes.comparadoCom: null` with non-zero `adicionados` from a **first embed** that never ran a second fetch, the bot **seals** the baseline at the start of each run:
+
+- Sets `comparadoCom` → `capturadoEm`
+- Zeros `adicionados` / `removidos` / `alterados`
+- Report drift counts only when `comparadoCom` is set **and** rows changed on this run (or snapshot diff on full refresh)
+
+This prevents false `+42321` totals and accidental auto-PATCH publishes. See `scripts/lib/drift-detection.ts` and `scripts/lib/seal-baseline-metadata.ts`.
+
 ---
 
 ## What consumers see

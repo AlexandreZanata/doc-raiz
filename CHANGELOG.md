@@ -15,9 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Daily data refresh bot (Phase 30)** — cron 00:00 America/Sao_Paulo; 5 fetch retries × 2 min; field-level drift logs; source health escalation (warning → critical); `CRITICAL-ALERTS.md`; full-auto PATCH publish on drift
 
-### Changed
+### Fixed
 
-- Data bot schedule: weekly → **daily**; `DatasetMetadata.verificacao.agendamento` → `diario`
+- **Data refresh report** — seal stale first-embed metadata (`comparadoCom: null`) so reports no longer show false `+42321` drift or trigger accidental auto-PATCH; `field-changes/` always written with `no_drift` when unchanged
 
 ---
 

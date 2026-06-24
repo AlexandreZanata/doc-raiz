@@ -1,5 +1,5 @@
 {
-  "executadoEm": "2026-06-24T14:55:30.442Z",
+  "executadoEm": "2026-06-24T15:25:25.265Z",
   "runDate": "2026-06-24",
   "schedule": "diario",
   "agendamento": "diario",
@@ -60,12 +60,12 @@
     },
     {
       "id": "moedas",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 154,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "moedas": 154
@@ -73,12 +73,12 @@
     },
     {
       "id": "paises-bacen",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 252,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "paises": 252
@@ -86,12 +86,12 @@
     },
     {
       "id": "incoterms",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 11,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "incoterms": 11
@@ -127,12 +127,12 @@
     },
     {
       "id": "cnaes",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 1332,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "cnaes": 1332
@@ -140,12 +140,12 @@
     },
     {
       "id": "cfop",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 689,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "cfop": 689
@@ -153,12 +153,12 @@
     },
     {
       "id": "natureza-juridica",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 90,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "naturezas": 90
@@ -166,12 +166,12 @@
     },
     {
       "id": "nbs",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 917,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "nbs": 917
@@ -179,12 +179,12 @@
     },
     {
       "id": "cest",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 1018,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "cest": 1018
@@ -192,12 +192,12 @@
     },
     {
       "id": "ncm",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 10515,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "ncm": 10515
@@ -205,12 +205,12 @@
     },
     {
       "id": "cbo",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 2694,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "cbo": 2694
@@ -218,12 +218,12 @@
     },
     {
       "id": "cep-faixas",
-      "status": "changed",
+      "status": "unchanged",
       "alteracoes": {
-        "adicionados": 24649,
+        "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": null
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "faixas": 24649
@@ -280,11 +280,12 @@
   "sourceAlerts": [],
   "resumo": {
     "datasetsVerificados": 20,
-    "datasetsAlterados": 11,
-    "totalAdicionados": 42321,
+    "datasetsAlterados": 0,
+    "totalAdicionados": 0,
     "totalRemovidos": 0,
     "totalAlterados": 0,
     "sourceAlerts": 0,
-    "criticalAlerts": 0
+    "criticalAlerts": 0,
+    "baselinesSelados": 0
   }
 }

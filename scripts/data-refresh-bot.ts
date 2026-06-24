@@ -5,11 +5,14 @@ import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
 import { writeCriticalAlertsFiles } from './lib/critical-alerts-writer.js';
+import { resolveDatasetDrift, sumReportTotals } from './lib/drift-detection.js';
 import { exitWithError } from './lib/errors.js';
 import {
   buildFieldChangesReport,
   snapshotDatasetJson,
+  type FieldChangesReport,
 } from './lib/field-change-report.js';
+import { sealAllStaleBaselines } from './lib/seal-baseline-metadata.js';
 import { parseDatasetMetadata } from './lib/parse-metadata.js';
 import {
   generateDataFreshnessDoc,
@@ -210,17 +213,42 @@ async function pruneDailyArchives(): Promise<void> {
   }
 }
 
+function buildFieldChangesFromReport(
+  runDate: string,
+  datasetEntries: readonly RefreshReportDataset[],
+): FieldChangesReport {
+  const hasDrift = datasetEntries.some((entry) => entry.status === 'changed');
+  return {
+    date: runDate,
+    summary: hasDrift ? 'drift' : 'no_drift',
+    datasets: datasetEntries.map((entry) => {
+      if (entry.status === 'unchanged') {
+        return { id: entry.id, status: 'unchanged' as const };
+      }
+      return {
+        id: entry.id,
+        status: 'changed' as const,
+        adicionados: entry.alteracoes.adicionados,
+        removidos: entry.alteracoes.removidos,
+        alterados: entry.alteracoes.alterados,
+        ...(entry.camposAlterados === undefined ? {} : { camposAlterados: entry.camposAlterados }),
+      };
+    }),
+  };
+}
+
 async function writeReports(
   dryRun: boolean,
   noArchive: boolean,
   snapshots: ReadonlyMap<string, ReadonlyMap<string, string>> | null,
+  baselinesSelados: number,
 ): Promise<RefreshReport> {
   const runDate = todayIsoDate();
   const datasets = await readAllMetadata();
   const { alerts: sourceAlerts, healthStates } = await collectSourceAlerts(runDate);
 
   const comparadoCom = datasets[0]?.alteracoes.comparadoCom ?? null;
-  const fieldChanges =
+  const snapshotFieldChanges =
     snapshots === null
       ? null
       : await buildFieldChangesReport(
@@ -232,19 +260,28 @@ async function writeReports(
         );
 
   const fieldChangeById = new Map(
-    fieldChanges?.datasets.map((entry) => [entry.id, entry]) ?? [],
+    snapshotFieldChanges?.datasets.map((entry) => [entry.id, entry]) ?? [],
   );
 
   const datasetEntries: RefreshReportDataset[] = datasets.map((metadata) => {
     const fieldEntry = fieldChangeById.get(metadata.id);
-    const changed =
-      metadata.alteracoes.adicionados > 0 ||
-      metadata.alteracoes.removidos > 0 ||
-      metadata.alteracoes.alterados > 0;
+    const drift = resolveDatasetDrift({
+      metadataChanges: metadata.alteracoes,
+      capturadoEm: metadata.capturadoEm,
+      ...(fieldEntry === undefined
+        ? {}
+        : {
+            fieldStatus: fieldEntry.status,
+            fieldAdicionados: fieldEntry.adicionados,
+            fieldRemovidos: fieldEntry.removidos,
+            fieldAlterados: fieldEntry.alterados,
+          }),
+    });
+
     return {
       id: metadata.id,
-      status: changed ? 'changed' : 'unchanged',
-      alteracoes: metadata.alteracoes,
+      status: drift.status,
+      alteracoes: drift.alteracoes,
       contagens: metadata.contagens,
       ...(fieldEntry?.camposAlterados === undefined
         ? {}
@@ -252,6 +289,9 @@ async function writeReports(
     };
   });
 
+  const totals = sumReportTotals(datasetEntries);
+  const fieldChanges =
+    snapshotFieldChanges ?? buildFieldChangesFromReport(runDate, datasetEntries);
   const criticalAlerts = sourceAlerts.filter((alert) => alert.severity === 'critical').length;
 
   const report: RefreshReport = {
@@ -263,20 +303,19 @@ async function writeReports(
     sourceAlerts,
     resumo: {
       datasetsVerificados: datasets.length,
-      datasetsAlterados: datasetEntries.filter((entry) => entry.status === 'changed').length,
-      totalAdicionados: datasetEntries.reduce((sum, entry) => sum + entry.alteracoes.adicionados, 0),
-      totalRemovidos: datasetEntries.reduce((sum, entry) => sum + entry.alteracoes.removidos, 0),
-      totalAlterados: datasetEntries.reduce((sum, entry) => sum + entry.alteracoes.alterados, 0),
+      datasetsAlterados: totals.datasetsAlterados,
+      totalAdicionados: totals.totalAdicionados,
+      totalRemovidos: totals.totalRemovidos,
+      totalAlterados: totals.totalAlterados,
       sourceAlerts: sourceAlerts.length,
       criticalAlerts,
+      baselinesSelados,
     },
   };
 
   if (dryRun) {
     console.log('Dry run — report:', JSON.stringify(report, null, 2));
-    if (fieldChanges !== null) {
-      console.log('Field changes:', JSON.stringify(fieldChanges, null, 2));
-    }
+    console.log('Field changes:', JSON.stringify(fieldChanges, null, 2));
     return report;
   }
 
@@ -287,7 +326,7 @@ async function writeReports(
   await writeFile(FRESHNESS_DOC, generateDataFreshnessDoc(report, datasets));
   await writeFile(
     JOB_SUMMARY_PATH,
-    generateJobSummary(report, fieldChanges ?? undefined),
+    generateJobSummary(report, fieldChanges),
   );
 
   await writeCriticalAlertsFiles(
@@ -300,13 +339,11 @@ async function writeReports(
     await mkdir(DAILY_DIR, { recursive: true });
     await writeFile(path.join(DAILY_DIR, `${runDate}.json`), `${JSON.stringify(report, null, 2)}\n`);
 
-    if (fieldChanges !== null) {
-      await mkdir(FIELD_CHANGES_DIR, { recursive: true });
-      await writeFile(
-        path.join(FIELD_CHANGES_DIR, `${runDate}.json`),
-        `${JSON.stringify(fieldChanges, null, 2)}\n`,
-      );
-    }
+    await mkdir(FIELD_CHANGES_DIR, { recursive: true });
+    await writeFile(
+      path.join(FIELD_CHANGES_DIR, `${runDate}.json`),
+      `${JSON.stringify(fieldChanges, null, 2)}\n`,
+    );
 
     await pruneDailyArchives();
   }
@@ -318,6 +355,11 @@ async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   let snapshots: Map<string, Map<string, string>> | null = null;
 
+  const baselinesSelados = await sealAllStaleBaselines(DATASET_METADATA_PATHS);
+  if (baselinesSelados > 0) {
+    console.log(`Sealed ${String(baselinesSelados)} stale baseline metadata file(s).`);
+  }
+
   if (!options.reportOnly) {
     snapshots = await snapshotDatasetJson(ROOT, FIELD_CHANGE_DATASET_IDS);
     await mkdir(FETCH_OUTCOME_DIR, { recursive: true });
@@ -326,7 +368,7 @@ async function main(): Promise<void> {
     }
   }
 
-  const report = await writeReports(options.dryRun, options.noArchive, snapshots);
+  const report = await writeReports(options.dryRun, options.noArchive, snapshots, baselinesSelados);
 
   if (report.sourceAlerts.length > 0) {
     console.warn(`Source alerts: ${String(report.sourceAlerts.length)} — embedded data retained.`);

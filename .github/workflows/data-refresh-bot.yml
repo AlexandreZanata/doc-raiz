@@ -74,7 +74,7 @@ jobs:
             echo "changed=0" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          CHANGED=$(node -e "const fs=require('node:fs'); const r=JSON.parse(fs.readFileSync('data/refresh-reports/latest.json','utf8')); process.stdout.write(String(r.resumo?.datasetsAlterados ?? 0));")
+          CHANGED=$(node -e "const fs=require('node:fs'); const r=JSON.parse(fs.readFileSync('data/refresh-reports/latest.json','utf8')); const n=r.resumo?.datasetsAlterados ?? 0; const add=r.resumo?.totalAdicionados ?? 0; process.stdout.write(String(n > 0 && add > 0 ? n : 0));")
           echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
 
       - name: Bump PATCH version

@@ -25,6 +25,7 @@ export interface RefreshReport {
     totalAlterados: number;
     sourceAlerts: number;
     criticalAlerts: number;
+    baselinesSelados: number;
   };
 }
 
@@ -108,7 +109,8 @@ export function generateDataFreshnessDoc(report: RefreshReport, datasets: Datase
       .map(([key, value]) => `${String(value)} ${key}`)
       .join(' / ');
     const source = dataset.endpoints[0] ?? dataset.fonte;
-    const { adicionados, removidos, alterados } = dataset.alteracoes;
+    const alteracoes = reportEntry?.alteracoes ?? dataset.alteracoes;
+    const { adicionados, removidos, alterados } = alteracoes;
     lines.push(
       `| ${dataset.nome} | ${dataset.capturadoEm} | ${counts} | ${String(adicionados)} | ${String(removidos)} | ${String(alterados)} | ${formatFieldsDelta(reportEntry?.camposAlterados)} | [${dataset.fonte}](${source}) |`,
     );
@@ -154,7 +156,8 @@ export function generatePrBody(report: RefreshReport, datasets: DatasetMetadata[
       .map(([key, value]) => `${String(value)} ${key}`)
       .join(' / ');
     const source = dataset.endpoints[0] ?? '#';
-    const { adicionados, removidos, alterados } = dataset.alteracoes;
+    const alteracoes = reportEntry?.alteracoes ?? dataset.alteracoes;
+    const { adicionados, removidos, alterados } = alteracoes;
     lines.push(
       `| ${dataset.id} | ${counts} | ${String(adicionados)} | ${String(removidos)} | ${String(alterados)} | ${formatFieldsDelta(reportEntry?.camposAlterados)} | ${dataset.capturadoEm} | [official](${source}) |`,
     );
@@ -206,6 +209,7 @@ export function generateJobSummary(
     `- Run date: ${report.runDate}`,
     `- Datasets checked: ${String(report.resumo.datasetsVerificados)}`,
     `- Datasets changed: ${String(report.resumo.datasetsAlterados)}`,
+    `- Baselines sealed this run: ${String(report.resumo.baselinesSelados)}`,
     `- Source alerts: ${String(report.resumo.sourceAlerts)}`,
     `- Critical alerts: ${String(report.resumo.criticalAlerts)}`,
     '',
