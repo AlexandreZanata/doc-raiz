@@ -109,7 +109,6 @@ const FETCH_SCRIPTS = [
   'scripts/fetch-ncm.ts',
   'scripts/fetch-cbo.ts',
   'scripts/fetch-portos.ts',
-  'scripts/fetch-anp-combustiveis.ts',
   'scripts/fetch-pncp-reference.ts',
   'scripts/fetch-transparencia-snapshots.ts',
 ] as const;
