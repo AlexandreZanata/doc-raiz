@@ -1,6 +1,6 @@
 {
   "name": "@br-validators/express",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Express and Fastify middleware for Brazilian document validators — delegates to @br-validators/core",
   "license": "MIT",
   "type": "module",
@@ -44,7 +44,7 @@
   ],
   "scripts": {
     "build": "tsup",
-    "prepublishOnly": "pnpm run build",
+    "prepublishOnly": "node ../../scripts/assert-ci-publish.mjs && pnpm run build",
     "pretypecheck": "pnpm --filter @br-validators/core build",
     "pretest": "pnpm --filter @br-validators/core build",
     "pretest:coverage": "pnpm --filter @br-validators/core build",

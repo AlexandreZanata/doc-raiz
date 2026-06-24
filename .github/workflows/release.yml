@@ -1,7 +1,9 @@
 name: Release
 
 # Publish to npm when a version tag is pushed on main (after merge + version bump).
-# Requires repository secret: NPM_TOKEN (Automation token with publish on @br-validators).
+# CI-only: local pnpm publish is blocked by scripts/assert-ci-publish.mjs.
+# Publishes all six @br-validators/* packages (see docs/BRANCHING.md).
+# Requires repository secret: NPM_TOKEN (Automation or granular — read/write + create on @br-validators/*).
 
 on:
   push:
@@ -73,33 +75,31 @@ jobs:
       - name: Quality gate
         run: pnpm verify
 
-      - name: Publish @br-validators/core
-        run: pnpm --filter @br-validators/core publish --access public --tag ${{ steps.version.outputs.npm_tag }} --no-git-checks
+      - name: Publish npm packages (CI only)
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          NPM_TAG="${{ steps.version.outputs.npm_tag }}"
+          chmod +x scripts/publish-npm-if-missing.sh
+          ./scripts/publish-npm-if-missing.sh @br-validators/core @br-validators/core "$VERSION" "$NPM_TAG"
+          ./scripts/publish-npm-if-missing.sh @br-validators/cli @br-validators/cli "$VERSION" "$NPM_TAG"
+          ./scripts/publish-npm-if-missing.sh @br-validators/zod @br-validators/zod "$VERSION" "$NPM_TAG"
+          ./scripts/publish-npm-if-missing.sh @br-validators/react-hook-form @br-validators/react-hook-form "$VERSION" "$NPM_TAG"
+          ./scripts/publish-npm-if-missing.sh @br-validators/express @br-validators/express "$VERSION" "$NPM_TAG"
+          ./scripts/publish-npm-if-missing.sh @br-validators/vue @br-validators/vue "$VERSION" "$NPM_TAG"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish @br-validators/cli
-        run: pnpm --filter @br-validators/cli publish --access public --tag ${{ steps.version.outputs.npm_tag }} --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish @br-validators/zod
-        run: pnpm --filter @br-validators/zod publish --access public --tag ${{ steps.version.outputs.npm_tag }} --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish @br-validators/react-hook-form
-        run: pnpm --filter @br-validators/react-hook-form publish --access public --tag ${{ steps.version.outputs.npm_tag }} --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish @br-validators/express
-        run: pnpm --filter @br-validators/express publish --access public --tag ${{ steps.version.outputs.npm_tag }} --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish @br-validators/vue
-        run: pnpm --filter @br-validators/vue publish --access public --tag ${{ steps.version.outputs.npm_tag }} --no-git-checks
+      - name: Verify npm registry
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          for PKG in core cli zod react-hook-form express vue; do
+            PUBLISHED="$(npm view "@br-validators/${PKG}@${VERSION}" version)"
+            if [ "$PUBLISHED" != "$VERSION" ]; then
+              echo "Expected @br-validators/${PKG}@${VERSION}, got: ${PUBLISHED:-<missing>}"
+              exit 1
+            fi
+            echo "OK: @br-validators/${PKG}@${VERSION}"
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

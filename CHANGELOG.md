@@ -11,6 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [1.6.1] - 2026-06-24
+
+### Changed
+
+- **npm publish is CI-only** — `scripts/assert-ci-publish.mjs` blocks local `pnpm publish`; releases via tag push or Release workflow `workflow_dispatch`
+- **Release workflow** — idempotent publish (`scripts/publish-npm-if-missing.sh`), post-publish registry verification for all six packages, `npm-dist-tag` covers express and vue
+- **Docs** — `docs/BRANCHING.md`, `docs/VERSIONING.md`, release agent rules updated for six-package CI flow
+
+---
+
+## [1.6.0] - 2026-06-24
+
 ### Added
 
 - **`@br-validators/express`** — `brValidate()` Express middleware and `brValidateFastify()` preHandler; 18 document type ids; structured HTTP 400 `{ ok: false, field, code, message }`; body/query/params locations; optional `uf` for IE/RG

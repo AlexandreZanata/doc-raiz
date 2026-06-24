@@ -287,14 +287,14 @@ Every shipped type exists in **library + CLI + playground**. See [docs/DELIVERY-
 
 | Package | npm | Version |
 |---------|-----|---------|
-| `@br-validators/core` | [npm](https://www.npmjs.com/package/@br-validators/core) | `1.5.0` |
-| `@br-validators/cli` | [npm](https://www.npmjs.com/package/@br-validators/cli) | `1.5.0` |
-| `@br-validators/zod` | [npm](https://www.npmjs.com/package/@br-validators/zod) | `1.5.0` |
-| `@br-validators/react-hook-form` | [npm](https://www.npmjs.com/package/@br-validators/react-hook-form) | `1.5.0` |
-| `@br-validators/express` | [npm](https://www.npmjs.com/package/@br-validators/express) | `1.5.0` |
-| `@br-validators/vue` | [npm](https://www.npmjs.com/package/@br-validators/vue) | `1.5.0` |
+| `@br-validators/core` | [npm](https://www.npmjs.com/package/@br-validators/core) | `1.6.1` |
+| `@br-validators/cli` | [npm](https://www.npmjs.com/package/@br-validators/cli) | `1.6.1` |
+| `@br-validators/zod` | [npm](https://www.npmjs.com/package/@br-validators/zod) | `1.6.1` |
+| `@br-validators/react-hook-form` | [npm](https://www.npmjs.com/package/@br-validators/react-hook-form) | `1.6.1` |
+| `@br-validators/express` | [npm](https://www.npmjs.com/package/@br-validators/express) | `1.6.1` |
+| `@br-validators/vue` | [npm](https://www.npmjs.com/package/@br-validators/vue) | `1.6.1` |
 
-**v1.5.0** — federal open-data embeds (natureza-juridica, NBS, CEST, moedas, países Bacen, Incoterms, portos, aeroportos) plus CLI reference-lookup and playground `/data/fiscal|trade|logistics`. See [CHANGELOG.md](CHANGELOG.md) and [docs/VERSIONING.md](docs/VERSIONING.md#api-freeze-100).
+**v1.6.1** — CI-only npm publish for all six packages; express + vue adapters; RG + processo judicial; Phase 29 docs/E2E. See [CHANGELOG.md](CHANGELOG.md) and [docs/VERSIONING.md](docs/VERSIONING.md#api-freeze-100).
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

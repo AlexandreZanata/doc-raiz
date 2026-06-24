@@ -1,6 +1,6 @@
 {
   "name": "@br-validators/core",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "The Brazilian document validation library for TypeScript — CPF, CNPJ (alphanumeric), NF-e, PIX, boleto, IE (27 UFs), and 15+ more. Zero deps, fully typed, never throws.",
   "homepage": "https://www.npmjs.com/package/@br-validators/core",
   "license": "MIT",
@@ -255,7 +255,7 @@
   ],
   "scripts": {
     "build": "tsup",
-    "prepublishOnly": "pnpm run build",
+    "prepublishOnly": "node ../../scripts/assert-ci-publish.mjs && pnpm run build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src tests --max-warnings 0",

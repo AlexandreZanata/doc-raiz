@@ -1,6 +1,6 @@
 {
   "name": "@br-validators/cli",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "CLI for @br-validators/core — CPF, CNPJ, NF-e, IE, PIX, boleto + detect/sanitize/generate",
   "license": "MIT",
   "type": "module",
@@ -45,7 +45,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "prepublishOnly": "pnpm run build",
+    "prepublishOnly": "node ../../scripts/assert-ci-publish.mjs && pnpm run build",
     "pretest": "pnpm run build",
     "pretest:coverage": "pnpm run build",
     "pretypecheck": "pnpm --filter @br-validators/core build",

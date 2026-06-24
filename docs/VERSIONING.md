@@ -136,27 +136,20 @@ git push origin v1.0.0
 
 Tag format: **`v` + SemVer** (e.g. `v0.1.0-alpha.1`)
 
-### 4. Publish (npm)
+### 4. Publish (npm) — CI only
 
-**Automated (recommended):** push version tag on `main` — see [BRANCHING.md](BRANCHING.md) and `.github/workflows/release.yml`.
+**All publishes go through GitHub Actions.** Do not run `pnpm publish` locally — `prepublishOnly` blocks it.
 
-```bash
-git tag -a v0.11.0-alpha.0 -m "Release v0.11.0-alpha.0"
-git push origin v0.11.0-alpha.0
-```
-
-Requires GitHub secret `NPM_TOKEN` (granular publish token for `@br-validators/*`).
-
-**Manual (fallback):**
+Push a version tag on `main`:
 
 ```bash
-npm login
-pnpm verify
-pnpm --filter @br-validators/core publish --access public --tag latest
-pnpm --filter @br-validators/cli publish --access public --tag latest
-pnpm --filter @br-validators/zod publish --access public --tag latest
-pnpm --filter @br-validators/react-hook-form publish --access public --tag latest
+git tag -a v1.6.1 -m "Release v1.6.1"
+git push origin v1.6.1
 ```
+
+Requires GitHub secret `NPM_TOKEN` (Automation or granular token with read/write on **all** `@br-validators/*` packages, including create).
+
+**Re-run after failure:** Actions → **Release** → **Run workflow** with the tag name.
 
 Published packages (same semver on each tag):
 
@@ -166,6 +159,8 @@ Published packages (same semver on each tag):
 | `@br-validators/cli` | `apps/cli/` |
 | `@br-validators/zod` | `packages/br-validators-zod/` |
 | `@br-validators/react-hook-form` | `packages/br-validators-rhf/` |
+| `@br-validators/express` | `packages/br-validators-express/` |
+| `@br-validators/vue` | `packages/br-validators-vue/` |
 
 See [README](../README.md#install).
 
