@@ -1,5 +1,5 @@
 {
-  "executadoEm": "2026-06-24T18:59:33.374Z",
+  "executadoEm": "2026-06-24T15:43:03.974Z",
   "runDate": "2026-06-24",
   "schedule": "diario",
   "agendamento": "diario",
@@ -11,7 +11,7 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-24"
+        "comparadoCom": "2026-06-23"
       },
       "contagens": {
         "estados": 27,
@@ -277,51 +277,14 @@
       }
     }
   ],
-  "sourceAlerts": [
-    {
-      "datasetId": "paises-bacen",
-      "severity": "warning",
-      "status": "embedded_retained",
-      "message": "NF-e portal did not return a parseable country table (Portal returned HTML instead of a country table file). Embedded data from 2026-06-23 retained in the API.",
-      "endpoints": [
-        "http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=FOXZNFX/p50="
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-23",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "cfop",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-23",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "cest",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-23",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    }
-  ],
+  "sourceAlerts": [],
   "resumo": {
     "datasetsVerificados": 20,
     "datasetsAlterados": 0,
     "totalAdicionados": 0,
     "totalRemovidos": 0,
     "totalAlterados": 0,
-    "sourceAlerts": 3,
+    "sourceAlerts": 0,
     "criticalAlerts": 0,
     "baselinesSelados": 0
   }
