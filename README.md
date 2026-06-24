@@ -7,6 +7,8 @@
 [![rhf](https://img.shields.io/npm/v/@br-validators/react-hook-form?label=rhf)](https://www.npmjs.com/package/@br-validators/react-hook-form)
 [![express](https://img.shields.io/npm/v/@br-validators/express?label=express)](https://www.npmjs.com/package/@br-validators/express)
 [![vue](https://img.shields.io/npm/v/@br-validators/vue?label=vue)](https://www.npmjs.com/package/@br-validators/vue)
+[![npm downloads](https://img.shields.io/npm/dm/@br-validators/core?label=downloads)](https://www.npmjs.com/package/@br-validators/core)
+[![OpenSSF Best Practices](https://img.shields.io/badge/OpenSSF%20Best%20Practices-self--certify-blue)](https://www.bestpractices.dev/en/projects)
 [![GitHub release](https://img.shields.io/github/v/release/AlexandreZanata/br-validators)](https://github.com/AlexandreZanata/br-validators/releases)
 
 **100% open-source** (MIT) monorepo — TypeScript library, terminal CLI, and web playground for formatting and validating Brazilian document identifiers. Algorithms trace to official primary sources (Receita Federal, Bacen, CONTRAN, Correios, SEFAZ).
@@ -19,6 +21,7 @@
 | **React Hook Form** | [`@br-validators/react-hook-form`](https://www.npmjs.com/package/@br-validators/react-hook-form) on npm |
 | **Express / Fastify** | [`@br-validators/express`](https://www.npmjs.com/package/@br-validators/express) on npm |
 | **Vue 3** | [`@br-validators/vue`](https://www.npmjs.com/package/@br-validators/vue) on npm |
+| **Documentation** | [docs.br-validators.dev](https://docs.br-validators.dev/) — VitePress deep reference (README = quick start) |
 | **Playground** | [doc-raiz-playground.vercel.app](https://doc-raiz-playground.vercel.app/) — client-side only, no PII sent to server |
 
 Reference datasets (IBGE, Bacen banks, DDD lookup, national holidays, CNAE, CFOP, NCM, CBO, natureza jurídica, NBS, CEST, moedas, países Bacen, Incoterms, portos, aeroportos) are embedded offline and refreshed weekly — see [docs/DATA-FRESHNESS.md](docs/DATA-FRESHNESS.md).
@@ -274,7 +277,8 @@ Every shipped type exists in **library + CLI + playground**. See [docs/DELIVERY-
 | [apps/cli/README.md](apps/cli/README.md) | CLI commands |
 | [docs/LIBRARY-API.md](docs/LIBRARY-API.md) | Public API contract |
 | [docs/OFFICIAL-SOURCES.md](docs/OFFICIAL-SOURCES.md) | RFB, Bacen, CONTRAN, SEFAZ sources |
-| [docs/ROADMAP.md](docs/ROADMAP.md) | Phases and backlog |
+| [apps/docs/](apps/docs/) | VitePress site — [docs.br-validators.dev](https://docs.br-validators.dev/) (API synced from `LIBRARY-API.md`) |
+| [docs/community/RG-GOOD-FIRST-ISSUES.md](docs/community/RG-GOOD-FIRST-ISSUES.md) | RG remaining 21 UFs — `good first issue` |
 | [CHANGELOG.md](CHANGELOG.md) | Release history |
 
 ---

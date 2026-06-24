@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **`@br-validators/express`** — `brValidate()` Express middleware and `brValidateFastify()` preHandler; 18 document type ids; structured HTTP 400 `{ ok: false, field, code, message }`; body/query/params locations; optional `uf` for IE/RG
 - **`@br-validators/vue`** — Vue 3 composables `useBrValidator()` plus `useCpf()`, `useCnpj()`, `useCep()`, `useTelefone()`, `usePix()`, `useInscricaoEstadual()`; reactive `error`, `formatted`, `isValid`; delegates to core `validate*` / `format*`
+- **Phase 29 — community & distribution**
+  - VitePress docs site (`apps/docs/`) — auto-sync `docs/LIBRARY-API.md`; deploy target `docs.br-validators.dev`
+  - Dev.to article outline — `docs/marketing/devto-brazilian-data-toolkit.md`
+  - RG good-first-issues index — `docs/community/RG-GOOD-FIRST-ISSUES.md` + issue template config
+  - `.github/FUNDING.yml` — GitHub Sponsors
+  - Playwright E2E smoke for playground — `.github/workflows/e2e.yml`
+  - README: npm downloads badge + OpenSSF best-practices self-certify link
 - **`@br-validators/core/rg`** — `validateRg(raw, { uf })`, `formatRg`, `stripRg`, `getRgUfSupport()` — per-UF identity card (phase 1: SP, RJ, MG, PR, RS, SC; UF required; no `detect()` auto-classify)
 - CLI: `br-validators rg validate|format|strip … --uf SP`
 - Playground: `/rg` with UF selector (6 implemented states)
