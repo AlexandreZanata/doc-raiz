@@ -202,6 +202,9 @@ describe('package exports', () => {
     expect(ibgeEntry.getEstados).toBeTypeOf('function');
     expect(ibgeEntry.getMunicipios).toBeTypeOf('function');
     expect(ibgeEntry.getMunicipioPorCodigo).toBeTypeOf('function');
+    expect(ibgeEntry.toCmunFg).toBeTypeOf('function');
+    expect(ibgeEntry.parseCmunFg).toBeTypeOf('function');
+    expect(ibgeEntry.computeCmunFgCheckDigit).toBeTypeOf('function');
     expect(ibgeEntry.IBGE_DATA_VERSION.id).toBe('ibge');
   });
 

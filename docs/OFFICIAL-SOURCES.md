@@ -31,7 +31,7 @@
 | **IE — São Paulo (SP)** | SEFAZ-SP | [Sintegra rotina de consistência](https://portal.fazenda.sp.gov.br/servicos/icms/Paginas/sintegra-rotina-consistencia.aspx) | 12 digits, dual modulo-11 DVs. Golden: **`110042490114`**. Vector: `ie.sp.official.json`. Mirror: [cad_SP.html](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html). |
 | **IE — SP produtor rural** | SEFAZ-SP / SINTEGRA | [cad_SP.html Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) | 13 chars `P0MMMSSSSD000`; DV at position 10; weights `1,3,4,5,6,7,8,10` on `0MMMSSSS`. Golden: **`P-01100424.3/002`**. Vector: `inscricao-estadual-produtor-rural.official.json`. Cadastro: [CADESP produtor rural](https://portal.fazenda.sp.gov.br/servicos/cadesp/Paginas/Produtor-Rural-abertura,-baixa-e-outras-alteracoes.aspx). |
 | **IE — all 27 UFs** | Per-state SEFAZ | Full table: [§ Inscrição Estadual (IE)](#inscrição-estadual-ie--all-27-ufs) · Index: [IE-STATE-ALGORITHMS.md](IE-STATE-ALGORITHMS.md) | Check digits only — no SEFAZ registration lookup. `getIeOfficialSourceUrl(uf)` / `IE_OFFICIAL_SOURCE_URLS`. SP produtor rural: `validateIeProdutorRural` / `getIeProdutorRuralOfficialSourceUrl()`. |
-| **IBGE localities** | IBGE | [Serviço de Dados — localidades](https://servicodados.ibge.gov.br/api/docs/localidades) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Estados + municípios embedded offline. Golden: **`3550308`** (São Paulo/SP), **`5107925`** (Sorriso/MT), **`5300108`** (Brasília/DF), **`5101837`** (Boa Esperança do Norte/MT — null `microrregiao` fallback). Vector: `ibge.official.json`. Weekly refresh via `data-refresh-bot.yml`. |
+| **IBGE localities** | IBGE | [Serviço de Dados — localidades](https://servicodados.ibge.gov.br/api/docs/localidades) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Estados + municípios embedded offline. Golden: **`3550308`** (São Paulo/SP), **`5107925`** (Sorriso/MT), **`5300108`** (Brasília/DF), **`5101837`** (Boa Esperança do Norte/MT — null `microrregiao` fallback). Vector: `ibge.official.json`. **cMunFG** helpers (`toCmunFg`, `parseCmunFg`) — vector: `ibge.cmunfg.official.json`. Weekly refresh via `data-refresh-bot.yml`. |
 | **CNAE** | IBGE CONCLA | [IBGE CNAE API v2](https://servicodados.ibge.gov.br/api/docs/cnae) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Economic activity subclasses (CNAE 2.3). Golden: **`6201501`** (software development). Vector: `cnaes.official.json`. |
 | **CFOP** | CONFAZ | [CFOP SINIEF vigente](https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Fiscal operation codes. Golden: **`1102`** (purchase for resale), **`5102`** (third-party sale). Vector: `cfop.official.json`. |
 | **Natureza jurídica** | RFB CNPJ | [Dados Abertos CNPJ — Naturezas.zip](https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | CNPJ legal nature codes. Golden: **`2062`** (Ltda.). Vector: `natureza-juridica.official.json`. Dev fallback mirror documented in `fetch-natureza-juridica.ts`. |
@@ -281,7 +281,7 @@ Before merging a validator:
 
 ## IBGE localities {#ibge-localities}
 
-> **Vectors:** `packages/br-validators/tests/vectors/ibge.official.json`  
+> **Vectors:** `packages/br-validators/tests/vectors/ibge.official.json` · **cMunFG:** `packages/br-validators/tests/vectors/ibge.cmunfg.official.json`  
 > **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md) (auto-generated weekly)
 
 | Role | Source | URL |
@@ -289,6 +289,10 @@ Before merging a validator:
 | API docs | IBGE Serviço de Dados | https://servicodados.ibge.gov.br/api/docs/localidades |
 | Estados | IBGE API v1 | https://servicodados.ibge.gov.br/api/v1/localidades/estados |
 | Municípios | IBGE API v1 | https://servicodados.ibge.gov.br/api/v1/localidades/municipios |
+| Municipality code structure (7th DV) | IBGE explica | https://www.ibge.gov.br/explica/codigos-dos-municipios.php |
+| NF-e field B12 `cMunFG` | NF-e / SEFAZ MOC 7.0 Anexo I | https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=BMPFMBoln3w= |
+
+**cMunFG helpers** (`toCmunFg`, `parseCmunFg`, `computeCmunFgCheckDigit`): build/validate 7-digit IBGE municipality codes for NF-e field B12. Golden: base **`355030`** → **`3550308`** (São Paulo); exception **`220191`** → **`2201919`** (Bom Princípio do Piauí — non-algorithmic DV). Nine IBGE exceptions embedded per official tables.
 
 **Edge case:** municipality `5101837` (Boa Esperança do Norte, MT) returns `microrregiao: null` — UF resolved via `regiao-imediata.regiao-intermediaria.UF` in fetch script.
 

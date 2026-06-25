@@ -549,18 +549,29 @@ Constants: `IE_OFFICIAL_SOURCE_URLS` (all UFs), legacy `IE_SP_OFFICIAL_SOURCE_UR
 | `getEstados()` | All 27 federative units with `codigo`, `sigla`, `nome`, `regiao` |
 | `getMunicipios(options?)` | All municipalities, or filtered by `uf` (case-insensitive) |
 | `getMunicipioPorCodigo(codigo)` | Single municipality or `undefined` |
+| `toCmunFg(codigo)` | 7-digit NF-e `cMunFG` from 6-digit base or validated 7-digit input; `undefined` if invalid |
+| `parseCmunFg(code)` | Structured ok/reason result with `codigo`, `base6`, `checkDigit` on success |
+| `computeCmunFgCheckDigit(base6)` | IBGE modulo-10 check digit for 6-digit base; `undefined` if invalid |
 | `IBGE_DATA_VERSION` | `DatasetMetadata` — capture date, official endpoints, row counts, weekly delta |
 
-Golden vectors: `3550308` (São Paulo/SP), `5107925` (Sorriso/MT), `5300108` (Brasília/DF), `5101837` (Boa Esperança do Norte/MT).
+Golden vectors: `3550308` (São Paulo/SP), `5107925` (Sorriso/MT), `5300108` (Brasília/DF), `5101837` (Boa Esperança do Norte/MT). **cMunFG:** `tests/vectors/ibge.cmunfg.official.json` — base `355030` → `3550308`; exception `220191` → `2201919` (Bom Princípio do Piauí).
 
 ```typescript
 import {
   getEstados,
   getMunicipios,
   getMunicipioPorCodigo,
+  toCmunFg,
+  parseCmunFg,
+  computeCmunFgCheckDigit,
   IBGE_DATA_VERSION,
 } from '@br-validators/core/ibge';
+
+toCmunFg('355030'); // '3550308'
+parseCmunFg('3550308'); // { ok: true, codigo: 3550308, base6: '355030', checkDigit: 8 }
 ```
+
+**cMunFG** helpers implement NF-e field B12 check-digit rules (distinct from generic `getMunicipioPorCodigo` lookup). Nine IBGE exceptions with non-algorithmic DVs are embedded. Sources: [IBGE municipality codes](https://www.ibge.gov.br/explica/codigos-dos-municipios.php), [NF-e MOC Anexo I](https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=BMPFMBoln3w=).
 
 **No runtime fetch** — JSON embedded at build time from official IBGE API via `scripts/fetch-ibge.ts`.
 
