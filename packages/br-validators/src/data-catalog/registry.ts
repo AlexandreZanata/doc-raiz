@@ -15,6 +15,7 @@ import nbsMetadata from '../nbs/data/metadata.json';
 import cestMetadata from '../cest/data/metadata.json';
 import cstMetadata from '../cst/data/metadata.json';
 import lc116Metadata from '../lc116/data/metadata.json';
+import esocialMetadata from '../esocial/data/metadata.json';
 import ncmMetadata from '../ncm/data/metadata.json';
 import cboMetadata from '../cbo/data/metadata.json';
 import cepFaixaMetadata from '../core/cep/data/faixa-metadata.json';
@@ -47,6 +48,7 @@ export const DATASET_REGISTRY: readonly DatasetRegistryEntry[] = [
   { id: 'cest', metadata: cestMetadata as DatasetMetadata },
   { id: 'cst', metadata: cstMetadata as DatasetMetadata },
   { id: 'lc116', metadata: lc116Metadata as DatasetMetadata },
+  { id: 'esocial', metadata: esocialMetadata as DatasetMetadata },
   { id: 'ncm', metadata: ncmMetadata as DatasetMetadata },
   { id: 'cbo', metadata: cboMetadata as DatasetMetadata },
   { id: 'cep-faixas', metadata: cepFaixaMetadata as DatasetMetadata },

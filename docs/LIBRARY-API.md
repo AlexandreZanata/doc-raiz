@@ -45,6 +45,7 @@
 | `@br-validators/core/cfop` | CONFAZ CFOP fiscal operation code lookup |
 | `@br-validators/core/cst` | RFB SPED CST lookup (ICMS, IPI, PIS, COFINS) |
 | `@br-validators/core/lc116` | LC 116/2003 ISS national service list lookup |
+| `@br-validators/core/esocial` | eSocial Tabela 01 worker category lookup |
 | `@br-validators/core/ptax` | Bacen PTAX Fechamento exchange rates (pairs with `moedas`) |
 | `@br-validators/core/ncm` | Siscomex NCM Mercosur nomenclature lookup |
 | `@br-validators/core/cbo` | MTE CBO 2002 occupation lookup |
@@ -718,6 +719,30 @@ Golden vectors: `1.01` (análise e desenvolvimento de sistemas), `7.02` (obras d
 
 ```typescript
 import { getLc116PorCodigo, searchLc116, LC116_DATA_VERSION } from '@br-validators/core/lc116';
+```
+
+---
+
+## Core API — eSocial (reference data)
+
+> **Offline embedded data** from [eSocial S-1.3 Tabela 01](https://www.gov.br/esocial/pt-br/documentacao-tecnica/leiautes-esocial-versao-s-1-3-nt-06-2026/tabelas.html).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — manual maintainer refresh (`pnpm fetch:data:esocial`)
+
+| Function | Returns |
+|----------|---------|
+| `getEsocialCategorias()` | All Tabela 01 worker categories |
+| `getEsocialCategoriaPorCodigo(codigo)` | Single category or `undefined` (3-digit code) |
+| `searchEsocialCategorias(query, { limit? })` | Search by code, grupo, or description (default limit 10) |
+| `ESOCIAL_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: `101` (empregado geral), `103` (aprendiz), `901` (estagiário).
+
+```typescript
+import {
+  getEsocialCategoriaPorCodigo,
+  searchEsocialCategorias,
+  ESOCIAL_DATA_VERSION,
+} from '@br-validators/core/esocial';
 ```
 
 ---
