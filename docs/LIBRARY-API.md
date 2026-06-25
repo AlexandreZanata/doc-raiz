@@ -43,6 +43,7 @@
 | `@br-validators/core/feriados` | Brazilian national federal holidays (fixed dates) + optional facultative days |
 | `@br-validators/core/cnaes` | IBGE CNAE 2.3 economic activity subclass lookup |
 | `@br-validators/core/cfop` | CONFAZ CFOP fiscal operation code lookup |
+| `@br-validators/core/cst` | RFB SPED CST lookup (ICMS, IPI, PIS, COFINS) |
 | `@br-validators/core/ncm` | Siscomex NCM Mercosur nomenclature lookup |
 | `@br-validators/core/cbo` | MTE CBO 2002 occupation lookup |
 | `@br-validators/core/data-catalog` | Aggregated dataset transparency metadata |
@@ -661,6 +662,40 @@ Golden vectors: `1102` (purchase for resale), `5102` (third-party sale).
 
 ```typescript
 import { getCfopPorCodigo, searchCfop, CFOP_DATA_VERSION } from '@br-validators/core/cfop';
+```
+
+---
+
+## Core API — CST (reference data)
+
+> **Offline embedded data** from [RFB SPED Fiscal — Tabelas de Situação Tributária](http://www.sped.fazenda.gov.br/spedtabelas/AppConsulta/publico/aspx/ConsultaTabelasExternas.aspx?CodSistema=SpedFiscal).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — manual maintainer refresh (`pnpm fetch:data:cst`)
+
+| Function | Returns |
+|----------|---------|
+| `getCstIcms()` | All ICMS CST codes (2-digit NF-e format) |
+| `getCstIpi()` | All IPI CST codes |
+| `getCstPis()` | All PIS CST codes |
+| `getCstCofins()` | All COFINS CST codes |
+| `getCstIcmsPorCodigo(codigo)` | Single ICMS CST or `undefined` |
+| `getCstIpiPorCodigo(codigo)` | Single IPI CST or `undefined` |
+| `getCstPisPorCodigo(codigo)` | Single PIS CST or `undefined` |
+| `getCstCofinsPorCodigo(codigo)` | Single COFINS CST or `undefined` |
+| `searchCstIcms(query, { limit? })` | ICMS description search (default limit 10) |
+| `searchCstIpi(query, { limit? })` | IPI description search |
+| `searchCstPis(query, { limit? })` | PIS description search |
+| `searchCstCofins(query, { limit? })` | COFINS description search |
+| `CST_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: ICMS `00` / `10`; IPI `50` / `00`; PIS `01` / `07`; COFINS `01` / `07`.
+
+```typescript
+import {
+  getCstIcmsPorCodigo,
+  getCstIpiPorCodigo,
+  searchCstIcms,
+  CST_DATA_VERSION,
+} from '@br-validators/core/cst';
 ```
 
 ---

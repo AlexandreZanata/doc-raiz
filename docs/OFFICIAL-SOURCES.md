@@ -37,6 +37,7 @@
 | **Natureza jurídica** | RFB CNPJ | [Dados Abertos CNPJ — Naturezas.zip](https://dadosabertos.rfb.gov.br/CNPJ/dados_abertos_cnpj/) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | CNPJ legal nature codes. Golden: **`2062`** (Ltda.). Vector: `natureza-juridica.official.json`. Dev fallback mirror documented in `fetch-natureza-juridica.ts`. |
 | **NBS** | NFSe Nacional | [Anexo B NBS2 xlsx](https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/documentacao-atual/anexo_b-nbs2-lista_servico_nacional-snnfse.xlsx) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Brazilian Services Nomenclature leaf codes. Golden: **`1.1502.50.00`** (TI systems integration). Vector: `nbs.official.json`. Parsed from xlsx without extra deps. |
 | **CEST** | CONFAZ | [Convênio ICMS 142/2018](https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | ST specifier codes (7 digits) linked to NCM prefixes. Golden: **`0302100`** (returnable beer bottle); NCM **`22030000`** cross-ref. Vector: `cest.official.json`. |
+| **CST** | RFB SPED | [SPED Fiscal — Tabelas de Situação Tributária](http://www.sped.fazenda.gov.br/spedtabelas/AppConsulta/publico/aspx/ConsultaTabelasExternas.aspx?CodSistema=SpedFiscal) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | NF-e CST codes for ICMS, IPI, PIS, COFINS. Golden: ICMS **`00`** / **`10`**, IPI **`50`** / **`00`**, PIS **`01`** / **`07`**, COFINS **`01`** / **`07`**. Vector: `cst.official.json`. CSOSN deferred. Manual refresh (`agendamento: manual`). |
 | **NCM** | Receita / Siscomex | [NCM JSON download](https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Mercosur nomenclature leaf codes (8 digits). Golden: **`01012100`** (purebred horses). Vector: `ncm.official.json`. |
 | **CBO** | MTE | [CBO 2002 downloads](https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Occupation codes (eSocial / HR). Golden: **`212405`** (systems analyst). Vector: `cbo.official.json`. |
 | **CEP prefix lookup** | IBGE CNEFE | [CNEFE Censo 2022 UF CSV](https://ftp.ibge.gov.br/Cadastro_Nacional_de_Enderecos_para_Fins_Estatisticos/Censo_Demografico_2022/Arquivos_CNEFE/CSV/UF/) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | 5-digit prefix → UF + IBGE municipality. Golden: **`01310`** (São Paulo/SP), **`20040`** (Rio/RJ). Extends `@br-validators/core/cep`. Vector: `cep-faixa.official.json`. |
@@ -476,6 +477,26 @@ Leaf codes are parsed from sheet 2 of the official xlsx (no xlsx npm dependency 
 Golden: `0302100` (returnable beer bottle). Cross-ref: NCM `22030000` maps to multiple CEST rows; NCM `01012100` (purebred horses) has no CEST (not subject to ST).
 
 `getCestPorNcm` matches 8-digit NCM codes against embedded prefix lists from the annex tables.
+
+---
+
+## CST (situação tributária) {#cst-situacao-tributaria}
+
+> **Vectors:** `packages/br-validators/tests/vectors/cst.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — `agendamento: manual`
+
+| Role | Source | URL |
+|------|--------|-----|
+| SPED Fiscal — Tabelas de Situação Tributária | RFB SPED | http://www.sped.fazenda.gov.br/spedtabelas/AppConsulta/publico/aspx/ConsultaTabelasExternas.aspx?CodSistema=SpedFiscal |
+| CST-PIS table (Word, supplemental) | RFB SPED | http://sped.rfb.gov.br/arquivo/download/1629 |
+| CST-COFINS table (Word, supplemental) | RFB SPED | http://sped.rfb.gov.br/arquivo/download/1630 |
+| Legal basis | IN RFB 932/2009 family | https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/declaracoes-e-demonstrativos/sped-sistema-publico-de-escrituracao-digital/escrituracao-fiscal-digital-efd/escrituracao-fiscal-digital-efd |
+
+SPED table ids embedded at fetch time: ICMS `130`, IPI `26`, PIS `27`, COFINS `23` (package `5` — Tabelas de Situação Tributária).
+
+Golden: ICMS `00` (tributada integralmente), `10` (ST); IPI `50` (saída tributada), `00` (entrada com crédito); PIS `01` / `07`; COFINS `01` / `07`.
+
+**Scope v1:** NF-e 2-digit CST for ICMS (Nacional/Estrangeira origins from SPED 3-digit rows). **CSOSN** (Simples Nacional) deferred — overlaps separate code family.
 
 ---
 

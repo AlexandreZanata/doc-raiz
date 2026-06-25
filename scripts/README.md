@@ -18,6 +18,7 @@ pnpm fetch:data:cfop      # CONFAZ CFOP table → packages/br-validators/src/cfo
 pnpm fetch:data:natureza-juridica # RFB natureza jurídica → packages/br-validators/src/natureza-juridica/data/
 pnpm fetch:data:nbs       # Comex NBS → packages/br-validators/src/nbs/data/
 pnpm fetch:data:cest      # CONFAZ CEST → packages/br-validators/src/cest/data/
+pnpm fetch:data:cst       # RFB SPED CST tables → packages/br-validators/src/cst/data/
 pnpm fetch:data:portos    # ANTAQ portos → packages/br-validators/src/portos/data/
 pnpm fetch:data:pncp-reference # PNCP Cadastro domain tables → packages/br-validators/src/pncp-reference/data/
 pnpm fetch:data:transparencia  # CGU Swagger audit registry → packages/br-validators/src/transparencia-snapshots/data/

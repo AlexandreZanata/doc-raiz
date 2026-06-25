@@ -26,10 +26,12 @@ describe('Data catalog — transparency API', () => {
     expect(catalog.some((entry) => entry.id === 'natureza-juridica')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'nbs')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'cest')).toBe(true);
+    expect(catalog.some((entry) => entry.id === 'cst')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'ncm')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'cbo')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'cep-faixas')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'portos')).toBe(true);
+    expect(catalog.some((entry) => entry.id === 'anp-combustiveis')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'pncp-reference')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'transparencia-snapshots')).toBe(true);
   });

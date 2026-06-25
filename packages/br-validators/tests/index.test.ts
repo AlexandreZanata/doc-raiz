@@ -25,6 +25,7 @@ import * as cfopEntry from '../src/cfop.js';
 import * as naturezaJuridicaEntry from '../src/natureza-juridica.js';
 import * as nbsEntry from '../src/nbs.js';
 import * as cestEntry from '../src/cest.js';
+import * as cstEntry from '../src/cst.js';
 import * as ncmEntry from '../src/ncm.js';
 import * as cboEntry from '../src/cbo.js';
 import * as portosEntry from '../src/portos.js';
@@ -280,6 +281,15 @@ describe('package exports', () => {
     expect(cestEntry.getCestPorNcm).toBeTypeOf('function');
     expect(cestEntry.searchCest).toBeTypeOf('function');
     expect(cestEntry.CEST_DATA_VERSION.id).toBe('cest');
+  });
+
+  it('re-exports CST API from cst entry', () => {
+    expect(cstEntry.getCstIcmsPorCodigo).toBeTypeOf('function');
+    expect(cstEntry.getCstIpiPorCodigo).toBeTypeOf('function');
+    expect(cstEntry.getCstPisPorCodigo).toBeTypeOf('function');
+    expect(cstEntry.getCstCofinsPorCodigo).toBeTypeOf('function');
+    expect(cstEntry.searchCstIcms).toBeTypeOf('function');
+    expect(cstEntry.CST_DATA_VERSION.id).toBe('cst');
   });
 
   it('re-exports NCM API from ncm entry', () => {

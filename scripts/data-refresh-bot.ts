@@ -52,10 +52,12 @@ const DATASET_METADATA_PATHS = [
   path.join(ROOT, 'packages/br-validators/src/natureza-juridica/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/nbs/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/cest/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/cst/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/ncm/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/cbo/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/core/cep/data/faixa-metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/portos/data/metadata.json'),
+  path.join(ROOT, 'packages/br-validators/src/anp-combustiveis/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/pncp-reference/data/metadata.json'),
   path.join(ROOT, 'packages/br-validators/src/transparencia-snapshots/data/metadata.json'),
 ] as const;
