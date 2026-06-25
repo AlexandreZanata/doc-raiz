@@ -45,6 +45,7 @@
     "aeroportos",
     "tse-municipios",
     "moedas",
+    "ptax",
     "paises-bacen",
     "incoterms",
     "feriados",
@@ -194,6 +195,10 @@
     "./moedas": {
       "types": "./dist/moedas.d.ts",
       "import": "./dist/moedas.js"
+    },
+    "./ptax": {
+      "types": "./dist/ptax.d.ts",
+      "import": "./dist/ptax.js"
     },
     "./paises-bacen": {
       "types": "./dist/paises-bacen.d.ts",

@@ -45,6 +45,7 @@
 | `@br-validators/core/cfop` | CONFAZ CFOP fiscal operation code lookup |
 | `@br-validators/core/cst` | RFB SPED CST lookup (ICMS, IPI, PIS, COFINS) |
 | `@br-validators/core/lc116` | LC 116/2003 ISS national service list lookup |
+| `@br-validators/core/ptax` | Bacen PTAX Fechamento exchange rates (pairs with `moedas`) |
 | `@br-validators/core/ncm` | Siscomex NCM Mercosur nomenclature lookup |
 | `@br-validators/core/cbo` | MTE CBO 2002 occupation lookup |
 | `@br-validators/core/data-catalog` | Aggregated dataset transparency metadata |
@@ -717,6 +718,30 @@ Golden vectors: `1.01` (análise e desenvolvimento de sistemas), `7.02` (obras d
 
 ```typescript
 import { getLc116PorCodigo, searchLc116, LC116_DATA_VERSION } from '@br-validators/core/lc116';
+```
+
+---
+
+## Core API — PTAX (reference data)
+
+> **Offline embedded data** from [Bacen Olinda PTAX API](https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/swagger-ui3) — Fechamento closing rates for Bacen tipo A/B currencies in `@br-validators/core/moedas`.  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — daily refresh (`pnpm fetch:data:ptax`)
+
+| Function | Returns |
+|----------|---------|
+| `getPtaxList()` | All embedded Fechamento PTAX rows |
+| `getPtaxCotacao(moeda, data?)` | Single closing rate or `undefined` (ISO or Bacen date; omit `data` for latest) |
+| `getPtaxUltimoDiaUtil(moeda)` | Latest embedded Fechamento for currency |
+| `getPtaxCotacoesPorMoeda(moeda)` | All embedded days for currency, newest first |
+| `PTAX_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: USD `2026-06-24` (compra `5.2092`, venda `5.2098`); USD `2026-06-23` historical; EUR último dia útil `2026-06-24`.
+
+```typescript
+import { getPtaxCotacao, getPtaxUltimoDiaUtil, PTAX_DATA_VERSION } from '@br-validators/core/ptax';
+
+getPtaxCotacao('USD', '2026-06-24');
+getPtaxUltimoDiaUtil('EUR');
 ```
 
 ---

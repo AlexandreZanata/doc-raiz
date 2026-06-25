@@ -17,6 +17,7 @@ describe('Data catalog — transparency API', () => {
     expect(catalog.some((entry) => entry.id === 'aeroportos')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'tse-municipios')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'moedas')).toBe(true);
+    expect(catalog.some((entry) => entry.id === 'ptax')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'paises-bacen')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'incoterms')).toBe(true);
     expect(catalog.some((entry) => entry.id === 'telefone-ddd')).toBe(true);

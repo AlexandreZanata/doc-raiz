@@ -3,6 +3,7 @@ import bancosMetadata from '../bancos/data/metadata.json';
 import aeroportosMetadata from '../aeroportos/data/metadata.json';
 import tseMunicipiosMetadata from '../tse-municipios/data/metadata.json';
 import moedasMetadata from '../moedas/data/metadata.json';
+import ptaxMetadata from '../ptax/data/metadata.json';
 import paisesBacenMetadata from '../paises-bacen/data/metadata.json';
 import incotermsMetadata from '../incoterms/data/metadata.json';
 import telefoneDddMetadata from '../core/telefone/data/ddd-metadata.json';
@@ -34,6 +35,7 @@ export const DATASET_REGISTRY: readonly DatasetRegistryEntry[] = [
   { id: 'aeroportos', metadata: aeroportosMetadata as DatasetMetadata },
   { id: 'tse-municipios', metadata: tseMunicipiosMetadata as DatasetMetadata },
   { id: 'moedas', metadata: moedasMetadata as DatasetMetadata },
+  { id: 'ptax', metadata: ptaxMetadata as DatasetMetadata },
   { id: 'paises-bacen', metadata: paisesBacenMetadata as DatasetMetadata },
   { id: 'incoterms', metadata: incotermsMetadata as DatasetMetadata },
   { id: 'telefone-ddd', metadata: telefoneDddMetadata as DatasetMetadata },

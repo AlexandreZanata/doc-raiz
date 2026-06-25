@@ -10,6 +10,7 @@ pnpm fetch:data:bancos    # Bacen STR participants → packages/br-validators/sr
 pnpm fetch:data:aeroportos # ANAC public aerodromos → packages/br-validators/src/aeroportos/data/
 pnpm fetch:data:tse-municipios # TSE ↔ IBGE municipality codes → packages/br-validators/src/tse-municipios/data/
 pnpm fetch:data:moedas       # ISO 4217 + Bacen PTAX → packages/br-validators/src/moedas/data/
+pnpm fetch:data:ptax         # Bacen PTAX Fechamento → packages/br-validators/src/ptax/data/
 pnpm fetch:data:paises-bacen # NF-e Bacen country codes → packages/br-validators/src/paises-bacen/data/
 pnpm fetch:data:incoterms    # ICC Incoterms 2020 static list → packages/br-validators/src/incoterms/data/
 pnpm fetch:data:ddd       # Anatel DDD lookup → packages/br-validators/src/core/telefone/data/

@@ -17,6 +17,7 @@ import * as bancosEntry from '../src/bancos.js';
 import * as aeroportosEntry from '../src/aeroportos.js';
 import * as tseMunicipiosEntry from '../src/tse-municipios.js';
 import * as moedasEntry from '../src/moedas.js';
+import * as ptaxEntry from '../src/ptax.js';
 import * as paisesBacenEntry from '../src/paises-bacen.js';
 import * as incotermsEntry from '../src/incoterms.js';
 import * as feriadosEntry from '../src/feriados.js';
@@ -228,6 +229,13 @@ describe('package exports', () => {
     expect(moedasEntry.getMoedaPorCodigo).toBeTypeOf('function');
     expect(moedasEntry.searchMoedas).toBeTypeOf('function');
     expect(moedasEntry.MOEDAS_DATA_VERSION.id).toBe('moedas');
+  });
+
+  it('re-exports PTAX API from ptax entry', () => {
+    expect(ptaxEntry.getPtaxCotacao).toBeTypeOf('function');
+    expect(ptaxEntry.getPtaxUltimoDiaUtil).toBeTypeOf('function');
+    expect(ptaxEntry.getPtaxCotacoesPorMoeda).toBeTypeOf('function');
+    expect(ptaxEntry.PTAX_DATA_VERSION.id).toBe('ptax');
   });
 
   it('re-exports Paises Bacen API from paises-bacen entry', () => {
