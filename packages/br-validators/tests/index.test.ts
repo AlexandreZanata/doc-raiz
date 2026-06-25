@@ -25,6 +25,7 @@ import * as cnaesEntry from '../src/cnaes.js';
 import * as cfopEntry from '../src/cfop.js';
 import * as naturezaJuridicaEntry from '../src/natureza-juridica.js';
 import * as cnpjMotivosEntry from '../src/cnpj-motivos.js';
+import * as ibptEntry from '../src/ibpt.js';
 import * as nbsEntry from '../src/nbs.js';
 import * as cestEntry from '../src/cest.js';
 import * as cstEntry from '../src/cst.js';
@@ -288,6 +289,13 @@ describe('package exports', () => {
     expect(cnpjMotivosEntry.getMotivosSituacaoCadastral).toBeTypeOf('function');
     expect(cnpjMotivosEntry.getMotivoSituacaoCadastralPorCodigo).toBeTypeOf('function');
     expect(cnpjMotivosEntry.CNPJ_MOTIVOS_DATA_VERSION.id).toBe('cnpj-motivos');
+  });
+
+  it('re-exports IBPT API from ibpt entry', () => {
+    expect(ibptEntry.getIbptCargaPorNcmUf).toBeTypeOf('function');
+    expect(ibptEntry.computeIbptCargaTotal).toBeTypeOf('function');
+    expect(ibptEntry.getIbptCargas).toBeTypeOf('function');
+    expect(ibptEntry.IBPT_DATA_VERSION.id).toBe('ibpt');
   });
 
   it('re-exports NBS API from nbs entry', () => {

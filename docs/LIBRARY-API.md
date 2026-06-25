@@ -43,6 +43,7 @@
 | `@br-validators/core/bancos` | Bacen STR participants with COMPE / ISPB lookup |
 | `@br-validators/core/feriados` | Brazilian national federal holidays (fixed dates) + optional facultative days |
 | `@br-validators/core/cnaes` | IBGE CNAE 2.3 economic activity subclass lookup |
+| `@br-validators/core/ibpt` | IBPT approximate NCM tax burden (Lei 12.741/2012) |
 | `@br-validators/core/cnpj-motivos` | RFB CNPJ motivos de situação cadastral (Motivos.zip) |
 | `@br-validators/core/cfop` | CONFAZ CFOP fiscal operation code lookup |
 | `@br-validators/core/cst` | RFB SPED CST lookup (ICMS, IPI, PIS, COFINS) |
@@ -856,6 +857,39 @@ Golden vectors: `01012100` (purebred horses), `12011000` (soybean seeds).
 ```typescript
 import { getNcmPorCodigo, searchNcm, NCM_DATA_VERSION } from '@br-validators/core/ncm';
 ```
+
+Pair with `@br-validators/core/ibpt` for Lei 12.741/2012 approximate tax burden per NCM×UF.
+
+---
+
+## Core API — IBPT (approximate NCM tax burden)
+
+> **Offline golden subset** from [IBPT De Olho no Imposto](https://deolhonoimposto.ibpt.org.br/) (Lei 12.741/2012).  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — `pnpm fetch:data:ibpt`
+
+| Function | Returns |
+|----------|---------|
+| `getIbptCargas()` | All embedded NCM×UF carga rows (golden subset) |
+| `getIbptCargaPorNcmUf({ ncm, uf, excecao? })` | Single row or `undefined` |
+| `computeIbptCargaTotal(carga, { importado })` | Sum of federal + estadual + municipal (%) |
+| `getIbptTabelaAtual()` | Current IBPT table version string (e.g. `26.1.H`) |
+| `IBPT_DATA_VERSION` | `DatasetMetadata` |
+
+Golden: `01012100`/SP → **31,45%** nacional; `01012100`/RJ → **27,45%**; `22030000`/SP beer → **35,91%** / **39,77%** importado.
+
+```typescript
+import {
+  getIbptCargaPorNcmUf,
+  computeIbptCargaTotal,
+  getNcmPorCodigo,
+  IBPT_DATA_VERSION,
+} from '@br-validators/core/ibpt';
+
+const carga = getIbptCargaPorNcmUf({ ncm: '01012100', uf: 'SP' });
+const total = carga ? computeIbptCargaTotal(carga, { importado: false }) : undefined;
+```
+
+**Disclaimer:** approximate rates for consumer disclosure — not a substitute for SEFAZ ICMS/IPI calculation. Full NCM×UF matrix not embedded.
 
 ---
 

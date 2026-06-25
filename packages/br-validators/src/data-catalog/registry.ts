@@ -12,6 +12,7 @@ import cnaesMetadata from '../cnaes/data/metadata.json';
 import cfopMetadata from '../cfop/data/metadata.json';
 import naturezaJuridicaMetadata from '../natureza-juridica/data/metadata.json';
 import cnpjMotivosMetadata from '../cnpj-motivos/data/metadata.json';
+import ibptMetadata from '../ibpt/data/metadata.json';
 import nbsMetadata from '../nbs/data/metadata.json';
 import cestMetadata from '../cest/data/metadata.json';
 import cstMetadata from '../cst/data/metadata.json';
@@ -47,6 +48,7 @@ export const DATASET_REGISTRY: readonly DatasetRegistryEntry[] = [
   { id: 'cfop', metadata: cfopMetadata as DatasetMetadata },
   { id: 'natureza-juridica', metadata: naturezaJuridicaMetadata as DatasetMetadata },
   { id: 'cnpj-motivos', metadata: cnpjMotivosMetadata as DatasetMetadata },
+  { id: 'ibpt', metadata: ibptMetadata as DatasetMetadata },
   { id: 'nbs', metadata: nbsMetadata as DatasetMetadata },
   { id: 'cest', metadata: cestMetadata as DatasetMetadata },
   { id: 'cst', metadata: cstMetadata as DatasetMetadata },

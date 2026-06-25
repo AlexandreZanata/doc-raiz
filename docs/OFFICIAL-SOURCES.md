@@ -42,7 +42,8 @@
 | **LC 116** | Planalto / NFSe | [LC 116/2003 — Planalto](https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp116.htm) · [NFSe LC 116 list](https://www.gov.br/nfse/pt-br/mei-e-demais-empresas/codigos-de-tributacao-nacional-nbs) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | ISS national service list (~200 items). Golden: **`1.01`** (análise e desenvolvimento de sistemas), **`7.02`** (obras de construção civil). Vector: `lc116.official.json`. Municipal ISS **rates** out of scope. Manual refresh. |
 | **eSocial categorias** | eSocial / MTE | [eSocial S-1.3 Tabelas](https://www.gov.br/esocial/pt-br/documentacao-tecnica/leiautes-esocial-versao-s-1-3-nt-06-2026/tabelas.html) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Tabela 01 worker categories (~47). Golden: **`101`** (empregado geral), **`103`** (aprendiz), **`901`** (estagiário). Vector: `esocial.official.json`. Manual refresh. Natureza rubricas / leave types deferred v2. |
 | **Simples Nacional** | Planalto / RFB | [LC 123/2006 — Planalto](https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm) · [Receita Anexo I](http://normas.receita.fazenda.gov.br/sijut2consulta/anexoOutros.action?idArquivoBinario=48430) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Anexos I–V rate tables (6 faixas each, LC 155/2016). Golden: Anexo **`I`** RBT12 **`700000`** (alíquota efetiva **7,52%**), Anexo **`III`** faixa 1, Anexo **`V`** RBT12 **`200000`**. Vector: `simples-nacional.official.json`. CNAE→anexo mapping deferred. Manual refresh. |
-| **NCM** | Receita / Siscomex | [NCM JSON download](https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Mercosur nomenclature leaf codes (8 digits). Golden: **`01012100`** (purebred horses). Vector: `ncm.official.json`. |
+| **NCM** | Receita / Siscomex | [NCM JSON download](https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Mercosur nomenclature leaf codes (8 digits). Golden: **`01012100`** (purebred horses). Vector: `ncm.official.json`. **IBPT** approximate burden: `@br-validators/core/ibpt`. |
+| **IBPT carga tributária** | IBPT | [De Olho no Imposto](https://deolhonoimposto.ibpt.org.br/) · [Lei 12.741/2012](https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12741.htm) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Approximate federal + state + municipal burden per NCM×UF (golden subset embed). Golden: **`01012100`/SP** total **31,45%** nacional. Vector: `ibpt.official.json`. Full matrix out of scope. |
 | **CBO** | MTE | [CBO 2002 downloads](https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Occupation codes (eSocial / HR). Golden: **`212405`** (systems analyst). Vector: `cbo.official.json`. |
 | **CEP prefix lookup** | IBGE CNEFE | [CNEFE Censo 2022 UF CSV](https://ftp.ibge.gov.br/Cadastro_Nacional_de_Enderecos_para_Fins_Estatisticos/Censo_Demografico_2022/Arquivos_CNEFE/CSV/UF/) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | 5-digit prefix → UF + IBGE municipality. Golden: **`01310`** (São Paulo/SP), **`20040`** (Rio/RJ). Extends `@br-validators/core/cep`. Vector: `cep-faixa.official.json`. |
 | **Aeroportos (ANAC)** | ANAC | [Lista aeródromos públicos CSV](https://www.anac.gov.br/acesso-a-informacao/dados-abertos/areas-de-atuacao/aerodromos/lista-de-aerodromos-publicos/aerodromospublicosv1.csv/@@download/file/aerodromospublicosv1.csv) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) | Public aerodromos (ICAO/OACI + IATA where assigned). Golden: **`GRU`/`SBGR`**, **`GIG`/`SBGL`**, **`BSB`/`SBBR`**, **`SSA`/`SBSV`**, **`CGB`/`SBCY`**. Vector: `aeroportos.official.json`. IATA enrichment from ICAO standard assignment (supplemental to ANAC). |
@@ -608,7 +609,26 @@ Golden: Anexo **`I`** RBT12 **`700000`** → faixa 3, alíquota nominal **9,5%**
 
 Golden: `01012100` (purebred horse breeders), `12011000` (soybean seeds for sowing).
 
-Tax rates (IPI/ICMS) are out of scope — code + description lookup only.
+Tax rates (IPI/ICMS) are out of scope — code + description lookup only. Pair with `@br-validators/core/ibpt` for Lei 12.741/2012 approximate total burden.
+
+---
+
+## IBPT approximate tax burden (NCM) {#ibpt-carga-tributaria-ncm}
+
+> **Vectors:** `packages/br-validators/tests/vectors/ibpt.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — semestral IBPT release
+
+| Role | Source | URL |
+|------|--------|-----|
+| De Olho no Imposto (official tables) | IBPT | https://deolhonoimposto.ibpt.org.br/ |
+| Legal basis | Planalto | https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12741.htm |
+| Layout / integration | IBPT portal | https://deolhonoimposto.ibpt.org.br/ |
+
+Golden: NCM **`01012100`** / UF **`SP`** — nacional federal **13,45%** + estadual **18%** = **31,45%** total; UF **`RJ`** same NCM → estadual **14%** (**27,45%** total). NCM **`22030000`** / **`SP`** (malt beer) — **35,91%** nacional / **39,77%** importado.
+
+**Scope v1:** golden NCM×UF subset embedded (~5 rows). **Out of scope:** full ~11k NCM × 27 UF matrix in core bundle. Rates are **approximate** per Lei 12.741/2012 — not a substitute for SEFAZ calculation.
+
+**Fetch:** `pnpm fetch:data:ibpt` — refreshes golden subset from latest IBPT table (dev mirror documented in `fetch-ibpt.ts`).
 
 ---
 

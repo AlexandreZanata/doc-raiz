@@ -53,6 +53,7 @@
     "cfop",
     "natureza-juridica",
     "cnpj-motivos",
+    "ibpt",
     "nbs",
     "cest",
     "cst",
@@ -231,6 +232,10 @@
     "./cnpj-motivos": {
       "types": "./dist/cnpj-motivos.d.ts",
       "import": "./dist/cnpj-motivos.js"
+    },
+    "./ibpt": {
+      "types": "./dist/ibpt.d.ts",
+      "import": "./dist/ibpt.js"
     },
     "./nbs": {
       "types": "./dist/nbs.d.ts",
