@@ -1,11 +1,11 @@
 {
   "datasetId": "tse-municipios",
-  "status": "ok",
+  "status": "source_unavailable",
   "endpoints": [
     "https://cdn.tse.jus.br/estatistica/sead/odsele/municipio_tse_ibge/municipio_tse_ibge.zip"
   ],
   "attempts": 5,
-  "checkedAt": "2026-06-24T18:27:09.198Z",
-  "retainedEmbeddedDataFrom": "2026-06-24",
-  "message": "Official TSE municipio_tse_ibge zip fetch succeeded."
+  "checkedAt": "2026-06-25T06:53:04.461Z",
+  "retainedEmbeddedDataFrom": "2026-06-23",
+  "message": "Possible link deprecation — official source unreachable after 5 attempts (interval 120000ms) (fetch failed). No new data returned — embedded data from 2026-06-23 retained in the API."
 }

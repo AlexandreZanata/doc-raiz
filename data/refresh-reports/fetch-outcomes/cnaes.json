@@ -1,11 +1,11 @@
 {
   "datasetId": "cnaes",
-  "status": "ok",
+  "status": "source_unavailable",
   "endpoints": [
     "https://servicodados.ibge.gov.br/api/v2/cnae/subclasses"
   ],
   "attempts": 5,
-  "checkedAt": "2026-06-24T15:36:54.228Z",
+  "checkedAt": "2026-06-25T07:10:54.230Z",
   "retainedEmbeddedDataFrom": "2026-06-24",
-  "message": "Official IBGE CNAE subclasses fetch succeeded."
+  "message": "Possible link deprecation — official source unreachable after 5 attempts (interval 120000ms) (fetch failed). No new data returned — embedded data from 2026-06-24 retained in the API."
 }

@@ -1,11 +1,11 @@
 {
   "datasetId": "ncm",
-  "status": "ok",
+  "status": "source_unavailable",
   "endpoints": [
     "https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json"
   ],
   "attempts": 5,
-  "checkedAt": "2026-06-24T15:43:00.551Z",
+  "checkedAt": "2026-06-25T07:35:56.278Z",
   "retainedEmbeddedDataFrom": "2026-06-24",
-  "message": "Official Siscomex NCM JSON fetch succeeded."
+  "message": "Possible link deprecation — official source unreachable after 5 attempts (interval 120000ms) (fetch failed). No new data returned — embedded data from 2026-06-24 retained in the API."
 }

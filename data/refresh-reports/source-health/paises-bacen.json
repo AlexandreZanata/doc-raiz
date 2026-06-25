@@ -3,11 +3,12 @@
   "endpoints": [
     "http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=FOXZNFX/p50="
   ],
-  "consecutiveFailureDays": 0,
-  "firstFailureDate": null,
-  "lastFailureDate": null,
+  "consecutiveFailureDays": 1,
+  "firstFailureDate": "2026-06-25",
+  "lastFailureDate": "2026-06-25",
   "lastSuccessDate": "2026-06-24",
-  "severity": "ok",
-  "message": "Official source responded successfully.",
-  "retainedEmbeddedDataFrom": "2026-06-24"
+  "severity": "warning",
+  "message": "NF-e portal did not return a parseable country table (fetch failed). Embedded data from 2026-06-24 retained in the API.",
+  "retainedEmbeddedDataFrom": "2026-06-24",
+  "outcomeStatus": "embedded_retained"
 }

@@ -10,11 +10,12 @@
     "https://pncp.gov.br/api/pncp/v1/tipos-instrumentos-cobranca",
     "https://pncp.gov.br/api/pncp/v1/fontes-orcamentarias"
   ],
-  "consecutiveFailureDays": 0,
-  "firstFailureDate": null,
-  "lastFailureDate": null,
+  "consecutiveFailureDays": 1,
+  "firstFailureDate": "2026-06-25",
+  "lastFailureDate": "2026-06-25",
   "lastSuccessDate": "2026-06-24",
-  "severity": "ok",
-  "message": "Official source responded successfully.",
-  "retainedEmbeddedDataFrom": "2026-06-24"
+  "severity": "warning",
+  "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
+  "retainedEmbeddedDataFrom": "2026-06-24",
+  "outcomeStatus": "source_unavailable"
 }
