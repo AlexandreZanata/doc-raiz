@@ -348,7 +348,7 @@ Freshness table (auto-updated daily; ANP weekly): [docs/DATA-FRESHNESS.md](https
 
 ## Current release
 
-**v1.8.0** — all six `@br-validators/*` packages ship the same semver. Ten new core subpaths: `cst`, `lc116`, `ptax`, `esocial`, `ean`, `simples-nacional`, IBGE `cMunFG`, `cnpj-motivos`, `ibpt`, `cnis`. [CHANGELOG](https://github.com/AlexandreZanata/br-validators/blob/main/CHANGELOG.md#180---2026-06-25)
+**v1.8.2** — all six `@br-validators/*` packages ship the same semver. IBPT fetch fix, ANP in daily data bot, embedded refresh (Bacen STR, PTAX, IBPT 26.1.K). v1.8.0 added ten core subpaths. [CHANGELOG](https://github.com/AlexandreZanata/br-validators/blob/main/CHANGELOG.md#182---2026-06-25)
 
 ---
 

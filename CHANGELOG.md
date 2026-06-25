@@ -13,6 +13,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.8.2] - 2026-06-25
+
+### Fixed
+
+- **IBPT fetch** — `resolveLatestIbptTabela` picks `Math.max(anos)` (was resolving 2017 → 404 on valraw)
+- **Data refresh bot** — `anp-combustiveis` re-added to daily fetch; registry centralized in `data-refresh-registry.ts`
+
+### Changed
+
+- **Embedded reference data** — Bacen STR +1 institution; PTAX rolling window through 2026-06-25; IBPT tabela 26.1.K (12 golden cargas)
+
+---
+
 ## [1.8.0] - 2026-06-25
 
 ### Added
