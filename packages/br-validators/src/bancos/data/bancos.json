@@ -91,6 +91,13 @@
     "participaCompe": true
   },
   {
+    "codigo": "023",
+    "ispb": "53720128",
+    "nome": "CONTA SIMPLES SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "nomeReduzido": "CONTA SIMPLES SCD S.A.",
+    "participaCompe": false
+  },
+  {
     "codigo": "024",
     "ispb": "10866788",
     "nome": "Banco Bandepe S.A.",

@@ -1,7 +1,7 @@
 {
-  "datasetId": "cest",
+  "datasetId": "cnpj-motivos",
   "endpoints": [
-    "https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18"
+    "https://github.com/jonathands/dados-abertos-receita-cnpj/releases/download/2024.09/Motivos.zip"
   ],
   "consecutiveFailureDays": 0,
   "firstFailureDate": null,

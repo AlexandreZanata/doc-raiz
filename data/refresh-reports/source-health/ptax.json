@@ -1,7 +1,8 @@
 {
-  "datasetId": "cest",
+  "datasetId": "ptax",
   "endpoints": [
-    "https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18"
+    "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)",
+    "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/swagger-ui3"
   ],
   "consecutiveFailureDays": 0,
   "firstFailureDate": null,

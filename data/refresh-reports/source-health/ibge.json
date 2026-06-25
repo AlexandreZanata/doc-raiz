@@ -4,12 +4,12 @@
     "https://servicodados.ibge.gov.br/api/v1/localidades/estados",
     "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
   ],
-  "consecutiveFailureDays": 1,
-  "firstFailureDate": "2026-06-25",
-  "lastFailureDate": "2026-06-25",
-  "lastSuccessDate": "2026-06-24",
-  "severity": "warning",
-  "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-  "retainedEmbeddedDataFrom": "2026-06-24",
-  "outcomeStatus": "source_unavailable"
+  "consecutiveFailureDays": 0,
+  "firstFailureDate": null,
+  "lastFailureDate": null,
+  "lastSuccessDate": "2026-06-25",
+  "severity": "ok",
+  "message": "Official source responded successfully.",
+  "retainedEmbeddedDataFrom": "2026-06-25",
+  "outcomeStatus": "ok"
 }

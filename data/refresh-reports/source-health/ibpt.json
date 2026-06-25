@@ -1,0 +1,15 @@
+{
+  "datasetId": "ibpt",
+  "endpoints": [
+    "https://deolhonoimposto.ibpt.org.br/",
+    "https://ibpt.valraw.com.br/api/meta.json"
+  ],
+  "consecutiveFailureDays": 1,
+  "firstFailureDate": "2026-06-25",
+  "lastFailureDate": "2026-06-25",
+  "lastSuccessDate": null,
+  "severity": "warning",
+  "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
+  "retainedEmbeddedDataFrom": "2026-06-25",
+  "outcomeStatus": "source_empty"
+}

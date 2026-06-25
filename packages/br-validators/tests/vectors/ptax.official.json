@@ -8,9 +8,9 @@
   "golden": {
     "usdUltimoDiaUtil": {
       "moeda": "USD",
-      "data": "2026-06-24",
-      "cotacaoCompra": 5.2092,
-      "cotacaoVenda": 5.2098
+      "data": "2026-06-25",
+      "cotacaoCompra": 5.1886,
+      "cotacaoVenda": 5.1892
     },
     "usdHistorico": {
       "moeda": "USD",
@@ -21,9 +21,9 @@
     },
     "eurUltimoDiaUtil": {
       "moeda": "EUR",
-      "data": "2026-06-24",
-      "cotacaoCompra": 5.9114,
-      "cotacaoVenda": 5.9126
+      "data": "2026-06-25",
+      "cotacaoCompra": 5.9062,
+      "cotacaoVenda": 5.9079
     }
   }
 }

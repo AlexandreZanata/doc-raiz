@@ -1,5 +1,5 @@
 {
-  "executadoEm": "2026-06-25T08:01:04.412Z",
+  "executadoEm": "2026-06-25T16:37:00.889Z",
   "runDate": "2026-06-25",
   "schedule": "diario",
   "agendamento": "diario",
@@ -11,7 +11,7 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "estados": 27,
@@ -20,16 +20,17 @@
     },
     {
       "id": "bancos",
-      "status": "unchanged",
+      "status": "changed",
       "alteracoes": {
-        "adicionados": 0,
+        "adicionados": 1,
         "removidos": 0,
         "alterados": 0,
         "comparadoCom": "2026-06-23"
       },
       "contagens": {
-        "bancos": 468
-      }
+        "bancos": 469
+      },
+      "camposAlterados": []
     },
     {
       "id": "aeroportos",
@@ -69,6 +70,21 @@
       },
       "contagens": {
         "moedas": 154
+      }
+    },
+    {
+      "id": "ptax",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 10,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": "2026-06-25"
+      },
+      "contagens": {
+        "cotacoes": 50,
+        "moedas": 10,
+        "diasUteis": 5
       }
     },
     {
@@ -132,7 +148,7 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "cnaes": 1332
@@ -145,7 +161,7 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "cfop": 689
@@ -165,13 +181,39 @@
       }
     },
     {
+      "id": "cnpj-motivos",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 0,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": "2026-06-25"
+      },
+      "contagens": {
+        "motivos": 61
+      }
+    },
+    {
+      "id": "ibpt",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 0,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": null
+      },
+      "contagens": {
+        "cargas": 5
+      }
+    },
+    {
       "id": "nbs",
       "status": "unchanged",
       "alteracoes": {
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "nbs": 917
@@ -184,10 +226,66 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "cest": 1018
+      }
+    },
+    {
+      "id": "cst",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 0,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": "2026-06-24"
+      },
+      "contagens": {
+        "icms": 11,
+        "ipi": 14,
+        "pis": 33,
+        "cofins": 33
+      }
+    },
+    {
+      "id": "lc116",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 0,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": "2026-06-25"
+      },
+      "contagens": {
+        "lc116": 200
+      }
+    },
+    {
+      "id": "esocial",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 0,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": "2026-06-25"
+      },
+      "contagens": {
+        "categorias": 47
+      }
+    },
+    {
+      "id": "simples-nacional",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 0,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": "2026-06-25"
+      },
+      "contagens": {
+        "anexos": 5,
+        "faixas": 30
       }
     },
     {
@@ -197,7 +295,7 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "ncm": 10515
@@ -210,7 +308,7 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "cbo": 2694
@@ -236,10 +334,27 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "portos": 1094
+      }
+    },
+    {
+      "id": "anp-combustiveis",
+      "status": "unchanged",
+      "alteracoes": {
+        "adicionados": 0,
+        "removidos": 0,
+        "alterados": 0,
+        "comparadoCom": "2026-06-24"
+      },
+      "contagens": {
+        "semanas": 1,
+        "precosMedios": 2357,
+        "municipios": 386,
+        "produtos": 7,
+        "ufs": 27
       }
     },
     {
@@ -249,7 +364,7 @@
         "adicionados": 0,
         "removidos": 0,
         "alterados": 0,
-        "comparadoCom": "2026-06-23"
+        "comparadoCom": "2026-06-24"
       },
       "contagens": {
         "modalidades": 19,
@@ -279,35 +394,10 @@
   ],
   "sourceAlerts": [
     {
-      "datasetId": "ibge",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados",
-        "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "tse-municipios",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://cdn.tse.jus.br/estatistica/sead/odsele/municipio_tse_ibge/municipio_tse_ibge.zip"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-23",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
       "datasetId": "paises-bacen",
       "severity": "warning",
       "status": "embedded_retained",
-      "message": "NF-e portal did not return a parseable country table (fetch failed). Embedded data from 2026-06-24 retained in the API.",
+      "message": "NF-e portal did not return a parseable country table (Portal returned HTML instead of a country table file). Embedded data from 2026-06-24 retained in the API.",
       "endpoints": [
         "http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=FOXZNFX/p50="
       ],
@@ -316,129 +406,27 @@
       "consecutiveFailureDays": 1
     },
     {
-      "datasetId": "cnaes",
+      "datasetId": "ibpt",
       "severity": "warning",
-      "status": "source_unavailable",
+      "status": "source_empty",
       "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
       "endpoints": [
-        "https://servicodados.ibge.gov.br/api/v2/cnae/subclasses"
+        "https://deolhonoimposto.ibpt.org.br/",
+        "https://ibpt.valraw.com.br/api/meta.json"
       ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "cfop",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "nbs",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/documentacao-atual/anexo_b-nbs2-lista_servico_nacional-snnfse.xlsx/@@download/file/ANEXO_B-NBS2-LISTA_SERVICO_NACIONAL-SNNFSe.xlsx"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "cest",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "ncm",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://portalunico.siscomex.gov.br/classif/api/publico/nomenclatura/download/json"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "cbo",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads/cbo2002-ocupacao.csv"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "portos",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.gov.br/antaq/pt-br/central-de-conteudos/Instalaesporturias06052025.zip"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "pncp-reference",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://pncp.gov.br/api/pncp/v1/modalidades",
-        "https://pncp.gov.br/api/pncp/v1/amparos-legais",
-        "https://pncp.gov.br/api/pncp/v1/modos-disputas",
-        "https://pncp.gov.br/api/pncp/v1/tipos-instrumentos-convocatorios",
-        "https://pncp.gov.br/api/pncp/v1/tipos-contratos",
-        "https://pncp.gov.br/api/pncp/v1/criterios-julgamentos",
-        "https://pncp.gov.br/api/pncp/v1/tipos-instrumentos-cobranca",
-        "https://pncp.gov.br/api/pncp/v1/fontes-orcamentarias"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-24",
-      "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
-      "consecutiveFailureDays": 1
-    },
-    {
-      "datasetId": "feriados",
-      "severity": "warning",
-      "status": "source_unavailable",
-      "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
-      "endpoints": [
-        "https://www.gov.br/gestao/pt-br/assuntos/noticias/2025/dezembro/confira-o-calendario-oficial-de-feriados-nacionais-e-pontos-facultativos-em-2026"
-      ],
-      "retainedEmbeddedDataFrom": "2026-06-23",
+      "retainedEmbeddedDataFrom": "2026-06-25",
       "documentationAction": "See docs/DATA-SOURCE-MAINTENANCE.md — update OFFICIAL-SOURCES.md, fetch script endpoint(s), and metadata.json, then run `pnpm data:refresh`.",
       "consecutiveFailureDays": 1
     }
   ],
   "resumo": {
-    "datasetsVerificados": 20,
-    "datasetsAlterados": 0,
-    "totalAdicionados": 0,
+    "datasetsVerificados": 28,
+    "datasetsAlterados": 1,
+    "totalAdicionados": 1,
     "totalRemovidos": 0,
     "totalAlterados": 0,
-    "sourceAlerts": 12,
+    "sourceAlerts": 2,
     "criticalAlerts": 0,
-    "baselinesSelados": 0
+    "baselinesSelados": 3
   }
 }

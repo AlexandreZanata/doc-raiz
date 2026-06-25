@@ -3,7 +3,7 @@
   "lei12741Url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12741.htm",
   "minCargas": 4,
   "maxCargas": 12,
-  "tabela": "26.1.H",
+  "tabela": "26.1.K",
   "golden": {
     "cavalosSp": {
       "ncm": "01012100",

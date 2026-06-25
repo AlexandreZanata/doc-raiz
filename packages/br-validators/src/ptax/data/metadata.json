@@ -7,22 +7,22 @@
     "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/swagger-ui3"
   ],
   "capturadoEm": "2026-06-25",
-  "atualizadoEm": "2026-06-25T11:33:19.099Z",
+  "atualizadoEm": "2026-06-25T16:16:33.924Z",
   "contagens": {
-    "cotacoes": 40,
+    "cotacoes": 50,
     "moedas": 10,
-    "diasUteis": 4
+    "diasUteis": 5
   },
   "alteracoes": {
-    "adicionados": 40,
+    "adicionados": 10,
     "removidos": 0,
     "alterados": 0,
-    "comparadoCom": null
+    "comparadoCom": "2026-06-25"
   },
   "verificacao": {
     "agendamento": "diario",
     "workflow": "data-refresh-bot.yml",
-    "ultimaExecucao": "2026-06-25T11:33:19.099Z"
+    "ultimaExecucao": "2026-06-25T16:16:33.924Z"
   },
   "documentacao": "docs/OFFICIAL-SOURCES.md#ptax-cotacoes"
 }

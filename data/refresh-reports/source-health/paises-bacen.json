@@ -8,7 +8,7 @@
   "lastFailureDate": "2026-06-25",
   "lastSuccessDate": "2026-06-24",
   "severity": "warning",
-  "message": "NF-e portal did not return a parseable country table (fetch failed). Embedded data from 2026-06-24 retained in the API.",
+  "message": "NF-e portal did not return a parseable country table (Portal returned HTML instead of a country table file). Embedded data from 2026-06-24 retained in the API.",
   "retainedEmbeddedDataFrom": "2026-06-24",
   "outcomeStatus": "embedded_retained"
 }

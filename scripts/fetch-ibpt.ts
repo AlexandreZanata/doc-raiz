@@ -18,6 +18,10 @@ import {
   type IbptCargaRecord,
   type IbptNcmPayload,
 } from './lib/parse-ibpt-ncm-json.js';
+import {
+  resolveLatestIbptTabela,
+  type IbptMetaPayload,
+} from './lib/resolve-ibpt-tabela.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -37,11 +41,6 @@ export const IBPT_GOLDEN_UFS = ['SP', 'RJ', 'MG'] as const;
 
 export const IBPT_MIN_CARGAS = 4;
 export const IBPT_MAX_CARGAS = 12;
-
-interface IbptMetaPayload {
-  anos: number[];
-  versoes: Partial<Record<string, string[]>>;
-}
 
 async function downloadText(url: string, gzip: boolean): Promise<string> {
   let lastError: object | string | number | boolean | null = null;
@@ -79,28 +78,12 @@ function parseJsonObject(raw: string): object {
   return parsed;
 }
 
-function resolveLatestTabela(meta: IbptMetaPayload): { ano: number; tabela: string } {
-  if (meta.anos.length === 0) {
-    throw new SourceDataError('IBPT meta.json has no years');
-  }
-  const latestYear = meta.anos[meta.anos.length - 1];
-  const versoes = meta.versoes[String(latestYear)];
-  if (versoes === undefined || versoes.length === 0) {
-    throw new SourceDataError(`IBPT meta.json has no versions for year ${String(latestYear)}`);
-  }
-  const tabela = versoes[versoes.length - 1];
-  if (tabela.length === 0) {
-    throw new SourceDataError(`IBPT meta.json has no tabela for year ${String(latestYear)}`);
-  }
-  return { ano: latestYear, tabela };
-}
-
 async function fetchGoldenCargas(endpoints: string[]): Promise<IbptCargaRecord[]> {
   const metaUrl = `${IBPT_DEV_API_BASE_URL}/meta.json`;
   const metaRaw = await downloadText(metaUrl, false);
   endpoints.push(metaUrl);
   const meta = parseJsonObject(metaRaw) as IbptMetaPayload;
-  const { ano, tabela } = resolveLatestTabela(meta);
+  const { ano, tabela } = resolveLatestIbptTabela(meta);
 
   const cargas: IbptCargaRecord[] = [];
   for (const uf of IBPT_GOLDEN_UFS) {
