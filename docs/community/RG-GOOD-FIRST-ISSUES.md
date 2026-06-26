@@ -19,6 +19,7 @@ Phase 1 covers six states (~70% of population). The remaining **21 UFs** are ide
 | PR | Format-only (8 digits) | `12345678` |
 | RS | Format-only (10 digits) | `1234567890` |
 | SC | Format-only (9 digits) | `123456789` |
+| BA | Format-only (10 digits; IIPM legacy) | `1234567800` |
 
 ## Open for contribution
 
@@ -28,7 +29,6 @@ Phase 1 covers six states (~70% of population). The remaining **21 UFs** are ide
 | AL | `[rg] Add RG validation for UF AL` | PCivil AL — **not** SEFAZ-AL IE calc |
 | AM | `[rg] Add RG validation for UF AM` | PCivil AM |
 | AP | `[rg] Add RG validation for UF AP` | PCivil AP |
-| BA | `[rg] Add RG validation for UF BA` | PCivil BA — **not** SEFAZ-BA IE calc |
 | CE | `[rg] Add RG validation for UF CE` | PCivil CE |
 | DF | `[rg] Add RG validation for UF DF` | PCDF |
 | ES | `[rg] Add RG validation for UF ES` | PCivil ES |

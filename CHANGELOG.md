@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Platform CLI + playground** — `compare`, `batch`, and `diff` commands and routes (`/compare`, `/batch`, `/diff`) — closes DELIVERY-SURFACES parity gap for Layer 3 APIs
 - **Platform CLI `mask`** — `br-validators mask <type> <value>` delegates to `@br-validators/core/mask` (validate-then-format; `--uf` for IE / RG)
 - **RG contributor infrastructure (33c)** — `getRgPendingUfs()`, `getRgResearchUrl(uf)`, `RG_RESEARCH_URLS`, `CONTRIBUTING-UF.md`; OFFICIAL-SOURCES § RG expanded for 21 pending UFs (6/27 shipped)
+- **RG UF BA** — format-only legacy IIPM validator (10 digits); `rg.ba.official.json`; 7/27 UFs shipped
 
 ### Changed
 

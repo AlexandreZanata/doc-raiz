@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  RG_BA_GOLDEN,
   RG_MG_GOLDEN,
   RG_MG_GOLDEN_MASKED,
   RG_MG_GOLDEN_PREFIXED,
@@ -34,6 +35,7 @@ import {
   isValidRg,
   stripRg,
   validateRg,
+  validateRgBa,
   validateRgMg,
   validateRgPr,
   validateRgRj,
@@ -45,6 +47,7 @@ import type { ValidateRgOptions } from '../../../src/core/rg/types.js';
 import * as rgBarrel from '../../../src/rg.js';
 import { formatRg as formatRgBarrel } from '../../../src/format/rg.js';
 import { stripRg as stripRgBarrel } from '../../../src/strip/rg.js';
+import baVectors from '../../vectors/rg.ba.official.json';
 import spVectors from '../../vectors/rg.sp.official.json';
 import rjVectors from '../../vectors/rg.rj.official.json';
 import mgVectors from '../../vectors/rg.mg.official.json';
@@ -108,10 +111,17 @@ describe('RG golden vectors — per UF', () => {
     expect(RG_SC_GOLDEN).toBe(scVectors.valid.raw);
   });
 
+  it('validates BA format-only vectors', () => {
+    expect(isValidRg(baVectors.valid.raw, { uf: 'BA' })).toBe(true);
+    expect(validateRg(baVectors.invalid.raw, { uf: 'BA' }).ok).toBe(false);
+    expect(RG_BA_GOLDEN).toBe(baVectors.valid.raw);
+  });
+
   it('exports official source URLs', () => {
     expect(RG_OFFICIAL_SOURCE_URL).toBe(spVectors.url);
     expect(getRgOfficialSourceUrl('SP')).toBe(RG_OFFICIAL_SOURCE_URLS.SP);
     expect(getRgOfficialSourceUrl('PR')).toBe(prVectors.url);
+    expect(getRgOfficialSourceUrl('BA')).toBe(baVectors.url);
   });
 });
 
@@ -132,11 +142,12 @@ describe('RG registry', () => {
 
   it('reports implemented vs pending UFs', () => {
     expect(getRgPendingUfs()).toEqual(RG_PENDING_UFS);
-    expect(getRgPendingUfs()).toHaveLength(21);
+    expect(getRgPendingUfs()).toHaveLength(20);
     expect(isRgUfImplemented('SP')).toBe(true);
-    expect(isRgUfImplemented('BA')).toBe(false);
+    expect(isRgUfImplemented('BA')).toBe(true);
     expect(getRgResearchUrl('SP')).toBe(RG_OFFICIAL_SOURCE_URLS.SP);
-    expect(getRgResearchUrl('BA')).toBe(RG_RESEARCH_URLS.BA);
+    expect(getRgResearchUrl('BA')).toBe(RG_OFFICIAL_SOURCE_URLS.BA);
+    expect(getRgResearchUrl('CE')).toBe(RG_RESEARCH_URLS.CE);
     expect(getRgResearchUrl('ZZ' as never)).toBeUndefined();
   });
 
@@ -167,6 +178,7 @@ describe('RG masks', () => {
     expect(applyRgMask(RG_MG_GOLDEN_PREFIXED, 'MG')).toBe(`M${RG_MG_GOLDEN_MASKED}`);
     expect(applyRgMask(RG_PR_GOLDEN, 'PR')).toBe(RG_PR_GOLDEN);
     expect(applyRgMask(RG_RS_GOLDEN, 'RS')).toBe(RG_RS_GOLDEN);
+    expect(applyRgMask(RG_BA_GOLDEN, 'BA')).toBe(RG_BA_GOLDEN);
   });
 
   it('throws on invalid mask lengths', () => {
@@ -178,6 +190,7 @@ describe('RG masks', () => {
   it('formats via formatRg', () => {
     expect(formatRg(RG_SP_GOLDEN, { uf: 'SP' })).toEqual({ ok: true, formatted: RG_SP_GOLDEN_MASKED });
     expect(formatRg(RG_PR_GOLDEN, { uf: 'PR' })).toEqual({ ok: true, formatted: RG_PR_GOLDEN });
+    expect(formatRg(RG_BA_GOLDEN, { uf: 'BA' })).toEqual({ ok: true, formatted: RG_BA_GOLDEN });
     expect(formatRgBarrel(RG_SC_GOLDEN, { uf: 'SC' })).toEqual({
       ok: true,
       formatted: scVectors.valid.masked,
@@ -224,6 +237,12 @@ describe('RG per-UF edge cases', () => {
     expect(validateRgRs('123456789')).toMatchObject({ ok: false, code: 'INVALID_LENGTH' });
   });
 
+  it('BA rejects empty, invalid chars, wrong length', () => {
+    expect(validateRgBa('')).toMatchObject({ ok: false, code: 'EMPTY_INPUT' });
+    expect(validateRgBa('12A')).toMatchObject({ ok: false, code: 'INVALID_CHARACTER' });
+    expect(validateRgBa('123456789')).toMatchObject({ ok: false, code: 'INVALID_LENGTH' });
+  });
+
   it('SC rejects empty, invalid chars, wrong length', () => {
     expect(validateRgSc('')).toMatchObject({ ok: false, code: 'EMPTY_INPUT' });
     expect(validateRgSc('12A')).toMatchObject({ ok: false, code: 'INVALID_CHARACTER' });
@@ -237,5 +256,6 @@ describe('RG per-UF edge cases', () => {
     expect(stripRgBarrel(RG_PR_GOLDEN, { uf: 'PR' })).toBe(RG_PR_GOLDEN);
     expect(stripRg(RG_RS_GOLDEN, { uf: 'RS' })).toBe(RG_RS_GOLDEN);
     expect(stripRg(RG_SC_GOLDEN, { uf: 'SC' })).toBe(RG_SC_GOLDEN);
+    expect(stripRg(RG_BA_GOLDEN, { uf: 'BA' })).toBe(RG_BA_GOLDEN);
   });
 });

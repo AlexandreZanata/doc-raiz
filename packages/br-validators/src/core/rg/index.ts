@@ -10,6 +10,7 @@ import {
   RG_SUPPORTED_UFS,
   RG_UF_RULES,
 } from './constants.js';
+import { validateRgBa, stripRgBa } from './ba.js';
 import { validateRgMg, stripRgMg } from './mg.js';
 import { applyRgMask } from './mask.js';
 import { validateRgPr, stripRgPr } from './pr.js';
@@ -23,6 +24,7 @@ export {
   RG_MG_GOLDEN,
   RG_MG_GOLDEN_MASKED,
   RG_MG_GOLDEN_PREFIXED,
+  RG_BA_GOLDEN,
   RG_OFFICIAL_SOURCE_URL,
   RG_OFFICIAL_SOURCE_URLS,
   RG_PENDING_UFS,
@@ -40,6 +42,7 @@ export {
   RG_UF_RULES,
 } from './constants.js';
 export { computeRgMod10AlternatingCheckDigit, computeRgSpCheckDigit } from './modulo-rg.js';
+export { stripRgBa, validateRgBa } from './ba.js';
 export { stripRgMg, validateRgMg } from './mg.js';
 export { applyRgMask, applyRgRjStyleMask, applyRgScMask, applyRgSpStyleMask } from './mask.js';
 export { stripRgPr, validateRgPr } from './pr.js';
@@ -60,6 +63,7 @@ const VALIDATORS: Record<RgUfCode, ValidatorFn> = {
   PR: validateRgPr,
   RS: validateRgRs,
   SC: validateRgSc,
+  BA: validateRgBa,
 };
 
 const STRIPPERS: Record<RgUfCode, StripperFn> = {
@@ -69,6 +73,7 @@ const STRIPPERS: Record<RgUfCode, StripperFn> = {
   PR: stripRgPr,
   RS: stripRgRs,
   SC: stripRgSc,
+  BA: stripRgBa,
 };
 
 function failure(code: FailedResult['code'], message: string): FailedResult {
