@@ -259,7 +259,7 @@ br-validators generate inscricao-estadual-produtor-rural --masked --seed 42
 | IE Produtor Rural | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie …` (auto `P`) | `/ie` |
 | **detect()** | `@br-validators/core/detect` | `br-validators detect …` | `/detect` |
 | **sanitize()** | `@br-validators/core/sanitize` | `br-validators sanitize …` | `/sanitize` |
-| **mask()** | `@br-validators/core/mask` | — | via per-type `format` |
+| **mask()** | `@br-validators/core/mask` | `br-validators mask …` | via per-type `format` |
 | **compare()** | `@br-validators/core/compare` | `br-validators compare …` | `/compare` |
 | **batch()** | `@br-validators/core/batch` | `br-validators batch …` | `/batch` |
 | **diff()** | `@br-validators/core/diff` | `br-validators diff …` | `/diff` |

@@ -23,6 +23,7 @@ import {
   handleIeCli,
   handleDetectCli,
   handleSanitizeCli,
+  handleMaskCli,
   handleCompareCli,
   handleBatchCli,
   handleDiffCli,
@@ -58,6 +59,7 @@ import {
   type IeCliOptions,
   type DetectCliOptions,
   type SanitizeCliOptions,
+  type MaskCliOptions,
   type CompareCliOptions,
   type BatchCliOptions,
   type DiffCliOptions,
@@ -699,6 +701,19 @@ export function createProgram(): Command {
     .action((type: string, value: string | undefined, opts: SanitizeCliOptions) => {
       const io = { stdout: [] as string[], stderr: [] as string[] };
       process.exitCode = handleSanitizeCli(type, value, opts, io);
+      writeCliIo(io);
+    });
+
+  program
+    .command('mask <type> [value]')
+    .description('Apply unified display mask (validate first)')
+    .option('--uf <uf>', 'State code (required for inscricao-estadual and rg)')
+    .option('--json', 'JSON output')
+    .option('-q, --quiet', 'Exit code only')
+    .option('-f, --file <path>', 'Read value from file')
+    .action((type: string, value: string | undefined, opts: MaskCliOptions) => {
+      const io = { stdout: [] as string[], stderr: [] as string[] };
+      process.exitCode = handleMaskCli(type, value, opts, io);
       writeCliIo(io);
     });
 

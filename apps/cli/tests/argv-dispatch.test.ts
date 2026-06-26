@@ -253,6 +253,12 @@ describe('dispatchArgv', () => {
     const sanitizeEmpty = io();
     expect(dispatchArgv(['sanitize'], sanitizeEmpty)).toBe(EXIT.USAGE);
 
+    const mask = io();
+    expect(dispatchArgv(['mask', 'cpf', CPF_GOLDEN_PRIMARY, '--quiet'], mask)).toBe(EXIT.OK);
+
+    const maskEmpty = io();
+    expect(dispatchArgv(['mask'], maskEmpty)).toBe(EXIT.USAGE);
+
     const generate = io();
     expect(dispatchArgv(['generate', 'cpf', '--quiet', '--seed', '42', '--uf', 'SP'], generate)).toBe(
       EXIT.OK,

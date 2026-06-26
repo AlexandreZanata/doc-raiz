@@ -36,6 +36,7 @@ import {
   handlePlacaCli,
   handleRenavamCli,
   handleSanitizeCli,
+  handleMaskCli,
   handleTelefoneCli,
   handleTituloEleitorCli,
   type BoletoCliOptions,
@@ -168,7 +169,7 @@ export function dispatchArgv(tokens: string[], io: CliIo): number {
   if (tokens.length === 0 || tokens.includes('--help') || tokens.includes('-h')) {
     io.stdout.push('br-validators — 100% open-source Brazilian document validators');
     io.stdout.push('Usage: br-validators <command> ...');
-    io.stdout.push('Commands: list · cpf · cnpj · cep · telefone · cnh · renavam · titulo-eleitor · processo-judicial · rg · nfe-chave · brcode · placa · pis-pasep · cnis · pix · boleto · cartao · cartao-credito · ean · ie · bancos · ibge · feriados · tse-municipios · ddd · natureza-juridica · nbs · cest · cnae · cfop · ncm · cbo · moedas · paises-bacen · incoterms · portos · aeroportos · detect · sanitize · compare · batch · diff · generate');
+    io.stdout.push('Commands: list · cpf · cnpj · cep · telefone · cnh · renavam · titulo-eleitor · processo-judicial · rg · nfe-chave · brcode · placa · pis-pasep · cnis · pix · boleto · cartao · cartao-credito · ean · ie · bancos · ibge · feriados · tse-municipios · ddd · natureza-juridica · nbs · cest · cnae · cfop · ncm · cbo · moedas · paises-bacen · incoterms · portos · aeroportos · detect · sanitize · mask · compare · batch · diff · generate');
     return EXIT.OK;
   }
 
@@ -364,6 +365,8 @@ export function dispatchArgv(tokens: string[], io: CliIo): number {
       return handleDetectCli(rest.join(' ') || undefined, opts, io);
     case 'sanitize':
       return handleSanitizeCli(rest[0] ?? '', rest.slice(1).join(' ') || undefined, opts, io);
+    case 'mask':
+      return handleMaskCli(rest[0] ?? '', rest.slice(1).join(' ') || undefined, opts, io);
     case 'compare': {
       const type = rest[0];
       const valueA = rest[1];

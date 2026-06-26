@@ -159,7 +159,7 @@ Requires Node ≥ 18. ESM only (`"type": "module"`). Zero runtime dependencies.
 |-----|---------|-----|------------|---------|
 | `detect()` | `/detect` | `br-validators detect …` | `/detect` | Auto-classify raw input |
 | `sanitize()` | `/sanitize` | `br-validators sanitize <type> …` | `/sanitize` | ETL fixes + validate |
-| `mask()` | `/mask` | — | via `format` actions | Unified display mask |
+| `mask()` | `/mask` | `br-validators mask <type> …` | via `format` actions | Unified display mask |
 | `compare()` | `/compare` | `br-validators compare <type> …` | `/compare` | Normalized equality |
 | `batch()` | `/batch` | `br-validators batch <type> …` | `/batch` | Bulk validate + summary |
 | `diff()` | `/diff` | `br-validators diff <type> …` | `/diff` | Field-level structural diff |

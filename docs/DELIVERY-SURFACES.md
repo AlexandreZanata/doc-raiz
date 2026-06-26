@@ -56,7 +56,7 @@ As each module ships, **all three** must be updated:
 | IE produtor rural (SP) | `@br-validators/core/inscricao-estadual-produtor-rural` | `br-validators ie … --uf SP` (auto `P` prefix) | `/ie` badge | [SINTEGRA cad_SP Bloco II](http://www.sintegra.gov.br/Cad_Estados/cad_SP.html) |
 | **detect()** | `@br-validators/core/detect` | `br-validators detect …` | `/detect` | Composes per-type [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
 | **sanitize()** | `@br-validators/core/sanitize` | `br-validators sanitize <type> …` | `/sanitize` | Same validators as per-type rows |
-| **mask()** | `@br-validators/core/mask` | — | via per-type `format` | Per-type masks — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
+| **mask()** | `@br-validators/core/mask` | `br-validators mask <type> …` | via per-type `format` | Per-type masks — [OFFICIAL-SOURCES](OFFICIAL-SOURCES.md) |
 | **compare()** | `@br-validators/core/compare` | `br-validators compare <type> …` | `/compare` | Normalized equality via per-type `validate*` |
 | **batch()** | `@br-validators/core/batch` | `br-validators batch <type> …` | `/batch` | Bulk validate + summary |
 | **diff()** | `@br-validators/core/diff` | `br-validators diff <type> …` | `/diff` | Field-level diff per official structures |
@@ -99,6 +99,7 @@ br-validators <type> strip <value>
 |---------|-------------|
 | `detect [value]` | Classify raw input; `--uf` required for IE detection |
 | `sanitize <type> [value]` | Apply ETL fixes then validate; `--uf` for `inscricao-estadual` |
+| `mask <type> [value]` | Unified display mask; `--uf` for IE / RG |
 | `compare <type> <valueA> <valueB>` | Normalized equality; `--uf` for IE / RG / título |
 | `batch <type>` | Bulk validate from stdin or `--file`; `--uf`, `--limit` |
 | `diff <type> <valueA> <valueB>` | Field-level diff; `--uf` for IE / RG / título |
@@ -107,6 +108,7 @@ br-validators <type> strip <value>
 ```bash
 br-validators detect '123.456.789-09' --json
 br-validators sanitize cpf ' 123.456.789-09 ' --json
+br-validators mask cpf 12345678909 --json
 br-validators compare cpf '123.456.789-09' 12345678909 --json
 br-validators batch cpf --file values.txt --json
 br-validators diff cpf 12345678909 12345678901 --json

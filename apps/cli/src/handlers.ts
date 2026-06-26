@@ -53,6 +53,7 @@ import { runEan, type EanAction } from './commands/ean.js';
 import { runIe, type IeAction } from './commands/ie.js';
 import { runDetect } from './commands/detect.js';
 import { runSanitize } from './commands/sanitize.js';
+import { runMask } from './commands/mask.js';
 import { runCompare } from './commands/compare.js';
 import { runBatch } from './commands/batch.js';
 import { runDiff } from './commands/diff.js';
@@ -121,6 +122,10 @@ export type DetectCliOptions = CnpjCliOptions & {
 };
 
 export type SanitizeCliOptions = CnpjCliOptions & {
+  uf?: string;
+};
+
+export type MaskCliOptions = CnpjCliOptions & {
   uf?: string;
 };
 
@@ -778,6 +783,34 @@ export function handleSanitizeCli(
   }
 
   return runSanitize(
+    type,
+    value,
+    {
+      json: Boolean(opts.json),
+      quiet: Boolean(opts.quiet),
+      uf: opts.uf,
+      file: fileContent,
+    },
+    io,
+  );
+}
+
+export function handleMaskCli(
+  type: string,
+  value: string | undefined,
+  opts: MaskCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  let fileContent: string | undefined;
+  if (opts.file) {
+    const content = readInputFile(opts.file, io);
+    if (content === null) {
+      return EXIT.USAGE;
+    }
+    fileContent = content;
+  }
+
+  return runMask(
     type,
     value,
     {

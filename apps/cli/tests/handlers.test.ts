@@ -3,7 +3,7 @@ import { mkdtempSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { EXIT } from '../src/constants.js';
-import { handleCepCli, handleCnpjCli, handleCpfCli, handleTelefoneCli, handleCnhCli, handleRenavamCli, handleTituloEleitorCli, handleProcessoJudicialCli, handleRgCli, handleNfeChaveCli, handleBrCodeCli, handleListCli, handlePisPasepCli, handleCnisCli, handlePixCli, handleBoletoCli, handleCartaoCli, handleCartaoCreditoCli, handleEanCli, handleIeCli, handlePlacaCli, handleDetectCli, handleSanitizeCli, handleCompareCli, handleBatchCli, handleDiffCli, handleGenerateCli, handleBancosLookupCli, handleBancosListCli, readInputFile, writeCliIo } from '../src/handlers.js';
+import { handleCepCli, handleCnpjCli, handleCpfCli, handleTelefoneCli, handleCnhCli, handleRenavamCli, handleTituloEleitorCli, handleProcessoJudicialCli, handleRgCli, handleNfeChaveCli, handleBrCodeCli, handleListCli, handlePisPasepCli, handleCnisCli, handlePixCli, handleBoletoCli, handleCartaoCli, handleCartaoCreditoCli, handleEanCli, handleIeCli, handlePlacaCli, handleDetectCli, handleSanitizeCli, handleMaskCli, handleCompareCli, handleBatchCli, handleDiffCli, handleGenerateCli, handleBancosLookupCli, handleBancosListCli, readInputFile, writeCliIo } from '../src/handlers.js';
 import { createProgram, run } from '../src/program.js';
 import { CEP_GOLDEN_PRIMARY, CNPJ_GOLDEN_ALPHANUMERIC, CPF_GOLDEN_PRIMARY, CPF_GOLDEN_PRIMARY_MASKED, CPF_GOLDEN_SECONDARY, CNH_GOLDEN_PRIMARY, RENAVAM_GOLDEN_PRIMARY, TITULO_ELEITOR_GOLDEN_PRIMARY, PROCESSO_JUDICIAL_GOLDEN_PRIMARY_MASKED, NFE_CHAVE_GOLDEN_PRIMARY, PIX_GOLDEN_EMAIL, PIS_PASEP_GOLDEN_PRIMARY, CNIS_GOLDEN_INSS_NIT, PLACA_GOLDEN_MERCOSUL, BOLETO_GOLDEN_LINHA_STRIPPED, CARTAO_GOLDEN_VISA, EAN_GOLDEN_13, IE_SP_GOLDEN, RG_SP_GOLDEN, TELEFONE_GOLDEN_CELULAR, BRCODE_GOLDEN_STATIC_EVP } from '@br-validators/core';
 
@@ -726,6 +726,19 @@ describe('program', () => {
     expect(handleSanitizeCli('cpf', undefined, { file: '/no/such/sanitize.txt' }, io)).toBe(EXIT.USAGE);
   });
 
+  it('handleMaskCli reads value from file', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'br-validators-mask-'));
+    const file = join(dir, 'mask.txt');
+    writeFileSync(file, CPF_GOLDEN_PRIMARY, 'utf8');
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleMaskCli('cpf', undefined, { file, quiet: true }, io)).toBe(EXIT.OK);
+  });
+
+  it('handleMaskCli returns usage when file unreadable', () => {
+    const io = { stdout: [] as string[], stderr: [] as string[] };
+    expect(handleMaskCli('cpf', undefined, { file: '/no/such/mask.txt' }, io)).toBe(EXIT.USAGE);
+  });
+
   it('handleGenerateCli generates document', () => {
     const io = { stdout: [] as string[], stderr: [] as string[] };
     expect(handleGenerateCli('cpf', { quiet: true, seed: 42 }, io)).toBe(EXIT.OK);
@@ -743,12 +756,15 @@ describe('program', () => {
     expect(io.stdout).toHaveLength(2);
   });
 
-  it('run parses platform detect sanitize generate compare batch diff', () => {
+  it('run parses platform detect sanitize mask generate compare batch diff', () => {
     expect(() => {
       run(['node', 'br-validators', 'detect', CPF_GOLDEN_PRIMARY, '--quiet']);
     }).not.toThrow();
     expect(() => {
       run(['node', 'br-validators', 'sanitize', 'cpf', CPF_GOLDEN_PRIMARY_MASKED, '--quiet']);
+    }).not.toThrow();
+    expect(() => {
+      run(['node', 'br-validators', 'mask', 'cpf', CPF_GOLDEN_PRIMARY, '--quiet']);
     }).not.toThrow();
     expect(() => {
       run(['node', 'br-validators', 'generate', 'cpf', '--quiet', '--seed', '42']);
