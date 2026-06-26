@@ -17,6 +17,7 @@ describe('rg CLI', () => {
     expect(resolveRgUf('am')).toBe('AM');
     expect(resolveRgUf('ap')).toBe('AP');
     expect(resolveRgUf('df')).toBe('DF');
+    expect(resolveRgUf('es')).toBe('ES');
     expect(resolveRgUf('CE')).toBeNull();
     expect(resolveRgUf(undefined)).toBeNull();
   });

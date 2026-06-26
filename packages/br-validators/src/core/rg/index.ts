@@ -16,6 +16,7 @@ import { validateRgAm, stripRgAm } from './am.js';
 import { validateRgAp, stripRgAp } from './ap.js';
 import { validateRgBa, stripRgBa } from './ba.js';
 import { validateRgDf, stripRgDf } from './df.js';
+import { validateRgEs, stripRgEs } from './es.js';
 import { validateRgMg, stripRgMg } from './mg.js';
 import { applyRgMask } from './mask.js';
 import { validateRgPr, stripRgPr } from './pr.js';
@@ -35,6 +36,7 @@ export {
   RG_AP_GOLDEN,
   RG_BA_GOLDEN,
   RG_DF_GOLDEN,
+  RG_ES_GOLDEN,
   RG_OFFICIAL_SOURCE_URL,
   RG_OFFICIAL_SOURCE_URLS,
   RG_PENDING_UFS,
@@ -58,6 +60,7 @@ export { stripRgAm, validateRgAm } from './am.js';
 export { stripRgAp, validateRgAp } from './ap.js';
 export { stripRgBa, validateRgBa } from './ba.js';
 export { stripRgDf, validateRgDf } from './df.js';
+export { stripRgEs, validateRgEs } from './es.js';
 export { stripRgMg, validateRgMg } from './mg.js';
 export { applyRgMask, applyRgRjStyleMask, applyRgScMask, applyRgSpStyleMask } from './mask.js';
 export { stripRgPr, validateRgPr } from './pr.js';
@@ -84,6 +87,7 @@ const VALIDATORS: Record<RgUfCode, ValidatorFn> = {
   AM: validateRgAm,
   AP: validateRgAp,
   DF: validateRgDf,
+  ES: validateRgEs,
 };
 
 const STRIPPERS: Record<RgUfCode, StripperFn> = {
@@ -99,6 +103,7 @@ const STRIPPERS: Record<RgUfCode, StripperFn> = {
   AM: stripRgAm,
   AP: stripRgAp,
   DF: stripRgDf,
+  ES: stripRgEs,
 };
 
 function failure(code: FailedResult['code'], message: string): FailedResult {
