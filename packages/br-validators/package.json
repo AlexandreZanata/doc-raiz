@@ -114,6 +114,10 @@
       "types": "./dist/nfe-chave.d.ts",
       "import": "./dist/nfe-chave.js"
     },
+    "./nfe-cuf": {
+      "types": "./dist/nfe-cuf.d.ts",
+      "import": "./dist/nfe-cuf.js"
+    },
     "./processo-judicial": {
       "types": "./dist/processo-judicial.d.ts",
       "import": "./dist/processo-judicial.js"

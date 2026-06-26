@@ -41,7 +41,7 @@ function getGroupModuleCopy(
 ): GroupModuleCopy {
   if (groupId === 'fiscal') {
     return messages.referenceData.fiscal.modules[
-      moduleId as 'naturezaJuridica' | 'nbs' | 'cest' | 'cnae' | 'cfop' | 'ncm' | 'cbo' | 'cst'
+      moduleId as 'naturezaJuridica' | 'nbs' | 'cest' | 'cnae' | 'cfop' | 'ncm' | 'nfeCuf' | 'cbo' | 'cst'
     ];
   }
   if (groupId === 'trade') {

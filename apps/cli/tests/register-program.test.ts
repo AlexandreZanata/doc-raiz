@@ -34,4 +34,16 @@ describe('registerReferenceLookupCommands via createProgram', () => {
     expect(searchSpy).toHaveBeenCalled();
     expect(validateSpy).toHaveBeenCalled();
   });
+
+  it('wires nfe-cuf lookup subcommand to handler', async () => {
+    const lookupSpy = vi.spyOn(handlers, 'handleNfeCufLookupCli').mockReturnValue(0);
+    vi.spyOn(handlers, 'writeCliIo').mockImplementation(() => undefined);
+    const program = createProgram();
+    await program.parseAsync(['nfe-cuf', 'lookup', '35', '--json'], { from: 'user' });
+    expect(lookupSpy).toHaveBeenCalledWith(
+      '35',
+      expect.objectContaining({ json: true }),
+      expect.objectContaining({ stdout: expect.any(Array), stderr: expect.any(Array) }),
+    );
+  });
 });

@@ -387,6 +387,9 @@ describe('dispatchArgv', () => {
     const ddd = io();
     expect(dispatchArgv(['ddd', 'lookup', '11', '--json'], ddd)).toBe(EXIT.OK);
 
+    const nfeCuf = io();
+    expect(dispatchArgv(['nfe-cuf', 'lookup', '35', '--json'], nfeCuf)).toBe(EXIT.OK);
+
     const ptax = io();
     expect(dispatchArgv(['ptax', 'lookup', 'USD', '--json', '--verbose'], ptax)).toBe(EXIT.OK);
 
@@ -453,6 +456,12 @@ describe('dispatchArgv', () => {
 
     const dddUsage = io();
     expect(dispatchArgv(['ddd', 'unknown'], dddUsage)).toBe(EXIT.USAGE);
+
+    const nfeCufUsage = io();
+    expect(dispatchArgv(['nfe-cuf', 'unknown'], nfeCufUsage)).toBe(EXIT.USAGE);
+
+    const nfeCufMissing = io();
+    expect(dispatchArgv(['nfe-cuf', 'lookup'], nfeCufMissing)).toBe(EXIT.USAGE);
 
     const ptaxUsage = io();
     expect(dispatchArgv(['ptax', 'unknown'], ptaxUsage)).toBe(EXIT.USAGE);

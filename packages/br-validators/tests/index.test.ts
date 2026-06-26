@@ -21,6 +21,7 @@ import * as moedasEntry from '../src/moedas.js';
 import * as ptaxEntry from '../src/ptax.js';
 import * as paisesBacenEntry from '../src/paises-bacen.js';
 import * as incotermsEntry from '../src/incoterms.js';
+import * as nfeCufEntry from '../src/nfe-cuf.js';
 import * as feriadosEntry from '../src/feriados.js';
 import * as cnaesEntry from '../src/cnaes.js';
 import * as cfopEntry from '../src/cfop.js';
@@ -263,6 +264,14 @@ describe('package exports', () => {
     expect(incotermsEntry.getAllIncoterms).toBeTypeOf('function');
     expect(incotermsEntry.getIncotermPorCodigo).toBeTypeOf('function');
     expect(incotermsEntry.INCOTERMS_DATA_VERSION.id).toBe('incoterms');
+  });
+
+  it('re-exports NF-e cUF API from nfe-cuf entry', () => {
+    expect(nfeCufEntry.getAllCuf).toBeTypeOf('function');
+    expect(nfeCufEntry.getCufPorCodigo).toBeTypeOf('function');
+    expect(nfeCufEntry.getCufPorUf).toBeTypeOf('function');
+    expect(nfeCufEntry.lookupCufPorCodigo).toBeTypeOf('function');
+    expect(nfeCufEntry.NFE_CUF_DATA_VERSION.id).toBe('nfe-cuf');
   });
 
   it('re-exports Feriados API from feriados entry', () => {

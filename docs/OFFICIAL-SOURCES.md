@@ -22,6 +22,7 @@
 | **Processo judicial (número único CNJ)** | CNJ | [Resolução 65/2008](https://atos.cnj.jus.br/atos/detalhar/119) · [Anexo VIII (PDF)](https://www.cnj.jus.br/wp-content/uploads/2011/03/minuta_anexos_da_resoluo_numerao_nica_14_12_08.pdf) · Full index: [§ Processo judicial](#processo-judicial--reference-index) | **20 digits** — mask `NNNNNNN-DD.AAAA.J.TR.OOOO`. Modulo **97-10** (ISO 7064:2003). Golden: **`0000100-34.2008.9.21.0000`**. Vector: `processo-judicial.official.json`. |
 | **RG (Registro Geral)** | Per-state SSP/IGP | Full table: [§ RG](#rg--reference-index) | **UF required** — no federal algorithm. **27/27 UFs** shipped. SP/RJ/MG: Ghiorzi DV tables; others: format-only (DV unpublished by state issuers); SC: format-only + mask. Vectors: `rg.<uf>.official.json` for all UFs. |
 | **NF-e chave de acesso** | ENCAT / SEFAZ | [Portal NF-e — MOC index](https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=ndIjl+iEFdE%3D) · Full index: [§ NF-e chave](#nf-e--nfc-e-chave-de-acesso--reference-index) | **44 digits** — structure + modulo-11 DV on first 43. Models **55** (NF-e) / **65** (NFC-e). Golden: **`52060433009911002506550120000007800267301615`** (MOC §2.2.6.2 worked example, sum=644, DV=5). |
+| **NF-e cUF** | SEFAZ / NF-e | [Manual NF-e — Tabela de UF](http://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=Il8k4BIjb48=) · [DATA-FRESHNESS.md](DATA-FRESHNESS.md) · Full index: [§ NF-e cUF](#nfe-cuf) | 27 federative unit codes for NF-e field `cUF`. Golden: **`35`** (SP), **`53`** (DF). Vector: `nfe-cuf.official.json`. IBGE UF cross-ref embedded. Manual refresh. |
 | **PIX key** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf), [Anexo I — Padrões Iniciação PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf), [DICT API v2.9](https://aprendervalor.bcb.gov.br/content/estabilidadefinanceira/pix/API-DICT_v2-9-0.html) | **Key validation (Phase 4):** five types — CPF, CNPJ, email (max 77 lowercase), phone (`+55` mobile), EVP (UUID). Golden: `pix@bcb.gov.br`, `+5510998765432`, `123e4567-e89b-12d3-a456-426655440000`. |
 | **BR Code payload** | Banco Central | [Manual BR Code (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/spb_docs/ManualBRCode.pdf) · [Manual de Padrões PIX (PDF)](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf) | EMV TLV + CRC16-CCITT (tag 63). `parseBrCode` / `validateBrCode` / `buildStaticPixBrCode` (static PIX QR; omit `amount` for permanent QR). Golden: `tests/vectors/brcode.official.json` (≥5 manual examples + `BRCODE_GOLDEN_STATIC_*`). Static EVP CRC `1D3D`. Rule: BR-BRC-005. |
 | **Boleto (cobrança)** | FEBRABAN | [Convenção da Cobrança FB-0061/2021 (PDF)](https://cmsarquivos.febraban.org.br/Arquivos/documentos/PDF/Conven%C3%A7%C3%A3o%20da%20Cobran%C3%A7a%20-%2005_02_2021_f.pdf) | Bank boleto: 47-digit linha digitável (modulo 10 field DVs) + 44-digit código de barras (modulo 11 general DV). **Situação 1** (v1): currency `9`, fator+valor campo 5. **Situação 2** (5b): code `988`, currency `0`, ISPB campo 5. Golden: Santander linha ↔ barcode; synthetic Situação 2 pair in `boleto.situacao2.official.json`. |
@@ -244,6 +245,23 @@ Negative cross-UF cases: `ie.negative.official.json`.
 |--------|-------------------|--------|
 | **Primary** | `52060433009911002506550120000007800267301615` | MOC §2.2.6.2 — sum=644, remainder=6, DV=5 |
 | **Secondary** | `41180678393592000146558900000006041028190697` | MOC online valid example |
+
+---
+
+## NF-e cUF (SEFAZ UF code) {#nfe-cuf}
+
+> **Vectors:** `packages/br-validators/tests/vectors/nfe-cuf.official.json`  
+> **Freshness:** [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — `agendamento: manual`
+
+| Role | Source | URL |
+|------|--------|-----|
+| Manual NF-e — Tabela de UF | Portal Nacional NF-e | http://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=Il8k4BIjb48= |
+| Portal NF-e | SEFAZ | http://www.nfe.fazenda.gov.br/portal/principal.aspx |
+| IBGE UF codes (cross-ref) | IBGE | https://www.ibge.gov.br/explica/codigos-dos-municipios.php |
+
+Golden: `35` (São Paulo/SP), `53` (Distrito Federal), `11` (Rondônia). All **27** UFs embedded.
+
+`getCufPorCodigo` / `getCufPorUf` — lookup only. Numeric values coincide with IBGE UF codes but NF-e `cUF` field semantics differ from `@br-validators/core/ibge` locality API.
 
 ---
 

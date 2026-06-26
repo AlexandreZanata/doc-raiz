@@ -147,6 +147,15 @@ export const pt = {
           label: 'NCM',
           fields: { codigo: 'Código', descricao: 'Descrição' },
         },
+        nfeCuf: {
+          label: 'NF-e cUF',
+          fields: {
+            codigo: 'Código cUF',
+            uf: 'UF',
+            nome: 'Nome do estado',
+            codigoIbge: 'Código UF IBGE',
+          },
+        },
         cbo: {
           label: 'CBO',
           fields: { codigo: 'Código', descricao: 'Descrição' },

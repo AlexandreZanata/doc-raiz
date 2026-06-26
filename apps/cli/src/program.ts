@@ -33,6 +33,7 @@ import {
   handleBancosListCli,
   handleCepFaixaCli,
   handleDddLookupCli,
+  handleNfeCufLookupCli,
   handlePtaxLookupCli,
   handleCstLookupCli,
   handleCstSearchCli,
@@ -677,6 +678,20 @@ export function createProgram(): Command {
     .action((code: string, opts: ReferenceDatasetCliOptions) => {
       const io = { stdout: [] as string[], stderr: [] as string[] };
       process.exitCode = handleDddLookupCli(code, opts, io);
+      writeCliIo(io);
+    });
+
+  const nfeCuf = program.command('nfe-cuf').description('NF-e cUF — SEFAZ federative unit codes (offline)');
+
+  nfeCuf
+    .command('lookup')
+    .description('Resolve NF-e cUF code to UF sigla and IBGE cross-ref')
+    .argument('<code>', '2-digit cUF code (e.g. 35 for SP)')
+    .option('--json', 'JSON output')
+    .option('--verbose', 'Include dataset capture date')
+    .action((code: string, opts: ReferenceDatasetCliOptions) => {
+      const io = { stdout: [] as string[], stderr: [] as string[] };
+      process.exitCode = handleNfeCufLookupCli(code, opts, io);
       writeCliIo(io);
     });
 

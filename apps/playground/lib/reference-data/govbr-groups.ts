@@ -43,6 +43,12 @@ import {
   getNcmPorCodigo,
 } from '@br-validators/core/ncm';
 import {
+  NFE_CUF_DATA_VERSION,
+  NFE_CUF_GOLDEN_SP,
+  getCufPorCodigo,
+  getCufPorUf,
+} from '@br-validators/core/nfe-cuf';
+import {
   CST_DATA_VERSION,
   CST_GOLDEN_ICMS_TRIBUTADA,
   SPED_CST_CONSULTA_URL,
@@ -65,6 +71,7 @@ export type GovBrModuleId =
   | 'cnae'
   | 'cfop'
   | 'ncm'
+  | 'nfeCuf'
   | 'cbo'
   | 'cst'
   | 'moedas'
@@ -117,6 +124,24 @@ function lookupAeroporto(code: string): GovBrLookupRow | null {
 }
 
 export const FISCAL_MODULES: readonly GovBrModuleDefinition[] = [
+  {
+    id: 'nfeCuf',
+    defaultCode: NFE_CUF_GOLDEN_SP,
+    capturadoEm: NFE_CUF_DATA_VERSION.capturadoEm,
+    sourceUrl: sourceFromVersion(NFE_CUF_DATA_VERSION),
+    lookup: (code) => {
+      const row = getCufPorCodigo(code) ?? getCufPorUf(code);
+      return row
+        ? {
+            codigo: row.codigo,
+            uf: row.uf,
+            nome: row.nome,
+            codigoIbge: row.codigoIbge,
+          }
+        : null;
+    },
+    fieldKeys: ['codigo', 'uf', 'nome', 'codigoIbge'],
+  },
   {
     id: 'naturezaJuridica',
     defaultCode: '2062',

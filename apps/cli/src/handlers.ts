@@ -33,6 +33,7 @@ import { runFeriadosList } from './commands/feriados/list.js';
 import { runTseMunicipiosLookup } from './commands/tse-municipios/lookup.js';
 import { runCepFaixa } from './commands/cep/faixa.js';
 import { runDddLookup } from './commands/ddd/lookup.js';
+import { runNfeCufLookup } from './commands/nfe-cuf/lookup.js';
 import { runPtaxLookup } from './commands/ptax/lookup.js';
 import { runBrCode, type BrCodeAction } from './commands/brcode.js';
 import { runCep, type CepAction } from './commands/cep.js';
@@ -1108,6 +1109,14 @@ export function handleDddLookupCli(
   io: CliIo = { stdout: [], stderr: [] },
 ): number {
   return runDddLookup(value, { json: Boolean(opts.json), verbose: Boolean(opts.verbose) }, io);
+}
+
+export function handleNfeCufLookupCli(
+  value: string | undefined,
+  opts: ReferenceDatasetCliOptions,
+  io: CliIo = { stdout: [], stderr: [] },
+): number {
+  return runNfeCufLookup(value, { json: Boolean(opts.json), verbose: Boolean(opts.verbose) }, io);
 }
 
 export function handlePtaxLookupCli(

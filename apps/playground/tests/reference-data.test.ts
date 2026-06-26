@@ -67,9 +67,15 @@ describe('resolveCatalogDocUrl', () => {
 });
 
 describe('Gov.br reference groups', () => {
+  it('resolves fiscal golden NF-e cUF SP', () => {
+    const module = FISCAL_MODULES.find((entry) => entry.id === 'nfeCuf');
+    expect(module?.lookup('35')?.uf).toBe('SP');
+    expect(module?.lookup('SP')?.codigo).toBe('35');
+  });
+
   it('resolves fiscal golden natureza juridica', () => {
-    const module = FISCAL_MODULES[0];
-    expect(module.lookup('2062')?.codigo).toBe('2062');
+    const module = FISCAL_MODULES.find((entry) => entry.id === 'naturezaJuridica');
+    expect(module?.lookup('2062')?.codigo).toBe('2062');
   });
 
   it('resolves fiscal CNAE, CFOP, NCM, and CBO golden codes', () => {

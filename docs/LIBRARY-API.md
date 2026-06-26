@@ -23,6 +23,7 @@
 | `@br-validators/core/renavam` | RENAVAM — vehicle registry code |
 | `@br-validators/core/titulo-eleitor` | Título de Eleitor — voter registration |
 | `@br-validators/core/nfe-chave` | NF-e / NFC-e chave de acesso — 44-digit access key |
+| `@br-validators/core/nfe-cuf` | NF-e cUF — SEFAZ federative unit codes (27 UFs) |
 | `@br-validators/core/brcode` | BR Code PIX QR payload (EMV TLV + CRC16) |
 | `@br-validators/core/placa` | License plates |
 | `@br-validators/core/pis-pasep` | PIS / PASEP / NIS (checksum — no issuer metadata) |
@@ -321,6 +322,36 @@ getCepFaixaInfo('01310');
 **Success result:** `{ ok: true, value: NfeChave, format: 'numeric', parsed: NfeChaveParsed, uf?: UfCode }`
 
 **Official sources:** [OFFICIAL-SOURCES.md § NF-e chave](OFFICIAL-SOURCES.md#nf-e--nfc-e-chave-de-acesso--reference-index) — [Portal NF-e MOC](https://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=ndIjl+iEFdE%3D) · [MOC online §2.2.6.2](http://moc.sped.fazenda.pr.gov.br/#2.2.6.2. Cálculo do Dígito Verificador da Chave de Acesso da NF-e) · [MOC 7.0 PDF](https://www.confaz.fazenda.gov.br/legislacao/arquivo-manuais/moc7-visao-geral.pdf) · `NFE_CHAVE_OFFICIAL_SOURCE_URL` · `tests/vectors/nfe-chave.official.json` · Golden: `52060433009911002506550120000007800267301615`
+
+---
+
+## Core API — NF-e cUF (SEFAZ UF code)
+
+> **Offline embedded data** from [Manual NF-e — Tabela de UF](http://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=Il8k4BIjb48=).  
+> Distinct from `@br-validators/core/ibge` locality API — same numeric codes, NF-e field semantics.  
+> Freshness: [DATA-FRESHNESS.md](DATA-FRESHNESS.md) — `agendamento: manual`
+
+| Function | Returns |
+|----------|---------|
+| `getAllCuf()` | All 27 NF-e cUF rows |
+| `getCufs()` | **Deprecated** — use `getAllCuf()` (removed v2.0) |
+| `getCufPorCodigo(codigo)` | Single row or `undefined` (2-digit cUF) |
+| `getCufPorUf(uf)` | Reverse lookup by UF sigla |
+| `lookupCufPorCodigo(codigo)` | `LookupResult<NfeCuf>` |
+| `NFE_CUF_DATA_VERSION` | `DatasetMetadata` |
+
+Golden vectors: `35` (São Paulo/SP), `53` (Distrito Federal), `11` (Rondônia). Vector: `nfe-cuf.official.json`.
+
+```typescript
+import { getCufPorCodigo, getCufPorUf, NFE_CUF_DATA_VERSION } from '@br-validators/core/nfe-cuf';
+
+getCufPorCodigo('35'); // { codigo: '35', uf: 'SP', nome: 'São Paulo', codigoIbge: '35' }
+getCufPorUf('SP');     // same row
+```
+
+**Official sources:** [OFFICIAL-SOURCES.md § NF-e cUF](OFFICIAL-SOURCES.md#nfe-cuf) — [Manual NF-e Tabela de UF](http://www.nfe.fazenda.gov.br/portal/listaConteudo.aspx?tipoConteudo=Il8k4BIjb48=) · [IBGE UF codes (cross-ref)](https://www.ibge.gov.br/explica/codigos-dos-municipios.php)
+
+CLI: `br-validators nfe-cuf lookup <code>`
 
 ---
 

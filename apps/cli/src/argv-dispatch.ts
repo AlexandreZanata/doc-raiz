@@ -32,6 +32,7 @@ import {
   handleTseMunicipiosLookupCli,
   handleCepFaixaCli,
   handleDddLookupCli,
+  handleNfeCufLookupCli,
   handlePtaxLookupCli,
   handleListCli,
   handleNfeChaveCli,
@@ -184,7 +185,7 @@ export function dispatchArgv(tokens: string[], io: CliIo): number {
   if (tokens.length === 0 || tokens.includes('--help') || tokens.includes('-h')) {
     io.stdout.push('br-validators — 100% open-source Brazilian document validators');
     io.stdout.push('Usage: br-validators <command> ...');
-    io.stdout.push('Commands: list · cpf · cnpj · cep · telefone · cnh · renavam · titulo-eleitor · processo-judicial · rg · nfe-chave · brcode · placa · pis-pasep · cnis · pix · boleto · cartao · cartao-credito · ean · ie · bancos · ibge · feriados · tse-municipios · ddd · ptax · cst · natureza-juridica · nbs · cest · cnae · cfop · ncm · cbo · moedas · paises-bacen · incoterms · portos · aeroportos · detect · sanitize · mask · compare · batch · diff · generate');
+    io.stdout.push('Commands: list · cpf · cnpj · cep · telefone · cnh · renavam · titulo-eleitor · processo-judicial · rg · nfe-chave · brcode · placa · pis-pasep · cnis · pix · boleto · cartao · cartao-credito · ean · ie · bancos · ibge · feriados · tse-municipios · ddd · nfe-cuf · ptax · cst · natureza-juridica · nbs · cest · cnae · cfop · ncm · cbo · moedas · paises-bacen · incoterms · portos · aeroportos · detect · sanitize · mask · compare · batch · diff · generate');
     return EXIT.OK;
   }
 
@@ -375,6 +376,14 @@ export function dispatchArgv(tokens: string[], io: CliIo): number {
         return handleDddLookupCli(value, opts, io);
       }
       return usage(io, 'Expected: ddd lookup <code>');
+    }
+    case 'nfe-cuf': {
+      const action = rest[0];
+      if (action === 'lookup') {
+        const value = rest.slice(1).join(' ') || undefined;
+        return handleNfeCufLookupCli(value, opts, io);
+      }
+      return usage(io, 'Expected: nfe-cuf lookup <code>');
     }
     case 'ptax': {
       const action = rest[0];
