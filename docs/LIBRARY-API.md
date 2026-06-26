@@ -88,11 +88,50 @@ type Cnpj = string & { readonly __brand: 'Cnpj' };
 type Cep = string & { readonly __brand: 'Cep' };
 type Placa = string & { readonly __brand: 'Placa' };
 type PisPasep = string & { readonly __brand: 'PisPasep' };
+type Nit = string & { readonly __brand: 'Nit' };
 type PixKey = string & { readonly __brand: 'PixKey' };
-type PisPasep = string & { readonly __brand: 'PisPasep' };
+type Telefone = string & { readonly __brand: 'Telefone' };
+type Cnh = string & { readonly __brand: 'Cnh' };
+type Renavam = string & { readonly __brand: 'Renavam' };
+type TituloEleitor = string & { readonly __brand: 'TituloEleitor' };
+type NfeChave = string & { readonly __brand: 'NfeChave' };
+type ProcessoJudicial = string & { readonly __brand: 'ProcessoJudicial' };
+type Rg = string & { readonly __brand: 'Rg' };
+type Ean = string & { readonly __brand: 'Ean' };
+type CartaoCredito = string & { readonly __brand: 'CartaoCredito' };
+type InscricaoEstadual = string & { readonly __brand: 'InscricaoEstadual' };
+type InscricaoEstadualProdutorRural = string & { readonly __brand: 'InscricaoEstadualProdutorRural' };
+type LinhaDigitavel = string & { readonly __brand: 'LinhaDigitavel' };
+type CodigoBarras = string & { readonly __brand: 'CodigoBarras' };
+type Arrecadacao = string & { readonly __brand: 'Arrecadacao' };
+type BrCodePayload = string & { readonly __brand: 'BrCodePayload' };
 ```
 
-All public validators return `ValidationResult<T>` with branded `T` where applicable — **never** throw for invalid input (unless documented `assert*` helpers).
+| Module | Branded type | `validate*` return type |
+|--------|--------------|-------------------------|
+| CPF | `Cpf` | `ValidationResult<Cpf>` |
+| CNPJ | `Cnpj` | `ValidationResult<Cnpj>` |
+| CEP | `Cep` | `ValidationResult<Cep>` |
+| Placa | `Placa` | `ValidationResult<Placa>` |
+| PIS/PASEP | `PisPasep` | `ValidationResult<PisPasep>` |
+| CNIS / NIT | `Nit` | `NitValidationResult` |
+| PIX | `PixKey` | `PixValidationResult` |
+| Telefone | `Telefone` | `TelefoneValidationResult` |
+| CNH | `Cnh` | `ValidationResult<Cnh>` |
+| RENAVAM | `Renavam` | `ValidationResult<Renavam>` |
+| Título de eleitor | `TituloEleitor` | `TituloEleitorValidationResult` |
+| NF-e chave | `NfeChave` | `NfeChaveValidationResult` |
+| Processo judicial | `ProcessoJudicial` | `ProcessoJudicialValidationResult` |
+| RG | `Rg` | `RgValidationResult` |
+| EAN | `Ean` | `EanValidationResult` |
+| Cartão de crédito | `CartaoCredito` | `CartaoCreditoValidationResult` |
+| IE | `InscricaoEstadual` | `InscricaoEstadualValidationResult` |
+| IE produtor rural | `InscricaoEstadualProdutorRural` | `IeProdutorRuralValidationResult` |
+| Boleto cobrança | `LinhaDigitavel` \| `CodigoBarras` | `CobrancaBoletoValidationResult` |
+| Boleto arrecadação | `Arrecadacao` | `ArrecadacaoValidationResult` |
+| BR Code | `BrCodePayload` | `BrCodeValidationResult` |
+
+Semantic-only boleto helpers (`validateFatorVencimento`, `validateValorDocumento`) return structured fields, not document strings — out of branded scope.
 
 ### CLI mirror
 
@@ -112,7 +151,7 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 |----------|-----------|----------|
 | `stripCpf` | `(input: string) => string` | Remove non-digits |
 | `isValidCpf` | `(input: string) => boolean` | Modulo 11, reject known invalid patterns |
-| `validateCpf` | `(input: string) => ValidationResult` | Full result with canonical 11 digits |
+| `validateCpf` | `(input: string) => ValidationResult<Cpf>` | Full result with canonical 11 digits |
 | `formatCpf` | `(input: string) => FormatResult` | `XXX.XXX.XXX-DD` after validation |
 
 **Invariants:** Output canonical form is exactly 11 digits. Alphanumeric CPF **not supported** until RFB publishes spec.
@@ -130,7 +169,7 @@ See [DELIVERY-SURFACES.md](DELIVERY-SURFACES.md).
 | `isValidCnpjNumeric` | `(input: string) => boolean` | 14-digit modulo 11 |
 | `isValidCnpjAlphanumeric` | `(input: string) => boolean` | ASCII-48 + SERPRO weights |
 | `isValidCnpj` | `(input: string) => boolean` | Either format |
-| `validateCnpj` | `(input: string) => ValidationResult` | Includes `format` in success branch |
+| `validateCnpj` | `(input: string) => ValidationResult<Cnpj>` | Includes `format` in success branch |
 | `formatCnpjNumeric` | `(input: string) => FormatResult` | `XX.XXX.XXX/XXXX-DD` |
 | `formatCnpjAlphanumeric` | `(input: string) => FormatResult` | Mask TBD per RFB display rules |
 

@@ -163,8 +163,9 @@ Negative cross-UF cases: `ie.negative.official.json`.
 
 ## RG — reference index
 
-> **Vectors:** `packages/br-validators/tests/vectors/rg.{sp,rj,mg,pr,rs,sc}.official.json`  
-> **Caveat:** No single federal RG algorithm — each state issues its own format. `validateRg(raw, { uf })` requires UF; `detect()` does **not** auto-classify RG (too ambiguous without UF). **27/27 UFs shipped** — format-only rules cite state issuers where DV is unpublished; SP/RJ/MG use Ghiorzi walkthroughs.
+> **Vectors:** `packages/br-validators/tests/vectors/rg.<uf>.official.json` (all 27 UFs)  
+> **Caveat:** No single federal RG algorithm — each state issues its own format. `validateRg(raw, { uf })` requires UF; `detect()` does **not** auto-classify RG (too ambiguous without UF). **27/27 UFs shipped** — format-only rules cite state issuers where DV is unpublished; SP/RJ/MG use Ghiorzi walkthroughs.  
+> **Source rules** (same as [CONTRIBUTING-UF.md](../packages/br-validators/src/core/rg/CONTRIBUTING-UF.md)): cite an **official SSP/IGP walkthrough** — **not** SEFAZ-IE calculators (those validate Inscrição Estadual, not RG). Ghiorzi documents RG DV only for **SP, RJ, MG**; other states need state-specific sources; **most UFs have no consistent official legacy RG/DV doc**. Contributor workflow: [RG-CONTRIBUTOR-GUIDE.md](community/RG-CONTRIBUTOR-GUIDE.md).
 
 | UF | Coverage | Algorithm | Official / reference source | Golden vector |
 |----|----------|-----------|----------------------------|---------------|
