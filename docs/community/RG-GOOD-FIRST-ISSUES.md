@@ -4,7 +4,10 @@
 > **Template:** [.github/ISSUE_TEMPLATE/rg-uf-contribution.md](../../.github/ISSUE_TEMPLATE/rg-uf-contribution.md)  
 > **Depends on:** Phase 27c RG phase 1 (SP, RJ, MG, PR, RS, SC shipped)
 
-Phase 1 covers six states (~70% of population). The remaining **21 UFs** are ideal **good first issues** for contributors who can cite a state SSP/IGP official source.
+> **Contributor guide:** `packages/br-validators/src/core/rg/CONTRIBUTING-UF.md`  
+> **Pending list API:** `getRgPendingUfs()` · **Research URLs:** `getRgResearchUrl(uf)`
+
+Phase 1 covers six states (~70% of population). The remaining **21 UFs** are ideal **good first issues** for contributors who can cite a state **SSP / Polícia Civil** official source (not SEFAZ-IE calculators — those validate Inscrição Estadual, not RG).
 
 ## Shipped (do not re-open)
 
@@ -19,34 +22,35 @@ Phase 1 covers six states (~70% of population). The remaining **21 UFs** are ide
 
 ## Open for contribution
 
-| UF | Issue title suggestion | Notes |
-|----|------------------------|-------|
-| AC | `[rg] Add RG validation for UF AC` | SEFAZ-AC / state SSP |
-| AL | `[rg] Add RG validation for UF AL` | [SEFAZ-AL DV calculator](https://www.sefaz.al.gov.br/calculo) |
-| AM | `[rg] Add RG validation for UF AM` | SEFAZ-AM |
-| AP | `[rg] Add RG validation for UF AP` | SEFAZ-AP |
-| BA | `[rg] Add RG validation for UF BA` | [SEFAZ-BA DV calculator](https://www.sefaz.ba.gov.br/inspetoria-eletronica/icms/cadastro/calculo-dv/) |
-| CE | `[rg] Add RG validation for UF CE` | SEFAZ-CE |
-| DF | `[rg] Add RG validation for UF DF` | Receita DF |
-| ES | `[rg] Add RG validation for UF ES` | SEFAZ-ES |
-| GO | `[rg] Add RG validation for UF GO` | SEFAZ-GO CCE |
-| MA | `[rg] Add RG validation for UF MA` | SEFAZ-MA |
-| MS | `[rg] Add RG validation for UF MS` | SEFAZ-MS |
-| MT | `[rg] Add RG validation for UF MT` | SEFAZ-MT |
-| PA | `[rg] Add RG validation for UF PA` | SEFA-PA |
-| PB | `[rg] Add RG validation for UF PB` | Receita PB |
-| PE | `[rg] Add RG validation for UF PE` | SEFAZ-PE |
-| PI | `[rg] Add RG validation for UF PI` | SEFAZ-PI |
-| RN | `[rg] Add RG validation for UF RN` | SEFAZ-RN |
-| RO | `[rg] Add RG validation for UF RO` | SEFAZ-RO |
-| RR | `[rg] Add RG validation for UF RR` | SEFAZ-RR |
-| SE | `[rg] Add RG validation for UF SE` | SEFAZ-SE |
-| TO | `[rg] Add RG validation for UF TO` | SEFAZ-TO |
+| UF | Issue title suggestion | Research URL (`getRgResearchUrl`) |
+|----|------------------------|-----------------------------------|
+| AC | `[rg] Add RG validation for UF AC` | PCivil AC |
+| AL | `[rg] Add RG validation for UF AL` | PCivil AL — **not** SEFAZ-AL IE calc |
+| AM | `[rg] Add RG validation for UF AM` | PCivil AM |
+| AP | `[rg] Add RG validation for UF AP` | PCivil AP |
+| BA | `[rg] Add RG validation for UF BA` | PCivil BA — **not** SEFAZ-BA IE calc |
+| CE | `[rg] Add RG validation for UF CE` | PCivil CE |
+| DF | `[rg] Add RG validation for UF DF` | PCDF |
+| ES | `[rg] Add RG validation for UF ES` | PCivil ES |
+| GO | `[rg] Add RG validation for UF GO` | PCivil GO |
+| MA | `[rg] Add RG validation for UF MA` | PCivil MA |
+| MS | `[rg] Add RG validation for UF MS` | PCivil MS |
+| MT | `[rg] Add RG validation for UF MT` | PCivil MT |
+| PA | `[rg] Add RG validation for UF PA` | PCivil PA |
+| PB | `[rg] Add RG validation for UF PB` | PCivil PB |
+| PE | `[rg] Add RG validation for UF PE` | PCivil PE |
+| PI | `[rg] Add RG validation for UF PI` | PCivil PI |
+| RN | `[rg] Add RG validation for UF RN` | PCivil RN |
+| RO | `[rg] Add RG validation for UF RO` | PCivil RO |
+| RR | `[rg] Add RG validation for UF RR` | PCivil RR |
+| SE | `[rg] Add RG validation for UF SE` | PCivil SE |
+| TO | `[rg] Add RG validation for UF TO` | PCivil TO |
 
 ## Maintainer checklist when merging a UF
 
 - [ ] `packages/br-validators/tests/vectors/rg.<uf>.official.json`
 - [ ] `src/core/rg/<uf>.ts` registered in `RG_SUPPORTED_UFS`
+- [ ] Remove UF from `RG_PENDING_UFS` in `constants.ts`
 - [ ] Row in [docs/OFFICIAL-SOURCES.md § RG](../OFFICIAL-SOURCES.md#rg--reference-index)
 - [ ] `pnpm --filter @br-validators/core test:coverage` — 100% on `src/**`
 - [ ] CHANGELOG `[Unreleased]`

@@ -2,7 +2,7 @@
  * RG (Registro Geral) — per-UF rules (phase 1: SP, RJ, MG, RS, PR, SC).
  * @see http://ghiorzi.org/DVnew.htm — SSP-SP, IFP-RJ, MaSP-MG check digits
  */
-import type { RgUfCode } from '../../types/validation-result.js';
+import type { RgUfCode, UfCode } from '../../types/validation-result.js';
 import type { RgUfRules } from './types.js';
 
 export const RG_OFFICIAL_SOURCE_URL = 'http://ghiorzi.org/DVnew.htm';
@@ -17,6 +17,56 @@ export const RG_OFFICIAL_SOURCE_URLS: Record<RgUfCode, string> = {
 };
 
 export const RG_SUPPORTED_UFS = ['SP', 'RJ', 'MG', 'PR', 'RS', 'SC'] as const satisfies readonly RgUfCode[];
+
+/** Brazilian UFs without RG validator yet — community contributions (phase 33c). */
+export const RG_PENDING_UFS = [
+  'AC',
+  'AL',
+  'AM',
+  'AP',
+  'BA',
+  'CE',
+  'DF',
+  'ES',
+  'GO',
+  'MA',
+  'MS',
+  'MT',
+  'PA',
+  'PB',
+  'PE',
+  'PI',
+  'RN',
+  'RO',
+  'RR',
+  'SE',
+  'TO',
+] as const satisfies readonly UfCode[];
+
+/** SSP / Polícia Civil entry points for pending UF research — not algorithm sources. */
+export const RG_RESEARCH_URLS: Record<(typeof RG_PENDING_UFS)[number], string> = {
+  AC: 'https://www.policiacivil.ac.gov.br/',
+  AL: 'https://www.policiacivil.al.gov.br/',
+  AM: 'https://www.policiacivil.am.gov.br/',
+  AP: 'https://www.policiacivil.ap.gov.br/',
+  BA: 'https://www.policiacivil.ba.gov.br/',
+  CE: 'https://www.policiacivil.ce.gov.br/',
+  DF: 'https://www.pcdf.df.gov.br/',
+  ES: 'https://www.policiacivil.es.gov.br/',
+  GO: 'https://www.policiacivil.go.gov.br/',
+  MA: 'https://www.policiacivil.ma.gov.br/',
+  MS: 'https://www.pc.ms.gov.br/',
+  MT: 'https://www.policiacivil.mt.gov.br/',
+  PA: 'https://www.policiacivil.pa.gov.br/',
+  PB: 'https://www.policiacivil.pb.gov.br/',
+  PE: 'https://www.policiacivil.pe.gov.br/',
+  PI: 'https://www.policiacivil.pi.gov.br/',
+  RN: 'https://www.policiacivil.rn.gov.br/',
+  RO: 'https://www.policiacivil.ro.gov.br/',
+  RR: 'https://www.policiacivil.rr.gov.br/',
+  SE: 'https://www.policiacivil.se.gov.br/',
+  TO: 'https://www.policiacivil.to.gov.br/',
+};
 
 export const RG_SP_GOLDEN = '120300011';
 export const RG_SP_GOLDEN_MASKED = '12.030.001-1';

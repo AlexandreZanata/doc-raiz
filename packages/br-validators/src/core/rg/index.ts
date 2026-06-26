@@ -2,9 +2,11 @@
  * RG (Registro Geral) validation — per-UF rules (phase 1).
  * @see docs/GLOSSARY.md — RG identidade
  */
-import type { FormatResult, RgUfCode } from '../../types/validation-result.js';
+import type { FormatResult, RgUfCode, UfCode } from '../../types/validation-result.js';
 import {
   RG_OFFICIAL_SOURCE_URLS,
+  RG_PENDING_UFS,
+  RG_RESEARCH_URLS,
   RG_SUPPORTED_UFS,
   RG_UF_RULES,
 } from './constants.js';
@@ -23,7 +25,9 @@ export {
   RG_MG_GOLDEN_PREFIXED,
   RG_OFFICIAL_SOURCE_URL,
   RG_OFFICIAL_SOURCE_URLS,
+  RG_PENDING_UFS,
   RG_PR_GOLDEN,
+  RG_RESEARCH_URLS,
   RG_RJ_GOLDEN,
   RG_RJ_GOLDEN_MASKED,
   RG_RS_GOLDEN,
@@ -81,6 +85,28 @@ export function getRgOfficialSourceUrl(uf: RgUfCode): string {
 
 export function getRgUfSupport(): readonly RgUfCode[] {
   return RG_SUPPORTED_UFS;
+}
+
+export function getRgPendingUfs(): readonly (typeof RG_PENDING_UFS)[number][] {
+  return RG_PENDING_UFS;
+}
+
+export function isRgUfImplemented(uf: string): uf is RgUfCode {
+  return (RG_SUPPORTED_UFS as readonly string[]).includes(uf);
+}
+
+function isRgUfPending(uf: UfCode): uf is (typeof RG_PENDING_UFS)[number] {
+  return (RG_PENDING_UFS as readonly string[]).includes(uf);
+}
+
+export function getRgResearchUrl(uf: UfCode): string | undefined {
+  if (isRgUfImplemented(uf)) {
+    return getRgOfficialSourceUrl(uf);
+  }
+  if (isRgUfPending(uf)) {
+    return RG_RESEARCH_URLS[uf];
+  }
+  return undefined;
 }
 
 export function getRgUfRules(uf: RgUfCode) {

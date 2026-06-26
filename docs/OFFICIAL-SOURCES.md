@@ -174,7 +174,29 @@ Negative cross-UF cases: `ie.negative.official.json`.
 | **PR** | ✅ Shipped | Format-only (8 digits) | [IIPAR](https://www.iipar.pr.gov.br/) | `12345678` |
 | **RS** | ✅ Shipped | Format-only (10 digits) | [IGP-RS](https://www.estado.rs.gov.br/) | `1234567890` |
 | **SC** | ✅ Shipped | Format-only (9 digits) | [CIASC](https://www.ciasc.sc.gov.br/) | `123456789` |
-| AC–RO (except above) | ⏳ Community | TBD per state | — | — |
+| **AC** | ⏳ Community | Format + DV — **research required** (not in [Ghiorzi RG](http://ghiorzi.org/DVnew.htm)) | [PCivil AC](https://www.policiacivil.ac.gov.br/) | — |
+| **AL** | ⏳ Community | Research required — do not reuse [SEFAZ-AL IE calculator](https://www.sefaz.al.gov.br/calculo) | [PCivil AL](https://www.policiacivil.al.gov.br/) | — |
+| **AM** | ⏳ Community | Research required | [PCivil AM](https://www.policiacivil.am.gov.br/) | — |
+| **AP** | ⏳ Community | Research required | [PCivil AP](https://www.policiacivil.ap.gov.br/) | — |
+| **BA** | ⏳ Community | Research required — do not reuse [SEFAZ-BA IE calculator](https://www.sefaz.ba.gov.br/inspetoria-eletronica/icms/cadastro/calculo-dv/) | [PCivil BA](https://www.policiacivil.ba.gov.br/) | — |
+| **CE** | ⏳ Community | Research required | [PCivil CE](https://www.policiacivil.ce.gov.br/) | — |
+| **DF** | ⏳ Community | Research required | [PCDF](https://www.pcdf.df.gov.br/) | — |
+| **ES** | ⏳ Community | Research required | [PCivil ES](https://www.policiacivil.es.gov.br/) | — |
+| **GO** | ⏳ Community | Research required | [PCivil GO](https://www.policiacivil.go.gov.br/) | — |
+| **MA** | ⏳ Community | Research required | [PCivil MA](https://www.policiacivil.ma.gov.br/) | — |
+| **MS** | ⏳ Community | Research required | [PCivil MS](https://www.pc.ms.gov.br/) | — |
+| **MT** | ⏳ Community | Research required | [PCivil MT](https://www.policiacivil.mt.gov.br/) | — |
+| **PA** | ⏳ Community | Research required | [PCivil PA](https://www.policiacivil.pa.gov.br/) | — |
+| **PB** | ⏳ Community | Research required | [PCivil PB](https://www.policiacivil.pb.gov.br/) | — |
+| **PE** | ⏳ Community | Research required | [PCivil PE](https://www.policiacivil.pe.gov.br/) | — |
+| **PI** | ⏳ Community | Research required | [PCivil PI](https://www.policiacivil.pi.gov.br/) | — |
+| **RN** | ⏳ Community | Research required | [PCivil RN](https://www.policiacivil.rn.gov.br/) | — |
+| **RO** | ⏳ Community | Research required | [PCivil RO](https://www.policiacivil.ro.gov.br/) | — |
+| **RR** | ⏳ Community | Research required | [PCivil RR](https://www.policiacivil.rr.gov.br/) | — |
+| **SE** | ⏳ Community | Research required | [PCivil SE](https://www.policiacivil.se.gov.br/) | — |
+| **TO** | ⏳ Community | Research required | [PCivil TO](https://www.policiacivil.to.gov.br/) | — |
+
+Pending list API: `getRgPendingUfs()` · Research URLs: `getRgResearchUrl(uf)`.
 
 ---
 

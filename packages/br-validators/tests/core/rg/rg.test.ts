@@ -5,7 +5,9 @@ import {
   RG_MG_GOLDEN_PREFIXED,
   RG_OFFICIAL_SOURCE_URL,
   RG_OFFICIAL_SOURCE_URLS,
+  RG_PENDING_UFS,
   RG_PR_GOLDEN,
+  RG_RESEARCH_URLS,
   RG_RJ_GOLDEN,
   RG_RJ_GOLDEN_MASKED,
   RG_RS_GOLDEN,
@@ -24,8 +26,11 @@ import {
   computeRgSpCheckDigit,
   formatRg,
   getRgOfficialSourceUrl,
+  getRgPendingUfs,
+  getRgResearchUrl,
   getRgUfRules,
   getRgUfSupport,
+  isRgUfImplemented,
   isValidRg,
   stripRg,
   validateRg,
@@ -123,6 +128,16 @@ describe('RG registry', () => {
       code: 'UF_NOT_IMPLEMENTED',
       message: 'UF AC is not implemented for RG validation',
     });
+  });
+
+  it('reports implemented vs pending UFs', () => {
+    expect(getRgPendingUfs()).toEqual(RG_PENDING_UFS);
+    expect(getRgPendingUfs()).toHaveLength(21);
+    expect(isRgUfImplemented('SP')).toBe(true);
+    expect(isRgUfImplemented('BA')).toBe(false);
+    expect(getRgResearchUrl('SP')).toBe(RG_OFFICIAL_SOURCE_URLS.SP);
+    expect(getRgResearchUrl('BA')).toBe(RG_RESEARCH_URLS.BA);
+    expect(getRgResearchUrl('ZZ' as never)).toBeUndefined();
   });
 
   it('strips with unsupported UF fallback', () => {
