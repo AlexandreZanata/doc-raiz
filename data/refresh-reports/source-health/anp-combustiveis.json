@@ -1,12 +1,15 @@
 {
   "datasetId": "anp-combustiveis",
-  "status": "ok",
   "endpoints": [
     "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/levantamento-de-precos-de-combustiveis-ultimas-semanas-pesquisadas",
     "https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/arquivos-lpc/2026/resumo_semanal_lpc_2026-06-14_2026-06-20.xlsx"
   ],
-  "attempts": 5,
-  "checkedAt": "2026-06-26T07:27:57.498Z",
+  "consecutiveFailureDays": 0,
+  "firstFailureDate": null,
+  "lastFailureDate": null,
+  "lastSuccessDate": "2026-06-26",
+  "severity": "ok",
+  "message": "Official source responded successfully.",
   "retainedEmbeddedDataFrom": "2026-06-26",
-  "message": "Official ANP LPC weekly summary XLSX fetch succeeded."
+  "outcomeStatus": "ok"
 }
