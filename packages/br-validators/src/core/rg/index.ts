@@ -18,6 +18,11 @@ import { validateRgBa, stripRgBa } from './ba.js';
 import { validateRgDf, stripRgDf } from './df.js';
 import { validateRgEs, stripRgEs } from './es.js';
 import { validateRgGo, stripRgGo } from './go.js';
+import { validateRgMa, stripRgMa } from './ma.js';
+import { validateRgMs, stripRgMs } from './ms.js';
+import { validateRgMt, stripRgMt } from './mt.js';
+import { validateRgPa, stripRgPa } from './pa.js';
+import { validateRgPb, stripRgPb } from './pb.js';
 import { validateRgMg, stripRgMg } from './mg.js';
 import { applyRgMask } from './mask.js';
 import { validateRgPr, stripRgPr } from './pr.js';
@@ -39,6 +44,11 @@ export {
   RG_DF_GOLDEN,
   RG_ES_GOLDEN,
   RG_GO_GOLDEN,
+  RG_MA_GOLDEN,
+  RG_MS_GOLDEN,
+  RG_MT_GOLDEN,
+  RG_PA_GOLDEN,
+  RG_PB_GOLDEN,
   RG_OFFICIAL_SOURCE_URL,
   RG_OFFICIAL_SOURCE_URLS,
   RG_PENDING_UFS,
@@ -64,6 +74,11 @@ export { stripRgBa, validateRgBa } from './ba.js';
 export { stripRgDf, validateRgDf } from './df.js';
 export { stripRgEs, validateRgEs } from './es.js';
 export { stripRgGo, validateRgGo } from './go.js';
+export { stripRgMa, validateRgMa } from './ma.js';
+export { stripRgMs, validateRgMs } from './ms.js';
+export { stripRgMt, validateRgMt } from './mt.js';
+export { stripRgPa, validateRgPa } from './pa.js';
+export { stripRgPb, validateRgPb } from './pb.js';
 export { stripRgMg, validateRgMg } from './mg.js';
 export { applyRgMask, applyRgRjStyleMask, applyRgScMask, applyRgSpStyleMask } from './mask.js';
 export { stripRgPr, validateRgPr } from './pr.js';
@@ -92,6 +107,11 @@ const VALIDATORS: Record<RgUfCode, ValidatorFn> = {
   DF: validateRgDf,
   ES: validateRgEs,
   GO: validateRgGo,
+  MA: validateRgMa,
+  MS: validateRgMs,
+  MT: validateRgMt,
+  PA: validateRgPa,
+  PB: validateRgPb,
 };
 
 const STRIPPERS: Record<RgUfCode, StripperFn> = {
@@ -109,6 +129,11 @@ const STRIPPERS: Record<RgUfCode, StripperFn> = {
   DF: stripRgDf,
   ES: stripRgEs,
   GO: stripRgGo,
+  MA: stripRgMa,
+  MS: stripRgMs,
+  MT: stripRgMt,
+  PA: stripRgPa,
+  PB: stripRgPb,
 };
 
 function failure(code: FailedResult['code'], message: string): FailedResult {

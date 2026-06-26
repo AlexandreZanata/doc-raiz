@@ -22,35 +22,41 @@ export const RG_OFFICIAL_SOURCE_URLS: Record<RgUfCode, string> = {
   DF: 'https://www.nahora.df.gov.br/policia_civil/',
   ES: 'https://pci.es.gov.br/perguntas-frequentes',
   GO: 'https://identificacao.policiacivil.go.gov.br/1a-via-do-rg-goias/',
+  MA: 'https://www.ma.gov.br/servicos/obter-1-via-do-rg-agendamento-on-line',
+  MS: 'https://servicos.sejusp.ms.gov.br/',
+  MT: 'https://www.politec.mt.gov.br/',
+  PA: 'https://www.policiacivil.pa.gov.br/',
+  PB: 'https://agendamentos.pb.gov.br/SAA/ipc/home',
 };
 
-export const RG_SUPPORTED_UFS = ['SP', 'RJ', 'MG', 'PR', 'RS', 'SC', 'BA', 'AC', 'AL', 'AM', 'AP', 'DF', 'ES', 'GO'] as const satisfies readonly RgUfCode[];
-
-/** Brazilian UFs without RG validator yet — community contributions (phase 33c). */
-export const RG_PENDING_UFS = [
-  'CE',
+export const RG_SUPPORTED_UFS = [
+  'SP',
+  'RJ',
+  'MG',
+  'PR',
+  'RS',
+  'SC',
+  'BA',
+  'AC',
+  'AL',
+  'AM',
+  'AP',
+  'DF',
+  'ES',
+  'GO',
   'MA',
   'MS',
   'MT',
   'PA',
   'PB',
-  'PE',
-  'PI',
-  'RN',
-  'RO',
-  'RR',
-  'SE',
-  'TO',
-] as const satisfies readonly UfCode[];
+] as const satisfies readonly RgUfCode[];
+
+/** Brazilian UFs without RG validator yet — community contributions (phase 33c). */
+export const RG_PENDING_UFS = ['CE', 'PE', 'PI', 'RN', 'RO', 'RR', 'SE', 'TO'] as const satisfies readonly UfCode[];
 
 /** SSP / Polícia Civil entry points for pending UF research — not algorithm sources. */
 export const RG_RESEARCH_URLS: Record<(typeof RG_PENDING_UFS)[number], string> = {
   CE: 'https://www.policiacivil.ce.gov.br/',
-  MA: 'https://www.policiacivil.ma.gov.br/',
-  MS: 'https://www.pc.ms.gov.br/',
-  MT: 'https://www.policiacivil.mt.gov.br/',
-  PA: 'https://www.policiacivil.pa.gov.br/',
-  PB: 'https://www.policiacivil.pb.gov.br/',
   PE: 'https://www.policiacivil.pe.gov.br/',
   PI: 'https://www.policiacivil.pi.gov.br/',
   RN: 'https://www.policiacivil.rn.gov.br/',
@@ -93,6 +99,16 @@ export const RG_DF_GOLDEN = '1234567';
 export const RG_ES_GOLDEN = '123456789';
 
 export const RG_GO_GOLDEN = '123456789';
+
+export const RG_MA_GOLDEN = '123456789';
+
+export const RG_MS_GOLDEN = '123456789';
+
+export const RG_MT_GOLDEN = '123456789';
+
+export const RG_PA_GOLDEN = '123456789';
+
+export const RG_PB_GOLDEN = '123456789';
 
 export const RG_UF_RULES: Record<RgUfCode, RgUfRules> = {
   SP: {
@@ -202,6 +218,46 @@ export const RG_UF_RULES: Record<RgUfCode, RgUfRules> = {
   },
   GO: {
     uf: 'GO',
+    canonicalLength: 9,
+    baseLength: 9,
+    dvAlgorithm: 'format-only',
+    allowsCheckDigitX: false,
+    supportsMask: false,
+  },
+  MA: {
+    uf: 'MA',
+    canonicalLength: 9,
+    baseLength: 9,
+    dvAlgorithm: 'format-only',
+    allowsCheckDigitX: false,
+    supportsMask: false,
+  },
+  MS: {
+    uf: 'MS',
+    canonicalLength: 9,
+    baseLength: 9,
+    dvAlgorithm: 'format-only',
+    allowsCheckDigitX: false,
+    supportsMask: false,
+  },
+  MT: {
+    uf: 'MT',
+    canonicalLength: 9,
+    baseLength: 9,
+    dvAlgorithm: 'format-only',
+    allowsCheckDigitX: false,
+    supportsMask: false,
+  },
+  PA: {
+    uf: 'PA',
+    canonicalLength: 9,
+    baseLength: 9,
+    dvAlgorithm: 'format-only',
+    allowsCheckDigitX: false,
+    supportsMask: false,
+  },
+  PB: {
+    uf: 'PB',
     canonicalLength: 9,
     baseLength: 9,
     dvAlgorithm: 'format-only',

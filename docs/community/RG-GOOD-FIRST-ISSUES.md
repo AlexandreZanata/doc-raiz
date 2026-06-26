@@ -28,17 +28,17 @@ Phase 1 covers six states (~70% of population). Remaining UFs are **good first i
 | DF | Format-only (7 digits; PCDF legacy) | `1234567` |
 | ES | Format-only (9 digits; PCIES/SESP-ES legacy) | `123456789` |
 | GO | Format-only (9 digits; PCGO legacy) | `123456789` |
+| MA | Format-only (9 digits; Ident-MA legacy) | `123456789` |
+| MS | Format-only (9 digits; SEJUSP/PCMS legacy) | `123456789` |
+| MT | Format-only (9 digits; POLITEC/PCMT legacy) | `123456789` |
+| PA | Format-only (9 digits; PC-PA legacy) | `123456789` |
+| PB | Format-only (9 digits; IPC/PB legacy) | `123456789` |
 
 ## Open for contribution
 
 | UF | Issue title suggestion | Research URL (`getRgResearchUrl`) |
 |----|------------------------|-----------------------------------|
 | CE | `[rg] Add RG validation for UF CE` | PCivil CE |
-| MA | `[rg] Add RG validation for UF MA` | PCivil MA |
-| MS | `[rg] Add RG validation for UF MS` | PCivil MS |
-| MT | `[rg] Add RG validation for UF MT` | PCivil MT |
-| PA | `[rg] Add RG validation for UF PA` | PCivil PA |
-| PB | `[rg] Add RG validation for UF PB` | PCivil PB |
 | PE | `[rg] Add RG validation for UF PE` | PCivil PE |
 | PI | `[rg] Add RG validation for UF PI` | PCivil PI |
 | RN | `[rg] Add RG validation for UF RN` | PCivil RN |
