@@ -5,6 +5,14 @@
 
 import precosMediosData from './data/precos-medios.json';
 import semanasData from './data/semanas.json';
+import {
+  lookupFound,
+  lookupInvalidFormat,
+  lookupInvalidInput,
+  lookupNotFound,
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { AnpCombustivel, AnpPrecoMedio, AnpPrecosMediosQuery, AnpSemanaPesquisa } from './types.js';
 import { ANP_COMBUSTIVEL_VALUES } from './types.js';
 
@@ -61,33 +69,85 @@ export function getAnpSemanaAtual(): AnpSemanaPesquisa | undefined {
   return pickLatestAnpSemana(semanas);
 }
 
-export function getAnpPrecosMedios(query: AnpPrecosMediosQuery): AnpPrecoMedio | undefined {
+export function lookupAnpPrecosMedios(query: AnpPrecosMediosQuery): LookupResult<AnpPrecoMedio> {
+  const trimmedUf = query.uf.trim();
+  const trimmedMunicipio = query.municipio.trim();
+  if (trimmedUf.length === 0 || trimmedMunicipio.length === 0) {
+    return lookupInvalidInput('UF and municipio are required');
+  }
+
   const uf = normalizeUf(query.uf);
   if (!/^[A-Z]{2}$/.test(uf)) {
-    return undefined;
+    return lookupInvalidFormat('UF must be a 2-letter state code');
   }
 
   const municipio = normalizePlaceName(query.municipio);
   if (municipio.length === 0) {
-    return undefined;
+    return lookupInvalidFormat('Municipio name is required after normalization');
   }
 
   if (!isValidCombustivel(query.produto)) {
-    return undefined;
+    return lookupInvalidFormat('Produto must be a valid ANP fuel type');
   }
 
   const semanaInicio = resolveSemanaInicio(query.semanaInicio);
   if (semanaInicio === undefined) {
-    return undefined;
+    return lookupInvalidFormat('semanaInicio must be YYYY-MM-DD or omitted for latest week');
   }
 
-  return precosMedios.find(
+  const found = precosMedios.find(
     (record) =>
       record.semanaInicio === semanaInicio &&
       record.uf === uf &&
       normalizePlaceName(record.municipioNome) === municipio &&
       record.produto === query.produto,
   );
+
+  if (found === undefined) {
+    return lookupNotFound(
+      `ANP average price for ${query.produto} in ${municipio}/${uf} not in embedded table`,
+    );
+  }
+
+  return lookupFound(found);
+}
+
+export function getAnpPrecosMedios(query: AnpPrecosMediosQuery): AnpPrecoMedio | undefined {
+  return unwrapLookupValue(lookupAnpPrecosMedios(query));
+}
+
+export function lookupAnpPrecosMediosPorIbge(
+  codigo: number,
+  produto: AnpCombustivel,
+  semanaInicio?: string,
+): LookupResult<AnpPrecoMedio> {
+  if (!Number.isInteger(codigo) || codigo <= 0) {
+    return lookupInvalidFormat('IBGE municipality code must be a positive integer');
+  }
+
+  if (!isValidCombustivel(produto)) {
+    return lookupInvalidFormat('Produto must be a valid ANP fuel type');
+  }
+
+  const resolvedSemana = resolveSemanaInicio(semanaInicio);
+  if (resolvedSemana === undefined) {
+    return lookupInvalidFormat('semanaInicio must be YYYY-MM-DD or omitted for latest week');
+  }
+
+  const found = precosMedios.find(
+    (record) =>
+      record.semanaInicio === resolvedSemana &&
+      record.municipioIbge === codigo &&
+      record.produto === produto,
+  );
+
+  if (found === undefined) {
+    return lookupNotFound(
+      `ANP average price for ${produto} in IBGE ${String(codigo)} not in embedded table`,
+    );
+  }
+
+  return lookupFound(found);
 }
 
 export function getAnpPrecosMediosPorIbge(
@@ -95,25 +155,7 @@ export function getAnpPrecosMediosPorIbge(
   produto: AnpCombustivel,
   semanaInicio?: string,
 ): AnpPrecoMedio | undefined {
-  if (!Number.isInteger(codigo) || codigo <= 0) {
-    return undefined;
-  }
-
-  if (!isValidCombustivel(produto)) {
-    return undefined;
-  }
-
-  const resolvedSemana = resolveSemanaInicio(semanaInicio);
-  if (resolvedSemana === undefined) {
-    return undefined;
-  }
-
-  return precosMedios.find(
-    (record) =>
-      record.semanaInicio === resolvedSemana &&
-      record.municipioIbge === codigo &&
-      record.produto === produto,
-  );
+  return unwrapLookupValue(lookupAnpPrecosMediosPorIbge(codigo, produto, semanaInicio));
 }
 
 /** Returns every embedded ANP municipal average price row (in-memory reference, not a copy). */

@@ -297,6 +297,10 @@
     "./data-catalog": {
       "types": "./dist/data-catalog.d.ts",
       "import": "./dist/data-catalog.js"
+    },
+    "./lookup": {
+      "types": "./dist/lookup.d.ts",
+      "import": "./dist/lookup.js"
     }
   },
   "files": [

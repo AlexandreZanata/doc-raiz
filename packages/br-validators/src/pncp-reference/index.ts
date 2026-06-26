@@ -8,6 +8,9 @@ export {
   getPncpModalidadePorId,
   getPncpAmparosLegais,
   getPncpAmparoLegalPorId,
+  lookupPncpAmparoLegalPorId,
+  lookupPncpModalidadePorId,
+  lookupPncpReferenceItem,
   searchPncpReference,
 } from './lookup.js';
 export { normalizePncpCnpj } from './normalize.js';

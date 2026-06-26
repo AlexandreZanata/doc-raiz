@@ -4,6 +4,11 @@
  */
 
 import lc116Data from './data/lc116.json';
+import { resolveStringCodeLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { Lc116 } from './types.js';
 
 const items: readonly Lc116[] = lc116Data;
@@ -37,12 +42,19 @@ export function getLc116List(): readonly Lc116[] {
   return getAllLc116();
 }
 
+export function lookupLc116PorCodigo(codigo: string): LookupResult<Lc116> {
+  return resolveStringCodeLookup({
+    input: codigo,
+    entityLabel: 'LC 116',
+    normalize: normalizeCodigo,
+    isValidNormalized: (normalized) => normalized.length > 0,
+    invalidFormatMessage: 'LC 116 code must be item.subitem (e.g. 1.01 or 010101)',
+    find: (normalized) => items.find((entry) => entry.codigo === normalized),
+  });
+}
+
 export function getLc116PorCodigo(codigo: string): Lc116 | undefined {
-  const normalized = normalizeCodigo(codigo);
-  if (normalized.length === 0) {
-    return undefined;
-  }
-  return items.find((entry) => entry.codigo === normalized);
+  return unwrapLookupValue(lookupLc116PorCodigo(codigo));
 }
 
 export function searchLc116(query: string, options?: { limit?: number }): readonly Lc116[] {

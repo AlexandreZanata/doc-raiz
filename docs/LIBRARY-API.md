@@ -650,6 +650,54 @@ const options = getAllCstIcms(); // readonly Cst[] — populate <select>
 
 ---
 
+## Lookup results — `LookupResult<T>` (v1.9+, v2.0 primary)
+
+Structured lookups mirror the `ValidationResult` ok/code/message contract without document-specific success fields.
+
+### Type
+
+```typescript
+import type { LookupResult, LookupErrorCode } from '@br-validators/core/lookup';
+
+type LookupResult<T> =
+  | { ok: true; value: T }
+  | { ok: false; code: LookupErrorCode; message: string };
+
+type LookupErrorCode = 'NOT_FOUND' | 'INVALID_FORMAT' | 'INVALID_INPUT';
+```
+
+### Canonical `lookup*` vs legacy `get*`
+
+| Pattern | Return | Failure |
+|---------|--------|---------|
+| `lookupNcmPorCodigo(codigo)` | `LookupResult<Ncm>` | `{ ok: false, code, message }` |
+| `getNcmPorCodigo(codigo)` | `Ncm \| undefined` | `undefined` (any failure) — **v1.x compat until v2.0** |
+
+Every lookup module ships both. Prefer `lookup*` for new code; use `unwrapLookupValue(result)` only when bridging to legacy callers.
+
+### Example
+
+```typescript
+import { lookupCfopPorCodigo } from '@br-validators/core/cfop';
+
+const result = lookupCfopPorCodigo('1102');
+if (!result.ok) {
+  if (result.code === 'INVALID_FORMAT') {
+    // malformed code
+  }
+  return;
+}
+console.log(result.value.descricao);
+```
+
+### `search*` unchanged
+
+`searchNcm`, `searchCfop`, etc. still return `readonly T[]` — empty array means no textual match (not an error).
+
+See [MIGRATION.md](../MIGRATION.md) for v1.x → v2.0 lookup migration.
+
+---
+
 ## Core API — IBGE localities (reference data)
 
 > **Offline embedded data** from [IBGE Serviço de Dados](https://servicodados.ibge.gov.br/api/docs/localidades).  

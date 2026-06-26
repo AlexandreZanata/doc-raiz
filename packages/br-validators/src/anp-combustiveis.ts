@@ -1,15 +1,4 @@
-export {
-  getAllAnpPrecosMedios,
-  getAllAnpSemanasPesquisa,
-  getAnpSemanasPesquisa,
-  getAnpSemanaAtual,
-  getAnpPrecosMedios,
-  getAnpPrecosMediosPorIbge,
-  getAnpPrecosMediosEmbedded,
-  ANP_COMBUSTIVEIS_DATA_VERSION,
-  ANP_LPC_LISTING_URL,
-  ANP_COMBUSTIVEL_VALUES,
-} from './anp-combustiveis/index.js';
+export * from './anp-combustiveis/index.js';
 export type {
   AnpCombustivel,
   AnpSemanaPesquisa,

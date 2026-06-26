@@ -4,6 +4,11 @@
  */
 
 import ncmData from './data/ncm.json';
+import { resolveFixedLengthCodeLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { Ncm } from './types.js';
 
 const ncms: readonly Ncm[] = ncmData;
@@ -26,12 +31,19 @@ export function getNcms(): readonly Ncm[] {
   return getAllNcm();
 }
 
+export function lookupNcmPorCodigo(codigo: string): LookupResult<Ncm> {
+  return resolveFixedLengthCodeLookup({
+    input: codigo,
+    entityLabel: 'NCM',
+    normalize: normalizeCodigo,
+    expectedLength: 8,
+    lengthLabel: '8 digits',
+    find: (normalized) => ncms.find((ncm) => ncm.codigo === normalized),
+  });
+}
+
 export function getNcmPorCodigo(codigo: string): Ncm | undefined {
-  const normalized = normalizeCodigo(codigo);
-  if (normalized.length !== 8) {
-    return undefined;
-  }
-  return ncms.find((ncm) => ncm.codigo === normalized);
+  return unwrapLookupValue(lookupNcmPorCodigo(codigo));
 }
 
 export function searchNcm(query: string, options?: { limit?: number }): readonly Ncm[] {

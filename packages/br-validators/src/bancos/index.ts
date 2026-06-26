@@ -3,6 +3,8 @@ export {
   getBancos,
   getBancoPorCodigo,
   getBancoPorIspb,
+  lookupBancoPorCodigo,
+  lookupBancoPorIspb,
 } from './lookup.js';
 export {
   BANCOS_GOLDEN_COMPE_BB,

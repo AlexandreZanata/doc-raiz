@@ -4,6 +4,7 @@ export {
   getEstados,
   getMunicipios,
   getMunicipioPorCodigo,
+  lookupMunicipioPorCodigo,
   computeCmunFgCheckDigit,
   parseCmunFg,
   toCmunFg,

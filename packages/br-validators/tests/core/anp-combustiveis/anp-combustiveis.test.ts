@@ -15,6 +15,8 @@ import {
   getAnpPrecosMediosPorIbge,
   getAnpSemanaAtual,
   getAllAnpSemanasPesquisa,
+  lookupAnpPrecosMedios,
+  lookupAnpPrecosMediosPorIbge,
   pickLatestAnpSemana,
 } from '../../../src/anp-combustiveis/index.js';
 import type { AnpCombustivel } from '../../../src/anp-combustiveis/types.js';
@@ -77,6 +79,37 @@ describe('ANP combustíveis — lookup guards', () => {
     expect(getAnpPrecosMediosPorIbge(0, 'ETHANOL')).toBeUndefined();
     expect(getAnpPrecosMediosPorIbge(3550308, 'INVALID' as 'ETHANOL')).toBeUndefined();
     expect(getAnpPrecosMediosPorIbge(3550308, 'ETHANOL', 'bad-date')).toBeUndefined();
+  });
+
+  it('lookupAnpPrecosMedios returns structured failure codes', () => {
+    expect(lookupAnpPrecosMedios({ uf: ' ', municipio: 'X', produto: 'ETHANOL' })).toEqual({
+      ok: false,
+      code: 'INVALID_INPUT',
+      message: 'UF and municipio are required',
+    });
+
+    const emptyMunicipio = lookupAnpPrecosMedios({
+      uf: 'SP',
+      municipio: '!!!',
+      produto: 'ETHANOL',
+    });
+    expect(emptyMunicipio.ok).toBe(false);
+    if (!emptyMunicipio.ok) {
+      expect(emptyMunicipio.code).toBe('INVALID_FORMAT');
+      expect(emptyMunicipio.message).toContain('Municipio name');
+    }
+
+    const notFound = lookupAnpPrecosMedios({
+      uf: 'SP',
+      municipio: 'CIDADE INEXISTENTE',
+      produto: 'ETHANOL',
+    });
+    expect(notFound.ok).toBe(false);
+    if (!notFound.ok) {
+      expect(notFound.code).toBe('NOT_FOUND');
+    }
+
+    expect(lookupAnpPrecosMediosPorIbge(9999999, 'ETHANOL').ok).toBe(false);
   });
 
   it('returns undefined for unknown municipality/product combinations', () => {

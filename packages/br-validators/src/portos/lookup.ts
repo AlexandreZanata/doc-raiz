@@ -4,6 +4,11 @@
  */
 
 import portosData from './data/portos.json';
+import { resolveStringCodeLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { Porto } from './types.js';
 
 const portos: readonly Porto[] = portosData;
@@ -22,12 +27,19 @@ export function getPortos(): readonly Porto[] {
   return getAllPortos();
 }
 
+export function lookupPortoPorCodigo(codigo: string): LookupResult<Porto> {
+  return resolveStringCodeLookup({
+    input: codigo,
+    entityLabel: 'Port',
+    normalize: normalizeCodigo,
+    isValidNormalized: (normalized) => /^BR[A-Z0-9]{3,8}$/.test(normalized),
+    invalidFormatMessage: 'Port code must match BR + 3–8 alphanumeric characters (ANTAQ)',
+    find: (normalized) => portos.find((porto) => porto.codigo === normalized),
+  });
+}
+
 export function getPortoPorCodigo(codigo: string): Porto | undefined {
-  const normalized = normalizeCodigo(codigo);
-  if (!/^BR[A-Z0-9]{3,8}$/.test(normalized)) {
-    return undefined;
-  }
-  return portos.find((porto) => porto.codigo === normalized);
+  return unwrapLookupValue(lookupPortoPorCodigo(codigo));
 }
 
 export function getPortosPorMunicipio(ibgeCodigo: number): readonly Porto[] {

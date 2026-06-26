@@ -4,6 +4,11 @@
  */
 
 import nbsData from './data/nbs.json';
+import { resolveStringCodeLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { Nbs } from './types.js';
 
 const nbsList: readonly Nbs[] = nbsData;
@@ -34,12 +39,19 @@ export function getNbsList(): readonly Nbs[] {
   return getAllNbs();
 }
 
+export function lookupNbsPorCodigo(codigo: string): LookupResult<Nbs> {
+  return resolveStringCodeLookup({
+    input: codigo,
+    entityLabel: 'NBS',
+    normalize: normalizeCodigo,
+    isValidNormalized: (normalized) => LEAF_CODE_PATTERN.test(normalized),
+    invalidFormatMessage: 'NBS code must match d.dddd.dd.dd after normalization',
+    find: (normalized) => nbsList.find((nbs) => nbs.codigo === normalized),
+  });
+}
+
 export function getNbsPorCodigo(codigo: string): Nbs | undefined {
-  const normalized = normalizeCodigo(codigo);
-  if (!LEAF_CODE_PATTERN.test(normalized)) {
-    return undefined;
-  }
-  return nbsList.find((nbs) => nbs.codigo === normalized);
+  return unwrapLookupValue(lookupNbsPorCodigo(codigo));
 }
 
 export function searchNbs(query: string, options?: { limit?: number }): readonly Nbs[] {

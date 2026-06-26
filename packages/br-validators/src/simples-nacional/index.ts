@@ -3,6 +3,8 @@ export {
   getSimplesAnexos,
   getSimplesAnexo,
   getSimplesFaixa,
+  lookupSimplesAnexo,
+  lookupSimplesFaixa,
   computeSimplesAliquotaEfetiva,
 } from './lookup.js';
 export {

@@ -4,6 +4,11 @@
  */
 
 import cnaesData from './data/cnaes.json';
+import { resolveFixedLengthCodeLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { Cnae } from './types.js';
 
 const cnaes: readonly Cnae[] = cnaesData;
@@ -26,12 +31,19 @@ export function getCnaes(): readonly Cnae[] {
   return getAllCnae();
 }
 
+export function lookupCnaePorCodigo(codigo: string): LookupResult<Cnae> {
+  return resolveFixedLengthCodeLookup({
+    input: codigo,
+    entityLabel: 'CNAE',
+    normalize: normalizeCodigo,
+    expectedLength: 7,
+    lengthLabel: '7 digits',
+    find: (normalized) => cnaes.find((cnae) => cnae.codigo === normalized),
+  });
+}
+
 export function getCnaePorCodigo(codigo: string): Cnae | undefined {
-  const normalized = normalizeCodigo(codigo);
-  if (normalized.length !== 7) {
-    return undefined;
-  }
-  return cnaes.find((cnae) => cnae.codigo === normalized);
+  return unwrapLookupValue(lookupCnaePorCodigo(codigo));
 }
 
 export function searchCnaes(query: string, options?: { limit?: number }): readonly Cnae[] {

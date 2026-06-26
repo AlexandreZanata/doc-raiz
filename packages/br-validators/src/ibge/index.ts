@@ -4,6 +4,7 @@ export {
   getEstados,
   getMunicipios,
   getMunicipioPorCodigo,
+  lookupMunicipioPorCodigo,
 } from './lookup.js';
 export {
   computeCmunFgCheckDigit,

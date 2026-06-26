@@ -1,4 +1,10 @@
-export { getAllMoedas, getMoedas, getMoedaPorCodigo, searchMoedas } from './lookup.js';
+export {
+  getAllMoedas,
+  getMoedas,
+  getMoedaPorCodigo,
+  lookupMoedaPorCodigo,
+  searchMoedas,
+} from './lookup.js';
 export {
   BACEN_PTAX_MOEDAS_URL,
   MOEDAS_GOLDEN_BRL,

@@ -2,6 +2,7 @@ export {
   getAllMoedas,
   getMoedas,
   getMoedaPorCodigo,
+  lookupMoedaPorCodigo,
   searchMoedas,
   MOEDAS_DATA_VERSION,
   BACEN_PTAX_MOEDAS_URL,

@@ -3,6 +3,7 @@ export {
   getPortos,
   getPortoPorCodigo,
   getPortosPorMunicipio,
+  lookupPortoPorCodigo,
   searchPortos,
 } from './lookup.js';
 export {

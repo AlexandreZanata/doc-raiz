@@ -4,6 +4,11 @@
  */
 
 import categoriasData from './data/categorias.json';
+import { resolveFixedLengthCodeLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { EsocialCategoriaTrabalhador } from './types.js';
 
 const categorias: readonly EsocialCategoriaTrabalhador[] = categoriasData;
@@ -26,12 +31,23 @@ export function getEsocialCategorias(): readonly EsocialCategoriaTrabalhador[] {
   return getAllEsocialCategorias();
 }
 
-export function getEsocialCategoriaPorCodigo(codigo: string): EsocialCategoriaTrabalhador | undefined {
-  const normalized = normalizeCodigo(codigo);
-  if (normalized.length !== 3) {
-    return undefined;
-  }
-  return categorias.find((entry) => entry.codigo === normalized);
+export function lookupEsocialCategoriaPorCodigo(
+  codigo: string,
+): LookupResult<EsocialCategoriaTrabalhador> {
+  return resolveFixedLengthCodeLookup({
+    input: codigo,
+    entityLabel: 'eSocial worker category',
+    normalize: normalizeCodigo,
+    expectedLength: 3,
+    lengthLabel: '3 digits',
+    find: (normalized) => categorias.find((entry) => entry.codigo === normalized),
+  });
+}
+
+export function getEsocialCategoriaPorCodigo(
+  codigo: string,
+): EsocialCategoriaTrabalhador | undefined {
+  return unwrapLookupValue(lookupEsocialCategoriaPorCodigo(codigo));
 }
 
 export function searchEsocialCategorias(

@@ -6,6 +6,8 @@ export {
   getAnpPrecosMedios,
   getAnpPrecosMediosPorIbge,
   getAnpPrecosMediosEmbedded,
+  lookupAnpPrecosMedios,
+  lookupAnpPrecosMediosPorIbge,
   pickLatestAnpSemana,
 } from './lookup.js';
 export {

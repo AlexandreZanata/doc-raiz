@@ -4,6 +4,8 @@ export {
   getAeroportoPorIata,
   getAeroportoPorIcao,
   getAeroportosPorMunicipio,
+  lookupAeroportoPorIata,
+  lookupAeroportoPorIcao,
 } from './lookup.js';
 export {
   ANAC_AERODROMOS_PUBLICOS_CSV_URL,

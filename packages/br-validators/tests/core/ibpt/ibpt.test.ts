@@ -11,6 +11,7 @@ import {
   IBPT_GOLDEN_UF_SP,
   IBPT_LEI_12741_URL,
   IBPT_OFFICIAL_PORTAL_URL,
+  lookupIbptCargaPorNcmUf,
 } from '../../../src/ibpt/index.js';
 import { getNcmPorCodigo } from '../../../src/ncm/index.js';
 import vectors from '../../vectors/ibpt.official.json';
@@ -76,6 +77,27 @@ describe('IBPT — negative vectors', () => {
     ['whitespaceUf', vectors.negative.whitespaceUf],
   ] as const)('returns undefined for %s lookup', (_label, vector) => {
     expect(getIbptCargaPorNcmUf({ ncm: vector.ncm, uf: vector.uf })).toBeUndefined();
+  });
+
+  it('lookupIbptCargaPorNcmUf returns INVALID_INPUT when ncm or uf missing', () => {
+    expect(lookupIbptCargaPorNcmUf({ ncm: '', uf: 'SP' })).toEqual({
+      ok: false,
+      code: 'INVALID_INPUT',
+      message: 'NCM and UF are required',
+    });
+    expect(lookupIbptCargaPorNcmUf({ ncm: '01012100', uf: '  ' })).toEqual({
+      ok: false,
+      code: 'INVALID_INPUT',
+      message: 'NCM and UF are required',
+    });
+  });
+
+  it('lookupIbptCargaPorNcmUf returns NOT_FOUND for missing embed row', () => {
+    const result = lookupIbptCargaPorNcmUf({ ncm: '99999999', uf: 'SP' });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.code).toBe('NOT_FOUND');
+    }
   });
 });
 

@@ -11,6 +11,11 @@ import modosDisputaData from './data/modos-disputa.json';
 import tiposContratoData from './data/tipos-contrato.json';
 import tiposInstrumentosCobrancaData from './data/tipos-instrumentos-cobranca.json';
 import tiposInstrumentosConvocatoriosData from './data/tipos-instrumentos-convocatorios.json';
+import { resolvePositiveIdLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { PncpReferenceItem, PncpReferenceTableId } from './types.js';
 
 const tables: Record<PncpReferenceTableId, readonly PncpReferenceItem[]> = {
@@ -24,9 +29,8 @@ const tables: Record<PncpReferenceTableId, readonly PncpReferenceItem[]> = {
   'fontes-orcamentarias': fontesOrcamentariasData,
 };
 
-function normalizeId(id: number | string): number | null {
-  const parsed = typeof id === 'number' ? id : Number.parseInt(id, 10);
-  return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+function pncpTableLabel(tableId: PncpReferenceTableId): string {
+  return `PNCP ${tableId}`;
 }
 
 /** Returns every row in a PNCP reference table (in-memory reference, not a copy). */
@@ -39,15 +43,22 @@ export function getPncpReferenceTable(tableId: PncpReferenceTableId): readonly P
   return getAllPncpReference(tableId);
 }
 
+export function lookupPncpReferenceItem(
+  tableId: PncpReferenceTableId,
+  id: number | string,
+): LookupResult<PncpReferenceItem> {
+  return resolvePositiveIdLookup({
+    id,
+    entityLabel: pncpTableLabel(tableId),
+    find: (normalizedId) => tables[tableId].find((item) => item.id === normalizedId),
+  });
+}
+
 export function getPncpReferenceItem(
   tableId: PncpReferenceTableId,
   id: number | string,
 ): PncpReferenceItem | undefined {
-  const normalizedId = normalizeId(id);
-  if (normalizedId === null) {
-    return undefined;
-  }
-  return tables[tableId].find((item) => item.id === normalizedId);
+  return unwrapLookupValue(lookupPncpReferenceItem(tableId, id));
 }
 
 /** Returns every PNCP procurement modality (in-memory reference, not a copy). */
@@ -60,8 +71,12 @@ export function getPncpModalidades(): readonly PncpReferenceItem[] {
   return getAllPncpModalidades();
 }
 
+export function lookupPncpModalidadePorId(id: number | string): LookupResult<PncpReferenceItem> {
+  return lookupPncpReferenceItem('modalidades', id);
+}
+
 export function getPncpModalidadePorId(id: number | string): PncpReferenceItem | undefined {
-  return getPncpReferenceItem('modalidades', id);
+  return unwrapLookupValue(lookupPncpModalidadePorId(id));
 }
 
 /** Returns every PNCP legal basis row (in-memory reference, not a copy). */
@@ -74,8 +89,12 @@ export function getPncpAmparosLegais(): readonly PncpReferenceItem[] {
   return getAllPncpAmparosLegais();
 }
 
+export function lookupPncpAmparoLegalPorId(id: number | string): LookupResult<PncpReferenceItem> {
+  return lookupPncpReferenceItem('amparos-legais', id);
+}
+
 export function getPncpAmparoLegalPorId(id: number | string): PncpReferenceItem | undefined {
-  return getPncpReferenceItem('amparos-legais', id);
+  return unwrapLookupValue(lookupPncpAmparoLegalPorId(id));
 }
 
 export function searchPncpReference(

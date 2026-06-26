@@ -13,6 +13,8 @@ import {
   getSimplesAnexo,
   getAllSimplesAnexos,
   getSimplesFaixa,
+  lookupSimplesAnexo,
+  lookupSimplesFaixa,
 } from '../../../src/simples-nacional/index.js';
 import vectors from '../../vectors/simples-nacional.official.json';
 import * as simplesNacionalBarrel from '../../../src/simples-nacional.js';
@@ -52,6 +54,56 @@ describe('Simples Nacional — official golden vectors', () => {
   it('flags Anexo IV with CPP collected outside Simples Nacional', () => {
     const anexo = getSimplesAnexo(vectors.golden.anexoIVCppFora.anexo);
     expect(anexo?.cppForaSimples).toBe(vectors.golden.anexoIVCppFora.cppForaSimples);
+  });
+});
+
+describe('Simples Nacional — lookupSimples* structured results', () => {
+  it('returns INVALID_INPUT for empty annex', () => {
+    expect(lookupSimplesAnexo('')).toEqual({
+      ok: false,
+      code: 'INVALID_INPUT',
+      message: 'Simples Nacional annex code is required',
+    });
+  });
+
+  it('returns INVALID_FORMAT for unknown annex alias', () => {
+    const result = lookupSimplesAnexo(vectors.negative.unknownAnnex.anexo);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.code).toBe('INVALID_FORMAT');
+    }
+  });
+
+  it('propagates annex failures from lookupSimplesFaixa', () => {
+    expect(lookupSimplesFaixa({
+      anexo: vectors.negative.emptyAnnex.anexo,
+      receitaBruta: 100_000,
+    })).toEqual({
+      ok: false,
+      code: 'INVALID_INPUT',
+      message: 'Simples Nacional annex code is required',
+    });
+
+    const invalidAnnex = lookupSimplesFaixa({
+      anexo: vectors.negative.invalidAnnexAlias.anexo,
+      receitaBruta: 100_000,
+    });
+    expect(invalidAnnex.ok).toBe(false);
+    if (!invalidAnnex.ok) {
+      expect(invalidAnnex.code).toBe('INVALID_FORMAT');
+    }
+  });
+
+  it('returns INVALID_FORMAT for out-of-range receita bruta', () => {
+    const result = lookupSimplesFaixa({
+      anexo: 'I',
+      receitaBruta: vectors.negative.revenueAboveMax.receitaBruta,
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.code).toBe('INVALID_FORMAT');
+      expect(result.message).toContain('Receita bruta');
+    }
   });
 });
 
@@ -95,6 +147,7 @@ describe('Simples Nacional — lookup normalization', () => {
     expect(getSimplesAnexo('ANEXO VI')).toBeUndefined();
     expect(getSimplesAnexo('6')).toBeUndefined();
     expect(getSimplesAnexo('10')).toBeUndefined();
+    expect(getSimplesAnexo('   ')).toBeUndefined();
   });
 
   it('maps each RBT12 boundary to the correct faixa', () => {

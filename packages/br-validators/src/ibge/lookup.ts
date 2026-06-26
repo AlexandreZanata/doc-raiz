@@ -6,6 +6,11 @@
 import { IBGE_UF_SIGLA_SET } from './constants.js';
 import estadosData from './data/estados.json';
 import municipiosData from './data/municipios.json';
+import { resolvePositiveIntegerLookup } from '../lookup/resolve.js';
+import {
+  unwrapLookupValue,
+  type LookupResult,
+} from '../types/lookup-result.js';
 import type { Estado, Municipio } from './types.js';
 
 const estados: readonly Estado[] = estadosData;
@@ -41,6 +46,14 @@ export function getMunicipios(options?: { uf?: string }): readonly Municipio[] {
   return getAllMunicipios(options);
 }
 
+export function lookupMunicipioPorCodigo(codigo: number): LookupResult<Municipio> {
+  return resolvePositiveIntegerLookup({
+    value: codigo,
+    entityLabel: 'IBGE municipality',
+    find: (value) => municipios.find((municipio) => municipio.codigo === value),
+  });
+}
+
 export function getMunicipioPorCodigo(codigo: number): Municipio | undefined {
-  return municipios.find((municipio) => municipio.codigo === codigo);
+  return unwrapLookupValue(lookupMunicipioPorCodigo(codigo));
 }
