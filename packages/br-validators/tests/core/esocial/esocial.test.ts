@@ -7,7 +7,7 @@ import {
   ESOCIAL_GOLDEN_ESTAGIARIO,
   ESOCIAL_TABELAS_URL,
   getEsocialCategoriaPorCodigo,
-  getEsocialCategorias,
+  getAllEsocialCategorias,
   searchEsocialCategorias,
 } from '../../../src/esocial/index.js';
 import vectors from '../../vectors/esocial.official.json';
@@ -62,7 +62,7 @@ describe('eSocial — negative vectors', () => {
 
 describe('eSocial — coverage and search', () => {
   it('lists categories within expected federal range', () => {
-    const list = getEsocialCategorias();
+    const list = getAllEsocialCategorias();
     expect(list.length).toBeGreaterThanOrEqual(vectors.minCategorias);
     expect(list.length).toBeLessThanOrEqual(vectors.maxCategorias);
     expect(new Set(list.map((entry) => entry.codigo)).size).toBe(list.length);
@@ -91,7 +91,7 @@ describe('eSocial — coverage and search', () => {
     expect(ESOCIAL_DATA_VERSION.id).toBe('esocial');
     expect(ESOCIAL_DATA_VERSION.endpoints).toContain(ESOCIAL_TABELAS_URL);
     expect(ESOCIAL_DATA_VERSION.endpoints).toContain(vectors.source);
-    expect(ESOCIAL_DATA_VERSION.contagens.categorias).toBe(getEsocialCategorias().length);
+    expect(ESOCIAL_DATA_VERSION.contagens.categorias).toBe(getAllEsocialCategorias().length);
     expect(ESOCIAL_DATA_VERSION.verificacao.agendamento).toBe('manual');
   });
 });

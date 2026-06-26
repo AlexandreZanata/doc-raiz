@@ -1,4 +1,5 @@
 export {
+  getAllPaisesBacen,
   getPaisesBacen,
   getPaisPorCodigoBacen,
   PAISES_BACEN_DATA_VERSION,

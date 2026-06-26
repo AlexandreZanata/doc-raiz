@@ -1,4 +1,4 @@
-export { getIncoterms, getIncotermPorCodigo } from './lookup.js';
+export { getAllIncoterms, getIncoterms, getIncotermPorCodigo } from './lookup.js';
 export {
   ICC_INCOTERMS_2020_URL,
   INCOTERMS_2020_COUNT,

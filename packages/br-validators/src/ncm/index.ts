@@ -1,4 +1,4 @@
-export { getNcms, getNcmPorCodigo, searchNcm } from './lookup.js';
+export { getAllNcm, getNcms, getNcmPorCodigo, searchNcm } from './lookup.js';
 export {
   NCM_GOLDEN_CAVALOS_REPRODUTORES,
   NCM_GOLDEN_SOJA_SEMENTES,

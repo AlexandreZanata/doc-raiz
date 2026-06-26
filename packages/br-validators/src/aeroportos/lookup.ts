@@ -16,8 +16,14 @@ function normalizeIcao(code: string): string {
   return code.trim().toUpperCase();
 }
 
-export function getAeroportos(): readonly Aeroporto[] {
+/** Returns every embedded ANAC aerodrome row (in-memory reference, not a copy). */
+export function getAllAeroportos(): readonly Aeroporto[] {
   return aeroportos;
+}
+
+/** @deprecated Use {@link getAllAeroportos} instead. Removed in v2.0. */
+export function getAeroportos(): readonly Aeroporto[] {
+  return getAllAeroportos();
 }
 
 export function getAeroportoPorIata(code: string): Aeroporto | undefined {

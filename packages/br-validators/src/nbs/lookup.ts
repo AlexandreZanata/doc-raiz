@@ -24,8 +24,14 @@ function normalizeCodigo(codigo: string): string {
   return `${digits[0]}.${digits.slice(1, 5)}.${digits.slice(5, 7)}.${digits.slice(7, 9)}`;
 }
 
-export function getNbsList(): readonly Nbs[] {
+/** Returns every embedded NBS service code (in-memory reference, not a copy). */
+export function getAllNbs(): readonly Nbs[] {
   return nbsList;
+}
+
+/** @deprecated Use {@link getAllNbs} instead. Removed in v2.0. */
+export function getNbsList(): readonly Nbs[] {
+  return getAllNbs();
 }
 
 export function getNbsPorCodigo(codigo: string): Nbs | undefined {

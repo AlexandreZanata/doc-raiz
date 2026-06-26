@@ -1,4 +1,4 @@
-export { getPaisesBacen, getPaisPorCodigoBacen } from './lookup.js';
+export { getAllPaisesBacen, getPaisesBacen, getPaisPorCodigoBacen } from './lookup.js';
 export {
   BACEN_PAISES_FTP_URL,
   NFE_DIVERSOS_LIST_URL,

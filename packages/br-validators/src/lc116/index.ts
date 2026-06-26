@@ -1,4 +1,4 @@
-export { getLc116List, getLc116PorCodigo, searchLc116 } from './lookup.js';
+export { getAllLc116, getLc116List, getLc116PorCodigo, searchLc116 } from './lookup.js';
 export {
   LC116_GOLDEN_ANALISE_SISTEMAS,
   LC116_GOLDEN_OBRAS_CIVIS,

@@ -1,4 +1,5 @@
 export {
+  getAllBancos,
   getBancos,
   getBancoPorCodigo,
   getBancoPorIspb,

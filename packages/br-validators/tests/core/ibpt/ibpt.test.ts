@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   computeIbptCargaTotal,
   getIbptCargaPorNcmUf,
-  getIbptCargas,
+  getAllIbptCargas,
   getIbptTabelaAtual,
   IBPT_DATA_VERSION,
   IBPT_GOLDEN_NCM_CAVALOS,
@@ -81,7 +81,7 @@ describe('IBPT — negative vectors', () => {
 
 describe('IBPT — coverage and metadata', () => {
   it('lists golden subset within expected embed range', () => {
-    const list = getIbptCargas();
+    const list = getAllIbptCargas();
     expect(list.length).toBeGreaterThanOrEqual(vectors.minCargas);
     expect(list.length).toBeLessThanOrEqual(vectors.maxCargas);
     expect(new Set(list.map((carga) => `${carga.uf}:${carga.ncm}`)).size).toBeGreaterThan(0);
@@ -92,6 +92,6 @@ describe('IBPT — coverage and metadata', () => {
     expect(IBPT_DATA_VERSION.endpoints.some((e) => e.includes(IBPT_OFFICIAL_PORTAL_URL))).toBe(true);
     expect(IBPT_LEI_12741_URL).toBe(vectors.lei12741Url);
     expect(getIbptTabelaAtual()).toBe(vectors.tabela);
-    expect(IBPT_DATA_VERSION.contagens.cargas).toBe(getIbptCargas().length);
+    expect(IBPT_DATA_VERSION.contagens.cargas).toBe(getAllIbptCargas().length);
   });
 });

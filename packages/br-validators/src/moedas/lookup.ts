@@ -12,8 +12,14 @@ function normalizeCodigo(codigo: string): string {
   return codigo.trim().toUpperCase();
 }
 
-export function getMoedas(): readonly Moeda[] {
+/** Returns every embedded ISO 4217 / Bacen currency row (in-memory reference, not a copy). */
+export function getAllMoedas(): readonly Moeda[] {
   return moedas;
+}
+
+/** @deprecated Use {@link getAllMoedas} instead. Removed in v2.0. */
+export function getMoedas(): readonly Moeda[] {
+  return getAllMoedas();
 }
 
 export function getMoedaPorCodigo(codigo: string): Moeda | undefined {

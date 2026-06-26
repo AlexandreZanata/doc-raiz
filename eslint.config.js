@@ -82,4 +82,14 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-argument': 'off',
     },
   },
+  {
+    files: [
+      'packages/br-validators/src/**/index.ts',
+      'packages/br-validators/src/*.ts',
+    ],
+    rules: {
+      // Public barrels intentionally re-export deprecated v1 aliases until v2.0.
+      '@typescript-eslint/no-deprecated': 'off',
+    },
+  },
 );

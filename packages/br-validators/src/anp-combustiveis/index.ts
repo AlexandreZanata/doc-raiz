@@ -1,4 +1,6 @@
 export {
+  getAllAnpPrecosMedios,
+  getAllAnpSemanasPesquisa,
   getAnpSemanasPesquisa,
   getAnpSemanaAtual,
   getAnpPrecosMedios,

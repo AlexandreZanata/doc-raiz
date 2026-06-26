@@ -24,8 +24,14 @@ function normalizeIspb(ispb: string): string {
   return digits.padStart(8, '0');
 }
 
-export function getBancos(): readonly Banco[] {
+/** Returns every embedded Bacen STR participant (in-memory reference, not a copy). */
+export function getAllBancos(): readonly Banco[] {
   return bancos;
+}
+
+/** @deprecated Use {@link getAllBancos} instead. Removed in v2.0. */
+export function getBancos(): readonly Banco[] {
+  return getAllBancos();
 }
 
 export function getBancoPorCodigo(codigo: string): Banco | undefined {

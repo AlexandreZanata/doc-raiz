@@ -1,4 +1,7 @@
 export {
+  getAllPncpAmparosLegais,
+  getAllPncpModalidades,
+  getAllPncpReference,
   getPncpReferenceTable,
   getPncpReferenceItem,
   getPncpModalidades,

@@ -11,13 +11,13 @@ import {
   CST_GOLDEN_PIS_ISENTA,
   CST_GOLDEN_PIS_TRIBUTAVEL,
   SPED_CST_CONSULTA_URL,
-  getCstCofins,
+  getAllCstCofins,
   getCstCofinsPorCodigo,
-  getCstIcms,
+  getAllCstIcms,
   getCstIcmsPorCodigo,
-  getCstIpi,
+  getAllCstIpi,
   getCstIpiPorCodigo,
-  getCstPis,
+  getAllCstPis,
   getCstPisPorCodigo,
   searchCstCofins,
   searchCstIcms,
@@ -126,10 +126,10 @@ describe('CST — negative vectors', () => {
 
 describe('CST — coverage and search', () => {
   it('lists codes within expected SPED ranges', () => {
-    const icms = getCstIcms();
-    const ipi = getCstIpi();
-    const pis = getCstPis();
-    const cofins = getCstCofins();
+    const icms = getAllCstIcms();
+    const ipi = getAllCstIpi();
+    const pis = getAllCstPis();
+    const cofins = getAllCstCofins();
 
     expect(icms.length).toBeGreaterThanOrEqual(vectors.minCounts.icms);
     expect(icms.length).toBeLessThanOrEqual(vectors.maxCounts.icms);
@@ -178,10 +178,10 @@ describe('CST — coverage and search', () => {
     expect(CST_DATA_VERSION.endpoints).toContain(SPED_CST_CONSULTA_URL);
     expect(CST_DATA_VERSION.endpoints).toContain(vectors.pisDocUrl);
     expect(CST_DATA_VERSION.endpoints).toContain(vectors.cofinsDocUrl);
-    expect(CST_DATA_VERSION.contagens.icms).toBe(getCstIcms().length);
-    expect(CST_DATA_VERSION.contagens.ipi).toBe(getCstIpi().length);
-    expect(CST_DATA_VERSION.contagens.pis).toBe(getCstPis().length);
-    expect(CST_DATA_VERSION.contagens.cofins).toBe(getCstCofins().length);
+    expect(CST_DATA_VERSION.contagens.icms).toBe(getAllCstIcms().length);
+    expect(CST_DATA_VERSION.contagens.ipi).toBe(getAllCstIpi().length);
+    expect(CST_DATA_VERSION.contagens.pis).toBe(getAllCstPis().length);
+    expect(CST_DATA_VERSION.contagens.cofins).toBe(getAllCstCofins().length);
     expect(CST_DATA_VERSION.verificacao.agendamento).toBe('manual');
   });
 });

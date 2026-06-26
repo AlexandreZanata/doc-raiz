@@ -11,7 +11,7 @@ import {
   SIMPLES_NACIONAL_DATA_VERSION,
   computeSimplesAliquotaEfetiva,
   getSimplesAnexo,
-  getSimplesAnexos,
+  getAllSimplesAnexos,
   getSimplesFaixa,
 } from '../../../src/simples-nacional/index.js';
 import vectors from '../../vectors/simples-nacional.official.json';
@@ -108,7 +108,7 @@ describe('Simples Nacional — lookup normalization', () => {
 
 describe('Simples Nacional — coverage and metadata', () => {
   it('lists five annexes with six progressive faixas each', () => {
-    const list = getSimplesAnexos();
+    const list = getAllSimplesAnexos();
     expect(list.length).toBeGreaterThanOrEqual(vectors.minAnexos);
     expect(list.length).toBeLessThanOrEqual(vectors.maxAnexos);
     for (const anexo of list) {
@@ -123,8 +123,8 @@ describe('Simples Nacional — coverage and metadata', () => {
     expect(SIMPLES_NACIONAL_DATA_VERSION.endpoints).toContain(RECEITA_SIMPLES_ANEXO_I_URL);
     expect(SIMPLES_NACIONAL_DATA_VERSION.endpoints).toContain(CGSN_RESOLUCAO_140_URL);
     expect(SIMPLES_NACIONAL_DATA_VERSION.endpoints).toContain(vectors.receitaAnexoIUrl);
-    expect(SIMPLES_NACIONAL_DATA_VERSION.contagens.anexos).toBe(getSimplesAnexos().length);
+    expect(SIMPLES_NACIONAL_DATA_VERSION.contagens.anexos).toBe(getAllSimplesAnexos().length);
     expect(SIMPLES_NACIONAL_DATA_VERSION.verificacao.agendamento).toBe('manual');
-    expect(simplesNacionalBarrel.getSimplesAnexos).toBe(getSimplesAnexos);
+    expect(simplesNacionalBarrel.getAllSimplesAnexos).toBe(getAllSimplesAnexos);
   });
 });

@@ -16,8 +16,14 @@ function normalizeCodigo(codigo: string): string {
   return digits.padStart(3, '0').slice(-3);
 }
 
-export function getEsocialCategorias(): readonly EsocialCategoriaTrabalhador[] {
+/** Returns every eSocial Tabela 01 category (in-memory reference, not a copy). */
+export function getAllEsocialCategorias(): readonly EsocialCategoriaTrabalhador[] {
   return categorias;
+}
+
+/** @deprecated Use {@link getAllEsocialCategorias} instead. Removed in v2.0. */
+export function getEsocialCategorias(): readonly EsocialCategoriaTrabalhador[] {
+  return getAllEsocialCategorias();
 }
 
 export function getEsocialCategoriaPorCodigo(codigo: string): EsocialCategoriaTrabalhador | undefined {

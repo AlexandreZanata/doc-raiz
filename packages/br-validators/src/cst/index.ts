@@ -1,4 +1,8 @@
 export {
+  getAllCstCofins,
+  getAllCstIcms,
+  getAllCstIpi,
+  getAllCstPis,
   getCstCofins,
   getCstCofinsPorCodigo,
   getCstIcms,

@@ -29,8 +29,14 @@ function normalizeId(id: number | string): number | null {
   return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
 }
 
-export function getPncpReferenceTable(tableId: PncpReferenceTableId): readonly PncpReferenceItem[] {
+/** Returns every row in a PNCP reference table (in-memory reference, not a copy). */
+export function getAllPncpReference(tableId: PncpReferenceTableId): readonly PncpReferenceItem[] {
   return tables[tableId];
+}
+
+/** @deprecated Use {@link getAllPncpReference} instead. Removed in v2.0. */
+export function getPncpReferenceTable(tableId: PncpReferenceTableId): readonly PncpReferenceItem[] {
+  return getAllPncpReference(tableId);
 }
 
 export function getPncpReferenceItem(
@@ -44,16 +50,28 @@ export function getPncpReferenceItem(
   return tables[tableId].find((item) => item.id === normalizedId);
 }
 
-export function getPncpModalidades(): readonly PncpReferenceItem[] {
+/** Returns every PNCP procurement modality (in-memory reference, not a copy). */
+export function getAllPncpModalidades(): readonly PncpReferenceItem[] {
   return tables.modalidades;
+}
+
+/** @deprecated Use {@link getAllPncpModalidades} instead. Removed in v2.0. */
+export function getPncpModalidades(): readonly PncpReferenceItem[] {
+  return getAllPncpModalidades();
 }
 
 export function getPncpModalidadePorId(id: number | string): PncpReferenceItem | undefined {
   return getPncpReferenceItem('modalidades', id);
 }
 
-export function getPncpAmparosLegais(): readonly PncpReferenceItem[] {
+/** Returns every PNCP legal basis row (in-memory reference, not a copy). */
+export function getAllPncpAmparosLegais(): readonly PncpReferenceItem[] {
   return tables['amparos-legais'];
+}
+
+/** @deprecated Use {@link getAllPncpAmparosLegais} instead. Removed in v2.0. */
+export function getPncpAmparosLegais(): readonly PncpReferenceItem[] {
+  return getAllPncpAmparosLegais();
 }
 
 export function getPncpAmparoLegalPorId(id: number | string): PncpReferenceItem | undefined {

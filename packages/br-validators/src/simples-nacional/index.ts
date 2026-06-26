@@ -1,4 +1,5 @@
 export {
+  getAllSimplesAnexos,
   getSimplesAnexos,
   getSimplesAnexo,
   getSimplesFaixa,

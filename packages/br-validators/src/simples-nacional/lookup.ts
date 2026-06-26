@@ -53,8 +53,14 @@ function isValidReceitaBruta(receitaBruta: number): boolean {
   return Number.isFinite(receitaBruta) && receitaBruta > 0 && receitaBruta <= SIMPLES_MAX_RBT12;
 }
 
-export function getSimplesAnexos(): readonly SimplesAnexo[] {
+/** Returns every Simples Nacional annex table (in-memory reference, not a copy). */
+export function getAllSimplesAnexos(): readonly SimplesAnexo[] {
   return anexos;
+}
+
+/** @deprecated Use {@link getAllSimplesAnexos} instead. Removed in v2.0. */
+export function getSimplesAnexos(): readonly SimplesAnexo[] {
+  return getAllSimplesAnexos();
 }
 
 export function getSimplesAnexo(anexo: string): SimplesAnexo | undefined {

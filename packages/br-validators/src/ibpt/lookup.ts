@@ -33,8 +33,14 @@ const cargasByKey = new Map<string, IbptCargaTributaria>(
   cargas.map((carga) => [buildLookupKey(carga.ncm, carga.uf, carga.excecao), carga]),
 );
 
-export function getIbptCargas(): readonly IbptCargaTributaria[] {
+/** Returns every embedded IBPT carga row (in-memory reference, not a copy). */
+export function getAllIbptCargas(): readonly IbptCargaTributaria[] {
   return cargas;
+}
+
+/** @deprecated Use {@link getAllIbptCargas} instead. Removed in v2.0. */
+export function getIbptCargas(): readonly IbptCargaTributaria[] {
+  return getAllIbptCargas();
 }
 
 export function getIbptCargaPorNcmUf(options: {

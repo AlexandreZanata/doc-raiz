@@ -1,5 +1,6 @@
 export {
   computeIbptCargaTotal,
+  getAllIbptCargas,
   getIbptCargaPorNcmUf,
   getIbptCargas,
   getIbptTabelaAtual,

@@ -1,4 +1,5 @@
 export {
+  getAllPortos,
   getPortos,
   getPortoPorCodigo,
   getPortosPorMunicipio,

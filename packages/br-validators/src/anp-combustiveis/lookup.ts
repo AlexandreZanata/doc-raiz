@@ -47,8 +47,14 @@ export function pickLatestAnpSemana(items: readonly AnpSemanaPesquisa[]): AnpSem
   return [...items].sort((left, right) => right.inicio.localeCompare(left.inicio))[0];
 }
 
-export function getAnpSemanasPesquisa(): readonly AnpSemanaPesquisa[] {
+/** Returns every embedded ANP survey week row (in-memory reference, not a copy). */
+export function getAllAnpSemanasPesquisa(): readonly AnpSemanaPesquisa[] {
   return semanas;
+}
+
+/** @deprecated Use {@link getAllAnpSemanasPesquisa} instead. Removed in v2.0. */
+export function getAnpSemanasPesquisa(): readonly AnpSemanaPesquisa[] {
+  return getAllAnpSemanasPesquisa();
 }
 
 export function getAnpSemanaAtual(): AnpSemanaPesquisa | undefined {
@@ -110,6 +116,12 @@ export function getAnpPrecosMediosPorIbge(
   );
 }
 
-export function getAnpPrecosMediosEmbedded(): readonly AnpPrecoMedio[] {
+/** Returns every embedded ANP municipal average price row (in-memory reference, not a copy). */
+export function getAllAnpPrecosMedios(): readonly AnpPrecoMedio[] {
   return precosMedios;
+}
+
+/** @deprecated Use {@link getAllAnpPrecosMedios} instead. Removed in v2.0. */
+export function getAnpPrecosMediosEmbedded(): readonly AnpPrecoMedio[] {
+  return getAllAnpPrecosMedios();
 }

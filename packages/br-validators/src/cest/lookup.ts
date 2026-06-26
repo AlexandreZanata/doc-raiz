@@ -24,8 +24,14 @@ function normalizeNcm(codigo: string): string {
   return digits.padStart(8, '0').slice(0, 8);
 }
 
-export function getCests(): readonly Cest[] {
+/** Returns every embedded CEST row (in-memory reference, not a copy). */
+export function getAllCest(): readonly Cest[] {
   return cests;
+}
+
+/** @deprecated Use {@link getAllCest} instead. Removed in v2.0. */
+export function getCests(): readonly Cest[] {
+  return getAllCest();
 }
 
 export function getCestPorCodigo(codigo: string): Cest | undefined {

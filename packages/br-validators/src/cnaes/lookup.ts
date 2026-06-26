@@ -16,8 +16,14 @@ function normalizeCodigo(codigo: string): string {
   return digits.padStart(7, '0').slice(-7);
 }
 
-export function getCnaes(): readonly Cnae[] {
+/** Returns every embedded CNAE subclass (in-memory reference, not a copy). */
+export function getAllCnae(): readonly Cnae[] {
   return cnaes;
+}
+
+/** @deprecated Use {@link getAllCnae} instead. Removed in v2.0. */
+export function getCnaes(): readonly Cnae[] {
+  return getAllCnae();
 }
 
 export function getCnaePorCodigo(codigo: string): Cnae | undefined {

@@ -609,6 +609,47 @@ Constants: `IE_OFFICIAL_SOURCE_URLS` (all UFs), legacy `IE_SP_OFFICIAL_SOURCE_UR
 
 ---
 
+## Lookup list getters — `getAll*` naming (v1.9+)
+
+Every lookup module that exposes a full embedded list uses **`getAll{Entity}()`** returning `readonly T[]` (in-memory reference, not a copy). Legacy plural names (`getNcms`, `getCfops`, `getLc116List`, …) remain as **deprecated aliases** until v2.0.
+
+| Canonical | Deprecated alias (v2.0 removal) |
+|-----------|----------------------------------|
+| `getAllNcm()` | `getNcms()` |
+| `getAllCfop()` | `getCfops()` |
+| `getAllCnae()` | `getCnaes()` |
+| `getAllCbo()` | `getCbos()` |
+| `getAllCstIcms()` / `Ipi` / `Pis` / `Cofins` | `getCstIcms()` / … |
+| `getAllLc116()` | `getLc116List()` |
+| `getAllNbs()` | `getNbsList()` |
+| `getAllCest()` | `getCests()` |
+| `getAllBancos()` | `getBancos()` |
+| `getAllMoedas()` | `getMoedas()` |
+| `getAllPaisesBacen()` | `getPaisesBacen()` |
+| `getAllIncoterms()` | `getIncoterms()` |
+| `getAllPortos()` | `getPortos()` |
+| `getAllAeroportos()` | `getAeroportos()` |
+| `getAllNaturezaJuridica()` | `getNaturezasJuridicas()` |
+| `getAllEsocialCategorias()` | `getEsocialCategorias()` |
+| `getAllEstados()` | `getEstados()` |
+| `getAllMunicipios(options?)` | `getMunicipios(options?)` |
+| `getAllFeriados(year)` | `getFeriadosNacionais(year)` |
+| `getAllSimplesAnexos()` | `getSimplesAnexos()` |
+| `getAllIbptCargas()` | `getIbptCargas()` |
+| `getAllAnpSemanasPesquisa()` | `getAnpSemanasPesquisa()` |
+| `getAllAnpPrecosMedios()` | `getAnpPrecosMediosEmbedded()` |
+| `getAllPncpReference(tableId)` | `getPncpReferenceTable(tableId)` |
+| `getAllPncpModalidades()` | `getPncpModalidades()` |
+| `getAllPncpAmparosLegais()` | `getPncpAmparosLegais()` |
+
+```typescript
+import { getAllCstIcms } from '@br-validators/core/cst';
+
+const options = getAllCstIcms(); // readonly Cst[] — populate <select>
+```
+
+---
+
 ## Core API — IBGE localities (reference data)
 
 > **Offline embedded data** from [IBGE Serviço de Dados](https://servicodados.ibge.gov.br/api/docs/localidades).  
@@ -616,8 +657,9 @@ Constants: `IE_OFFICIAL_SOURCE_URLS` (all UFs), legacy `IE_SP_OFFICIAL_SOURCE_UR
 
 | Function | Returns |
 |----------|---------|
-| `getEstados()` | All 27 federative units with `codigo`, `sigla`, `nome`, `regiao` |
-| `getMunicipios(options?)` | All municipalities, or filtered by `uf` (case-insensitive) |
+| `getAllEstados()` | All 27 federative units with `codigo`, `sigla`, `nome`, `regiao` |
+| `getAllMunicipios(options?)` | All municipalities, or filtered by `uf` (case-insensitive) |
+| `getEstados()` / `getMunicipios()` | **Deprecated** — use `getAll*` (removed v2.0) |
 | `getMunicipioPorCodigo(codigo)` | Single municipality or `undefined` |
 | `toCmunFg(codigo)` | 7-digit NF-e `cMunFG` from 6-digit base or validated 7-digit input; `undefined` if invalid |
 | `parseCmunFg(code)` | Structured ok/reason result with `codigo`, `base6`, `checkDigit` on success |
@@ -654,7 +696,8 @@ parseCmunFg('3550308'); // { ok: true, codigo: 3550308, base6: '355030', checkDi
 
 | Function | Returns |
 |----------|---------|
-| `getBancos()` | All institutions with valid 3-digit COMPE codes |
+| `getAllBancos()` | All institutions with valid 3-digit COMPE codes |
+| `getBancos()` | **Deprecated** — use `getAllBancos()` (removed v2.0) |
 | `getBancoPorCodigo(codigo)` | Single bank or `undefined` (normalizes `1` → `001`) |
 | `getBancoPorIspb(ispb)` | Single bank or `undefined` (8-digit ISPB) |
 | `BANCOS_DATA_VERSION` | `DatasetMetadata` |
@@ -692,7 +735,8 @@ import { getDddInfo, validateTelefone, TELEFONE_DDD_DATA_VERSION } from '@br-val
 | Function | Returns |
 |----------|---------|
 | `isFeriadoNacional(input)` | `true` for fixed Lei 662 holidays **or** Paixão de Cristo (Good Friday) |
-| `getFeriadosNacionais(year)` | Sorted list — `tipo: 'fixo'` or `'movel'` (Paixão de Cristo only) |
+| `getAllFeriados(year)` | Sorted list — `tipo: 'fixo'` or `'movel'` (Paixão de Cristo only) |
+| `getFeriadosNacionais(year)` | **Deprecated** — use `getAllFeriados(year)` (removed v2.0) |
 | `getProximoDiaUtil(input)` | Next weekday that is not a national holiday (`YYYY-MM-DD`) |
 | `getPontosFacultativosFederais(year)` | Portaria MGI facultative days — Carnaval, Cinzas, Corpus Christi, Servidor Público, vésperas, plus year-specific bridge days when published |
 | `FERIADOS_DATA_VERSION` | Planalto + Gov.br source URLs |
@@ -719,7 +763,8 @@ import {
 
 | Function | Returns |
 |----------|---------|
-| `getCnaes()` | All CNAE 2.3 subclasses |
+| `getAllCnaes()` | All CNAE 2.3 subclasses |
+| `getCnaes()` | **Deprecated** — use `getAllCnae()` (removed v2.0) |
 | `getCnaePorCodigo(codigo)` | Single subclass or `undefined` (7-digit code) |
 | `searchCnaes(query, { limit? })` | Description search (default limit 10) |
 | `CNAES_DATA_VERSION` | `DatasetMetadata` |
@@ -767,7 +812,8 @@ import {
 
 | Function | Returns |
 |----------|---------|
-| `getCfops()` | All CFOP codes |
+| `getAllCfop()` | All CFOP codes |
+| `getCfops()` | **Deprecated** — use `getAllCfop()` (removed v2.0) |
 | `getCfopPorCodigo(codigo)` | Single CFOP or `undefined` (4-digit code) |
 | `searchCfop(query, { limit? })` | Description search (default limit 10) |
 | `CFOP_DATA_VERSION` | `DatasetMetadata` |
@@ -787,10 +833,11 @@ import { getCfopPorCodigo, searchCfop, CFOP_DATA_VERSION } from '@br-validators/
 
 | Function | Returns |
 |----------|---------|
-| `getCstIcms()` | All ICMS CST codes (2-digit NF-e format) |
-| `getCstIpi()` | All IPI CST codes |
-| `getCstPis()` | All PIS CST codes |
-| `getCstCofins()` | All COFINS CST codes |
+| `getAllCstIcms()` | All ICMS CST codes (2-digit NF-e format) |
+| `getAllCstIpi()` | All IPI CST codes |
+| `getAllCstPis()` | All PIS CST codes |
+| `getAllCstCofins()` | All COFINS CST codes |
+| `getCstIcms()` / `getCstIpi()` / … | **Deprecated** — use `getAllCst*` (removed v2.0) |
 | `getCstIcmsPorCodigo(codigo)` | Single ICMS CST or `undefined` |
 | `getCstIpiPorCodigo(codigo)` | Single IPI CST or `undefined` |
 | `getCstPisPorCodigo(codigo)` | Single PIS CST or `undefined` |
@@ -821,7 +868,8 @@ import {
 
 | Function | Returns |
 |----------|---------|
-| `getLc116List()` | All LC 116 ISS service items |
+| `getAllLc116()` | All LC 116 ISS service items |
+| `getLc116List()` | **Deprecated** — use `getAllLc116()` (removed v2.0) |
 | `getLc116PorCodigo(codigo)` | Single item or `undefined` (accepts `1.01` or NFSe `010101`) |
 | `searchLc116(query, { limit? })` | Description search (default limit 10) |
 | `LC116_DATA_VERSION` | `DatasetMetadata` |
@@ -841,7 +889,8 @@ import { getLc116PorCodigo, searchLc116, LC116_DATA_VERSION } from '@br-validato
 
 | Function | Returns |
 |----------|---------|
-| `getEsocialCategorias()` | All Tabela 01 worker categories |
+| `getAllEsocialCategorias()` | All Tabela 01 worker categories |
+| `getEsocialCategorias()` | **Deprecated** — use `getAllEsocialCategorias()` (removed v2.0) |
 | `getEsocialCategoriaPorCodigo(codigo)` | Single category or `undefined` (3-digit code) |
 | `searchEsocialCategorias(query, { limit? })` | Search by code, grupo, or description (default limit 10) |
 | `ESOCIAL_DATA_VERSION` | `DatasetMetadata` |
@@ -865,7 +914,8 @@ import {
 
 | Function | Returns |
 |----------|---------|
-| `getSimplesAnexos()` | All annex rate tables (I–V) |
+| `getAllSimplesAnexos()` | All annex rate tables (I–V) |
+| `getSimplesAnexos()` | **Deprecated** — use `getAllSimplesAnexos()` (removed v2.0) |
 | `getSimplesAnexo(anexo)` | Single annex or `undefined` (accepts `I`, `ANEXO III`, `3`) |
 | `getSimplesFaixa({ anexo, receitaBruta })` | Matching faixa row + annex id, or `undefined` |
 | `computeSimplesAliquotaEfetiva({ anexo, receitaBruta })` | Effective rate decimal per Resolução CGSN art. 22, or `undefined` |
@@ -922,7 +972,8 @@ CLI: `br-validators ptax lookup <moeda> [data] [--json] [--verbose]` — verbose
 
 | Function | Returns |
 |----------|---------|
-| `getNcms()` | All 8-digit leaf NCM codes |
+| `getAllNcm()` | All 8-digit leaf NCM codes |
+| `getNcms()` | **Deprecated** — use `getAllNcm()` (removed v2.0) |
 | `getNcmPorCodigo(codigo)` | Single NCM or `undefined` (accepts dotted input) |
 | `searchNcm(query, { limit? })` | Description search (default limit 10) |
 | `NCM_DATA_VERSION` | `DatasetMetadata` |
@@ -944,7 +995,8 @@ Pair with `@br-validators/core/ibpt` for Lei 12.741/2012 approximate tax burden 
 
 | Function | Returns |
 |----------|---------|
-| `getIbptCargas()` | All embedded NCM×UF carga rows (golden subset) |
+| `getAllIbptCargas()` | All embedded NCM×UF carga rows (golden subset) |
+| `getIbptCargas()` | **Deprecated** — use `getAllIbptCargas()` (removed v2.0) |
 | `getIbptCargaPorNcmUf({ ncm, uf, excecao? })` | Single row or `undefined` |
 | `computeIbptCargaTotal(carga, { importado })` | Sum of federal + estadual + municipal (%) |
 | `getIbptTabelaAtual()` | Current IBPT table version string (e.g. `26.1.H`) |
@@ -975,7 +1027,8 @@ const total = carga ? computeIbptCargaTotal(carga, { importado: false }) : undef
 
 | Function | Returns |
 |----------|---------|
-| `getCbos()` | All CBO 2002 occupations |
+| `getAllCbo()` | All CBO 2002 occupations |
+| `getCbos()` | **Deprecated** — use `getAllCbo()` (removed v2.0) |
 | `getCboPorCodigo(codigo)` | Single occupation or `undefined` (6-digit code) |
 | `searchCbo(query, { limit? })` | Description search (default limit 10) |
 | `CBO_DATA_VERSION` | `DatasetMetadata` |

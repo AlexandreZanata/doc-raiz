@@ -16,8 +16,14 @@ function normalizeCodigo(codigo: string): string {
   return digits.padStart(6, '0').slice(-6);
 }
 
-export function getCbos(): readonly Cbo[] {
+/** Returns every embedded CBO occupation (in-memory reference, not a copy). */
+export function getAllCbo(): readonly Cbo[] {
   return cbos;
+}
+
+/** @deprecated Use {@link getAllCbo} instead. Removed in v2.0. */
+export function getCbos(): readonly Cbo[] {
+  return getAllCbo();
 }
 
 export function getCboPorCodigo(codigo: string): Cbo | undefined {

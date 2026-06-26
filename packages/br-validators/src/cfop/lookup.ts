@@ -16,8 +16,14 @@ function normalizeCodigo(codigo: string): string {
   return digits.padStart(4, '0').slice(-4);
 }
 
-export function getCfops(): readonly Cfop[] {
+/** Returns every embedded CFOP row (in-memory reference, not a copy). */
+export function getAllCfop(): readonly Cfop[] {
   return cfops;
+}
+
+/** @deprecated Use {@link getAllCfop} instead. Removed in v2.0. */
+export function getCfops(): readonly Cfop[] {
+  return getAllCfop();
 }
 
 export function getCfopPorCodigo(codigo: string): Cfop | undefined {

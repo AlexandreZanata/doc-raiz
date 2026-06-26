@@ -11,11 +11,18 @@ import type { Estado, Municipio } from './types.js';
 const estados: readonly Estado[] = estadosData;
 const municipios: readonly Municipio[] = municipiosData;
 
-export function getEstados(): readonly Estado[] {
+/** Returns every embedded IBGE state row (in-memory reference, not a copy). */
+export function getAllEstados(): readonly Estado[] {
   return estados;
 }
 
-export function getMunicipios(options?: { uf?: string }): readonly Municipio[] {
+/** @deprecated Use {@link getAllEstados} instead. Removed in v2.0. */
+export function getEstados(): readonly Estado[] {
+  return getAllEstados();
+}
+
+/** Returns embedded IBGE municipalities, optionally filtered by UF (in-memory reference, not a copy). */
+export function getAllMunicipios(options?: { uf?: string }): readonly Municipio[] {
   const uf = options?.uf;
   if (uf === undefined || uf === '') {
     return municipios;
@@ -27,6 +34,11 @@ export function getMunicipios(options?: { uf?: string }): readonly Municipio[] {
   }
 
   return municipios.filter((municipio) => municipio.uf === normalized);
+}
+
+/** @deprecated Use {@link getAllMunicipios} instead. Removed in v2.0. */
+export function getMunicipios(options?: { uf?: string }): readonly Municipio[] {
+  return getAllMunicipios(options);
 }
 
 export function getMunicipioPorCodigo(codigo: number): Municipio | undefined {

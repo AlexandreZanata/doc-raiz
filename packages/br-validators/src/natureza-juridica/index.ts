@@ -1,4 +1,5 @@
 export {
+  getAllNaturezaJuridica,
   getNaturezaJuridicaPorCodigo,
   getNaturezasJuridicas,
 } from './lookup.js';

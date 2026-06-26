@@ -1,4 +1,5 @@
 export {
+  getAllAeroportos,
   getAeroportos,
   getAeroportoPorIata,
   getAeroportoPorIcao,

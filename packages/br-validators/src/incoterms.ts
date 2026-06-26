@@ -1,4 +1,5 @@
 export {
+  getAllIncoterms,
   getIncoterms,
   getIncotermPorCodigo,
   INCOTERMS_DATA_VERSION,

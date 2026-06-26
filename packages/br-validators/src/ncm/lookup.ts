@@ -16,8 +16,14 @@ function normalizeCodigo(codigo: string): string {
   return digits.padStart(8, '0').slice(-8);
 }
 
-export function getNcms(): readonly Ncm[] {
+/** Returns every embedded NCM leaf code (in-memory reference, not a copy). */
+export function getAllNcm(): readonly Ncm[] {
   return ncms;
+}
+
+/** @deprecated Use {@link getAllNcm} instead. Removed in v2.0. */
+export function getNcms(): readonly Ncm[] {
+  return getAllNcm();
 }
 
 export function getNcmPorCodigo(codigo: string): Ncm | undefined {

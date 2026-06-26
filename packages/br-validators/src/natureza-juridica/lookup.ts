@@ -16,8 +16,14 @@ function normalizeCodigo(codigo: string): string {
   return digits.padStart(4, '0').slice(-4);
 }
 
-export function getNaturezasJuridicas(): readonly NaturezaJuridica[] {
+/** Returns every embedded natureza jurídica row (in-memory reference, not a copy). */
+export function getAllNaturezaJuridica(): readonly NaturezaJuridica[] {
   return naturezas;
+}
+
+/** @deprecated Use {@link getAllNaturezaJuridica} instead. Removed in v2.0. */
+export function getNaturezasJuridicas(): readonly NaturezaJuridica[] {
+  return getAllNaturezaJuridica();
 }
 
 export function getNaturezaJuridicaPorCodigo(codigo: string): NaturezaJuridica | undefined {

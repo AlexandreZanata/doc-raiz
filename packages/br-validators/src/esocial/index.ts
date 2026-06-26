@@ -1,4 +1,5 @@
 export {
+  getAllEsocialCategorias,
   getEsocialCategorias,
   getEsocialCategoriaPorCodigo,
   searchEsocialCategorias,

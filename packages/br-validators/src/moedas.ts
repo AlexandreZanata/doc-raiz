@@ -1,4 +1,5 @@
 export {
+  getAllMoedas,
   getMoedas,
   getMoedaPorCodigo,
   searchMoedas,

@@ -6,7 +6,7 @@ import {
   LC116_GOLDEN_OBRAS_CIVIS,
   NFSE_LC116_LIST_URL,
   PLANALTO_LC116_URL,
-  getLc116List,
+  getAllLc116,
   getLc116PorCodigo,
   searchLc116,
 } from '../../../src/lc116/index.js';
@@ -54,7 +54,7 @@ describe('LC 116 — negative vectors', () => {
 
 describe('LC 116 — coverage and search', () => {
   it('lists items within expected federal range', () => {
-    const list = getLc116List();
+    const list = getAllLc116();
     expect(list.length).toBeGreaterThanOrEqual(vectors.minItems);
     expect(list.length).toBeLessThanOrEqual(vectors.maxItems);
     expect(new Set(list.map((entry) => entry.codigo)).size).toBe(list.length);
@@ -84,7 +84,7 @@ describe('LC 116 — coverage and search', () => {
     expect(LC116_DATA_VERSION.endpoints).toContain(PLANALTO_LC116_URL);
     expect(LC116_DATA_VERSION.endpoints).toContain(vectors.nfseListUrl);
     expect(LC116_DATA_VERSION.endpoints).toContain(NFSE_LC116_LIST_URL);
-    expect(LC116_DATA_VERSION.contagens.lc116).toBe(getLc116List().length);
+    expect(LC116_DATA_VERSION.contagens.lc116).toBe(getAllLc116().length);
     expect(LC116_DATA_VERSION.verificacao.agendamento).toBe('manual');
   });
 });

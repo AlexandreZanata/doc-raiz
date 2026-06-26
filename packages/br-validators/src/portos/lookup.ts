@@ -12,8 +12,14 @@ function normalizeCodigo(codigo: string): string {
   return codigo.trim().toUpperCase();
 }
 
-export function getPortos(): readonly Porto[] {
+/** Returns every embedded ANTAQ port row (in-memory reference, not a copy). */
+export function getAllPortos(): readonly Porto[] {
   return portos;
+}
+
+/** @deprecated Use {@link getAllPortos} instead. Removed in v2.0. */
+export function getPortos(): readonly Porto[] {
+  return getAllPortos();
 }
 
 export function getPortoPorCodigo(codigo: string): Porto | undefined {

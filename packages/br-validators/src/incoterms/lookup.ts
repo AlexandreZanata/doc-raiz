@@ -12,8 +12,14 @@ function normalizeCodigo(codigo: string): string {
   return codigo.trim().toUpperCase();
 }
 
-export function getIncoterms(): readonly Incoterm[] {
+/** Returns every embedded Incoterms 2020 code (in-memory reference, not a copy). */
+export function getAllIncoterms(): readonly Incoterm[] {
   return incoterms;
+}
+
+/** @deprecated Use {@link getAllIncoterms} instead. Removed in v2.0. */
+export function getIncoterms(): readonly Incoterm[] {
+  return getAllIncoterms();
 }
 
 export function getIncotermPorCodigo(codigo: string): Incoterm | undefined {

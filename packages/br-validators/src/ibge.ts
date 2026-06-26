@@ -1,4 +1,6 @@
 export {
+  getAllEstados,
+  getAllMunicipios,
   getEstados,
   getMunicipios,
   getMunicipioPorCodigo,

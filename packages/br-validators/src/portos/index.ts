@@ -1,4 +1,10 @@
-export { getPortos, getPortoPorCodigo, getPortosPorMunicipio, searchPortos } from './lookup.js';
+export {
+  getAllPortos,
+  getPortos,
+  getPortoPorCodigo,
+  getPortosPorMunicipio,
+  searchPortos,
+} from './lookup.js';
 export {
   ANTAQ_PORTOS_ZIP_URL,
   PORTOS_GOLDEN_SANTOS,

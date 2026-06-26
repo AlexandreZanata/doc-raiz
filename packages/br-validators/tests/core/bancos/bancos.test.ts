@@ -11,7 +11,7 @@ import {
   BANCOS_STR_URL,
   getBancoPorCodigo,
   getBancoPorIspb,
-  getBancos,
+  getAllBancos,
 } from '../../../src/bancos/index.js';
 import vectors from '../../vectors/bancos.official.json';
 
@@ -57,7 +57,7 @@ describe('Bacen banks — official golden vectors', () => {
 
 describe('Bacen banks — national coverage', () => {
   it('lists institutions within expected STR range', () => {
-    const list = getBancos();
+    const list = getAllBancos();
     expect(list.length).toBeGreaterThanOrEqual(vectors.minInstitutions);
     expect(list.length).toBeLessThanOrEqual(vectors.maxInstitutions);
     expect(new Set(list.map((banco) => banco.codigo)).size).toBe(list.length);
@@ -68,6 +68,6 @@ describe('Bacen banks — national coverage', () => {
     expect(BANCOS_DATA_VERSION.id).toBe('bancos');
     expect(BANCOS_DATA_VERSION.endpoints).toContain(BANCOS_STR_URL);
     expect(BANCOS_DATA_VERSION.endpoints).toContain(vectors.source);
-    expect(BANCOS_DATA_VERSION.contagens.bancos).toBe(getBancos().length);
+    expect(BANCOS_DATA_VERSION.contagens.bancos).toBe(getAllBancos().length);
   });
 });

@@ -16,8 +16,14 @@ function normalizeCodigo(codigo: string): string {
   return digits.padStart(4, '0').slice(-4);
 }
 
-export function getPaisesBacen(): readonly PaisBacen[] {
+/** Returns every embedded NF-e Bacen country row (in-memory reference, not a copy). */
+export function getAllPaisesBacen(): readonly PaisBacen[] {
   return paises;
+}
+
+/** @deprecated Use {@link getAllPaisesBacen} instead. Removed in v2.0. */
+export function getPaisesBacen(): readonly PaisBacen[] {
+  return getAllPaisesBacen();
 }
 
 export function getPaisPorCodigoBacen(codigo: string): PaisBacen | undefined {

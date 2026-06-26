@@ -27,8 +27,14 @@ function normalizeCodigo(codigo: string): string {
   return '';
 }
 
-export function getLc116List(): readonly Lc116[] {
+/** Returns every embedded LC 116 service item (in-memory reference, not a copy). */
+export function getAllLc116(): readonly Lc116[] {
   return items;
+}
+
+/** @deprecated Use {@link getAllLc116} instead. Removed in v2.0. */
+export function getLc116List(): readonly Lc116[] {
+  return getAllLc116();
 }
 
 export function getLc116PorCodigo(codigo: string): Lc116 | undefined {

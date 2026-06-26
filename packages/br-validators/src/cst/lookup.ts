@@ -55,20 +55,44 @@ function searchCstList(
   return results;
 }
 
-export function getCstIcms(): readonly Cst[] {
+/** Returns every embedded ICMS CST row (in-memory reference, not a copy). */
+export function getAllCstIcms(): readonly Cst[] {
   return cstIcms;
 }
 
-export function getCstIpi(): readonly Cst[] {
+/** @deprecated Use {@link getAllCstIcms} instead. Removed in v2.0. */
+export function getCstIcms(): readonly Cst[] {
+  return getAllCstIcms();
+}
+
+/** Returns every embedded IPI CST row (in-memory reference, not a copy). */
+export function getAllCstIpi(): readonly Cst[] {
   return cstIpi;
 }
 
-export function getCstPis(): readonly Cst[] {
+/** @deprecated Use {@link getAllCstIpi} instead. Removed in v2.0. */
+export function getCstIpi(): readonly Cst[] {
+  return getAllCstIpi();
+}
+
+/** Returns every embedded PIS CST row (in-memory reference, not a copy). */
+export function getAllCstPis(): readonly Cst[] {
   return cstPis;
 }
 
-export function getCstCofins(): readonly Cst[] {
+/** @deprecated Use {@link getAllCstPis} instead. Removed in v2.0. */
+export function getCstPis(): readonly Cst[] {
+  return getAllCstPis();
+}
+
+/** Returns every embedded COFINS CST row (in-memory reference, not a copy). */
+export function getAllCstCofins(): readonly Cst[] {
   return cstCofins;
+}
+
+/** @deprecated Use {@link getAllCstCofins} instead. Removed in v2.0. */
+export function getCstCofins(): readonly Cst[] {
+  return getAllCstCofins();
 }
 
 export function getCstIcmsPorCodigo(codigo: string): Cst | undefined {
