@@ -8,7 +8,6 @@ import {
   resolveSearchLimit,
   type DatasetAdapter,
   type NormalizedRow,
-  type SearchOptions,
 } from './dataset-adapter';
 
 const PNCP_TABLE_IDS: readonly PncpReferenceTableId[] = [

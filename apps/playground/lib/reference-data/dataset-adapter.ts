@@ -56,7 +56,7 @@ export function clientFilterRows(
   for (const row of rows) {
     const haystack = fieldKeys
       .map((key) => row[key])
-      .filter((value) => value !== null && value !== undefined)
+      .filter((value) => value !== null)
       .map((value) => normalizeSearchQuery(String(value)))
       .join(' ');
 
@@ -76,7 +76,7 @@ export function rowToKeyValueBlock(row: NormalizedRow, fieldKeys: readonly strin
   return fieldKeys
     .map((key) => {
       const value = row[key];
-      const display = value === null || value === undefined ? '' : String(value);
+      const display = value === null ? '' : String(value);
       return `${key}: ${display}`;
     })
     .join('\n');
