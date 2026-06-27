@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, Suspense } from 'react';
 import { DocumentWorkspace } from '@/components/organisms/DocumentWorkspace';
 import { HomePage } from '@/components/organisms/HomePage';
 import { PixWorkspace } from '@/components/organisms/PixWorkspace';
@@ -17,6 +17,7 @@ import { DataFinanceExplorer } from '@/components/organisms/DataFinanceExplorer'
 import { DataPayrollExplorer } from '@/components/organisms/DataPayrollExplorer';
 import { DataCalendarExplorer } from '@/components/organisms/DataCalendarExplorer';
 import { DataCatalogTable } from '@/components/organisms/DataCatalogTable';
+import { DataExplorerHub } from '@/components/organisms/DataExplorerHub';
 import { DataGovBrGroupExplorer } from '@/components/organisms/DataGovBrGroupExplorer';
 import { usePlaygroundPath } from '@/components/providers/PlaygroundRouterProvider';
 import type { DocumentSlug, PlatformSlug, ReferenceDataSlug } from '@/lib/nav';
@@ -67,6 +68,12 @@ function ReferenceDataPane({ slug }: { slug: ReferenceDataSlug }) {
       return <DataGovBrGroupExplorer groupId="trade" />;
     case 'data/logistics':
       return <DataGovBrGroupExplorer groupId="logistics" />;
+    case 'data/explorer':
+      return (
+        <Suspense fallback={null}>
+          <DataExplorerHub />
+        </Suspense>
+      );
     case 'data/catalog':
       return <DataCatalogTable />;
   }
