@@ -50,6 +50,7 @@
     "data:refresh": "tsx scripts/data-refresh-bot.ts",
     "data:refresh:report": "tsx scripts/data-refresh-bot.ts --report-only",
     "test:scripts": "vitest run --config scripts/vitest.config.ts",
+    "measure:bundle-sizes": "pnpm --filter @br-validators/core build && tsx scripts/measure-subpath-sizes.ts",
     "test:integration": "pnpm --filter @br-validators/core build && pnpm --filter @br-validators/subpath-imports-e2e test",
     "docs:api": "pnpm --filter @br-validators/docs api",
     "docs:build": "pnpm docs:api && pnpm --filter @br-validators/docs build",
@@ -62,6 +63,7 @@
   "devDependencies": {
     "@eslint/js": "^9.28.0",
     "@types/node": "^22.15.21",
+    "esbuild": "^0.25.12",
     "eslint": "^9.28.0",
     "globals": "^16.2.0",
     "tsx": "^4.19.4",

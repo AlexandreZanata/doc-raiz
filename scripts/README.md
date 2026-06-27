@@ -22,6 +22,7 @@ pnpm fetch:data:cest      # CONFAZ CEST → packages/br-validators/src/cest/data
 pnpm fetch:data:cst       # RFB SPED CST tables → packages/br-validators/src/cst/data/
 pnpm fetch:data:lc116     # LC 116 ISS list → packages/br-validators/src/lc116/data/
 pnpm fetch:data:esocial   # eSocial Tabela 01 categorias + Tabela 03 rubricas → packages/br-validators/src/esocial/data/
+pnpm measure:bundle-sizes # esbuild raw + gzip per @br-validators/core subpath → data/bundle-sizes/
 pnpm fetch:data:portos    # ANTAQ portos → packages/br-validators/src/portos/data/
 pnpm fetch:data:pncp-reference # PNCP Cadastro domain tables → packages/br-validators/src/pncp-reference/data/
 pnpm fetch:data:transparencia  # CGU Swagger audit registry → packages/br-validators/src/transparencia-snapshots/data/
