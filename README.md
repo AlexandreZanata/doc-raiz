@@ -213,17 +213,21 @@ Government classification tables embedded in the library — **zero runtime fetc
 | NBS (NFSe) | `@br-validators/core/nbs` | `nbs lookup` | `/data/fiscal` | `getNbsPorCodigo`, `searchNbs` | [NFSe Anexo B NBS2 xlsx](https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/documentacao-atual/anexo_b-nbs2-lista_servico_nacional-snnfse.xlsx) |
 | CEST (ST) | `@br-validators/core/cest` | `cest lookup` | `/data/fiscal` | `getCestPorCodigo`, `getCestPorNcm`, `searchCest` | [CONFAZ ICMS 142/2018](https://www.confaz.fazenda.gov.br/legislacao/convenios/2018/CV142_18) |
 | ISO 4217 + Bacen PTAX moedas | `@br-validators/core/moedas` | `moedas lookup` | `/data/trade` | `getMoedaPorCodigo`, `searchMoedas` | [Bacen PTAX Moedas API](https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/Moedas) |
-| Bacen PTAX Fechamento | `@br-validators/core/ptax` | — | `/data/trade` | `getPtaxCotacao`, `getPtaxUltimoDiaUtil` | [Bacen Olinda PTAX API](https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/swagger-ui3) |
+| Bacen PTAX Fechamento | `@br-validators/core/ptax` | `ptax lookup` | `/data/trade` | `getPtaxCotacao`, `getPtaxUltimoDiaUtil` (+ `dataReferencia`, `isStale`) | [Bacen Olinda PTAX API](https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/swagger-ui3) |
 | NF-e Bacen country codes | `@br-validators/core/paises-bacen` | `paises-bacen lookup` | `/data/trade` | `getPaisPorCodigoBacen`, `getPaisesBacen` | [NF-e country table](http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=FOXZNFX/p50=) |
 | NF-e cUF (IBGE state codes) | `@br-validators/core/nfe-cuf` | `nfe-cuf lookup` | `/data/fiscal` | `getCufPorCodigo`, `lookupCufPorCodigo` | [NF-e cUF table](http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=FOXZNFX/p50=) |
 | IRPF progressive brackets | `@br-validators/core/irpf` | `irpf tabela` · `irpf calc` | `/data/payroll` | `getIrpfTabelaProgressiva`, `calcularIrpfMensal` | [RFB IRPF tables](https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas) |
 | INSS contribution brackets | `@br-validators/core/inss` | `inss tabela` · `inss calc` | `/data/payroll` | `getInssTabelaContribuicao`, `calcularInssMensal` | [INSS contribution rates](https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabelas-de-contribuicao) |
 | Bacen SELIC meta | `@br-validators/core/selic` | `selic` | `/data/finance` | `getSelicMeta`, `getSelicMetaPorData` | [Bacen SGS série 432](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries) |
-| ISS municipal rates (top 500 PIB) | `@br-validators/core/iss-municipal` | `iss-municipal lookup` · `list` · `search [--uf]` | `/data/fiscal` | `getIssMunicipalPorIbge`, `getIssMunicipalPorUf`, `searchIssMunicipal` | [IBGE SIDRA PIB 5938](https://apisidra.ibge.gov.br/values/t/5938/n6/all/v/37/p/2022) |
+| ISS municipal rates (top 500 PIB) | `@br-validators/core/iss-municipal` | `iss-municipal lookup` · `list` · `search [--uf]` | `/data/fiscal` | `getIssMunicipalPorIbge` — check `fonte` + `warning` (**473/500** `estimativa`) | [IBGE SIDRA PIB 5938](https://apisidra.ibge.gov.br/values/t/5938/n6/all/v/37/p/2022) |
 | ICC Incoterms 2020 | `@br-validators/core/incoterms` | `incoterms lookup` | `/data/trade` | `getIncotermPorCodigo`, `getIncoterms` | [ICC Incoterms rules](https://iccwbo.org/resources-for-business/incoterms-rules/) |
 | CBO 2002 occupations | `@br-validators/core/cbo` | `cbo lookup` · `cbo search` | `/data/fiscal` | `getCboPorCodigo`, `searchCbo` | [MTE CBO CSV](https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/cbo/servicos/downloads/cbo2002-ocupacao.csv) |
 | CEP prefix lookup | `@br-validators/core/cep` | `cep faixa` | — | `getCepFaixaInfo`, `getCepFaixas` | [IBGE CNEFE 2022](https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html) |
 | Transparency catalog | `@br-validators/core/data-catalog` | — | `/data/catalog` | `getDataCatalog`, `getDatasetMetadata` | See [DATA-FRESHNESS.md](docs/DATA-FRESHNESS.md) |
+
+> **PTAX embed:** last **5 business days** only — not live Bacen. Every cotacao includes `dataReferencia` and `isStale`; when stale, `warning` advises against settlement without a live fetch. Details: [DATA-FRESHNESS.md](docs/DATA-FRESHNESS.md) (row **Bacen PTAX Fechamento**).
+>
+> **`getAll*()`:** lookup modules export `getAll<Type>()` for full embedded tables — see [Listing reference data](#listing-reference-data) below. Full API list: [docs.br-validators.dev/api-reference](https://docs.br-validators.dev/api-reference/).
 
 ```typescript
 import { getNcmPorCodigo } from '@br-validators/core/ncm';
@@ -237,6 +241,7 @@ import { getNbsPorCodigo } from '@br-validators/core/nbs';
 import { getCestPorCodigo } from '@br-validators/core/cest';
 import { getMoedaPorCodigo } from '@br-validators/core/moedas';
 import { getPtaxUltimoDiaUtil } from '@br-validators/core/ptax';
+import { getIssMunicipalPorIbge } from '@br-validators/core/iss-municipal';
 import { getPaisPorCodigoBacen } from '@br-validators/core/paises-bacen';
 import { getIncotermPorCodigo } from '@br-validators/core/incoterms';
 import { getAeroportoPorIata } from '@br-validators/core/aeroportos';
@@ -254,7 +259,17 @@ getNaturezaJuridicaPorCodigo('2062'); // Ltda. legal nature
 getNbsPorCodigo('1.1502.50.00');      // NFSe service code
 getCestPorCodigo('0302100');          // ST specifier
 getMoedaPorCodigo('BRL');             // Real Brasileiro
-getPtaxUltimoDiaUtil('USD');          // Bacen PTAX Fechamento — latest business day
+
+const ptax = getPtaxUltimoDiaUtil('USD');
+ptax.dataReferencia;                 // '2026-06-25' — always expose to callers
+ptax.isStale;                        // true when embed > 1 business day old
+ptax.warning;                        // present when stale — not for settlement without live fetch
+
+const iss = getIssMunicipalPorIbge(3509502); // Campinas — estimativa row
+if (iss?.fonte === 'estimativa') {
+  console.warn(iss.warning);       // do not use estimated alíquota for NFSe emission
+}
+
 getPaisPorCodigoBacen('1058');        // Brasil (NF-e cPais)
 getIncotermPorCodigo('FOB');          // Free On Board
 getAeroportoPorIata('GRU');            // Guarulhos — SP
@@ -262,6 +277,22 @@ getPortoPorCodigo('BRSSZ');           // Santos organized port
 getAnpPrecosMedios({ uf: 'SP', municipio: 'São Paulo', produto: 'GASOLINE_REGULAR' });
 getDataCatalog();              // all dataset metadata + capture dates
 ```
+
+### Listing reference data (`getAll*`)
+
+Every lookup module exposes `getAll*()` to iterate the full embedded table (tree-shakeable per subpath):
+
+```typescript
+import { getAllNcm } from '@br-validators/core/ncm';
+import { getAllCfop } from '@br-validators/core/cfop';
+import { getAllCstIcms } from '@br-validators/core/cst';
+
+const allNcm = getAllNcm();       // readonly NcmRow[]
+const allCfop = getAllCfop();
+const allIcms = getAllCstIcms();
+```
+
+Other examples: `getAllBancos`, `getAllEsocialCategorias`, `getAllIssMunicipal`, `getAllAeroportos`. Deprecated plural names (`getNcms`, `getCfops`) remain until v2.0 — see [MIGRATION.md](MIGRATION.md).
 
 ---
 

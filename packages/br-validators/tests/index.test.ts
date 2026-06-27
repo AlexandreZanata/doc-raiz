@@ -29,6 +29,7 @@ import * as issMunicipalEntry from '../src/iss-municipal.js';
 import * as feriadosEntry from '../src/feriados.js';
 import * as cnaesEntry from '../src/cnaes.js';
 import * as cfopEntry from '../src/cfop.js';
+import * as csosnEntry from '../src/csosn.js';
 import * as naturezaJuridicaEntry from '../src/natureza-juridica.js';
 import * as cnpjMotivosEntry from '../src/cnpj-motivos.js';
 import * as ibptEntry from '../src/ibpt.js';
@@ -331,6 +332,13 @@ describe('package exports', () => {
     expect(cfopEntry.getCfopPorCodigo).toBeTypeOf('function');
     expect(cfopEntry.searchCfop).toBeTypeOf('function');
     expect(cfopEntry.CFOP_DATA_VERSION.id).toBe('cfop');
+  });
+
+  it('re-exports CSOSN API from csosn entry', () => {
+    expect(csosnEntry.getAllCsosn).toBeTypeOf('function');
+    expect(csosnEntry.getCsosnPorCodigo).toBeTypeOf('function');
+    expect(csosnEntry.validateCsosn).toBeTypeOf('function');
+    expect(csosnEntry.CSOSN_DATA_VERSION.id).toBe('csosn');
   });
 
   it('re-exports Natureza juridica API from natureza-juridica entry', () => {

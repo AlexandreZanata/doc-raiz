@@ -127,6 +127,8 @@ export const en = {
       issMunicipalUfAll: 'All UFs',
       issMunicipalCountLabel: '{count} municipalities in embed',
       issMunicipalListPreview: 'Showing first {shown} of {count} municipalities',
+      issMunicipalFonteOficial: 'Official',
+      issMunicipalFonteEstimativa: 'Estimate',
       notFound: 'Code not found.',
       capturedAt: 'Dataset captured',
       officialSource: 'Official source',
@@ -172,6 +174,10 @@ export const en = {
           label: 'CST',
           fields: { codigo: 'Code', descricao: 'Description', tax: 'Tax' },
         },
+        csosn: {
+          label: 'CSOSN',
+          fields: { codigo: 'Code', descricao: 'Description' },
+        },
         issMunicipal: {
           label: 'ISS municipal',
           fields: {
@@ -180,6 +186,7 @@ export const en = {
             uf: 'UF',
             aliquotaMin: 'Min rate (%)',
             aliquotaMax: 'Max rate (%)',
+            fonte: 'Source',
             warning: 'Disclaimer',
           },
         },

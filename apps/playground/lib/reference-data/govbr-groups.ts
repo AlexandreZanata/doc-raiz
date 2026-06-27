@@ -56,6 +56,12 @@ import {
   type CstTax,
 } from '@br-validators/core/cst';
 import {
+  CSOSN_DATA_VERSION,
+  CSOSN_GOLDEN_SEM_CREDITO,
+  CSOSN_SINIEF_URL,
+  validateCsosn,
+} from '@br-validators/core/csosn';
+import {
   getIssMunicipalPorIbge,
   ISS_MUNICIPAL_DATA_VERSION,
   ISS_MUNICIPAL_GOLDEN_SAO_PAULO,
@@ -79,6 +85,7 @@ export type GovBrModuleId =
   | 'nfeCuf'
   | 'cbo'
   | 'cst'
+  | 'csosn'
   | 'issMunicipal'
   | 'moedas'
   | 'paisesBacen'
@@ -241,6 +248,21 @@ export const FISCAL_MODULES: readonly GovBrModuleDefinition[] = [
     fieldKeys: ['codigo', 'descricao', 'tax'],
   },
   {
+    id: 'csosn',
+    defaultCode: CSOSN_GOLDEN_SEM_CREDITO,
+    capturadoEm: CSOSN_DATA_VERSION.capturadoEm,
+    sourceUrl: CSOSN_SINIEF_URL,
+    lookup: (code) => {
+      const row = validateCsosn(code);
+      if (!row.ok) {
+        return null;
+      }
+      return { codigo: row.value, descricao: row.description };
+    },
+    validate: (code) => validateCsosn(code),
+    fieldKeys: ['codigo', 'descricao'],
+  },
+  {
     id: 'issMunicipal',
     defaultCode: String(ISS_MUNICIPAL_GOLDEN_SAO_PAULO),
     capturadoEm: ISS_MUNICIPAL_DATA_VERSION.capturadoEm,
@@ -254,11 +276,12 @@ export const FISCAL_MODULES: readonly GovBrModuleDefinition[] = [
             uf: row.uf,
             aliquotaMin: row.aliquotaMin,
             aliquotaMax: row.aliquotaMax,
+            fonte: row.fonte,
             warning: row.warning,
           }
         : null;
     },
-    fieldKeys: ['codigoIbge', 'nome', 'uf', 'aliquotaMin', 'aliquotaMax', 'warning'],
+    fieldKeys: ['codigoIbge', 'nome', 'uf', 'aliquotaMin', 'aliquotaMax', 'fonte', 'warning'],
   },
   {
     id: 'cbo',

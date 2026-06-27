@@ -12,7 +12,15 @@ export interface IssMunicipalRow {
   pibRank: number | null;
 }
 
+/** Provenance of the embedded ISS alíquota row — do not use `'estimativa'` for NFSe emission. */
+export type IssMunicipalFonte = 'oficial' | 'estimativa';
+
 export interface IssMunicipalResult extends IssMunicipalRow {
+  /**
+   * `'oficial'` — capital seed with verified municipal legislation URL.
+   * `'estimativa'` — LC 116 Art. 8 band fallback; not verified municipal legislation.
+   */
+  fonte: IssMunicipalFonte;
   warning: string;
 }
 

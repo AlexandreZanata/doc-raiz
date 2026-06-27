@@ -2,6 +2,7 @@ import {
   getIssMunicipalPorIbge,
   getIssMunicipalPorUf,
   searchIssMunicipal,
+  type IssMunicipalFonte,
   type IssMunicipalResult,
 } from '@br-validators/core/iss-municipal';
 
@@ -26,6 +27,34 @@ export function countIssMunicipalForUf(uf: string): number {
     return 0;
   }
   return getIssMunicipalPorUf(normalizedUf).length;
+}
+
+export function getIssMunicipalFieldValue(
+  row: IssMunicipalResult,
+  fieldKey: string,
+): string | number | null {
+  switch (fieldKey) {
+    case 'codigoIbge':
+      return row.codigoIbge;
+    case 'nome':
+      return row.nome;
+    case 'uf':
+      return row.uf;
+    case 'aliquotaMin':
+      return row.aliquotaMin;
+    case 'aliquotaMax':
+      return row.aliquotaMax;
+    case 'fonte':
+      return row.fonte;
+    case 'warning':
+      return row.warning;
+    default:
+      return null;
+  }
+}
+
+export function issMunicipalFonteBadgeVariant(fonte: IssMunicipalFonte): 'success' | 'warning' {
+  return fonte === 'oficial' ? 'success' : 'warning';
 }
 
 export function resolveIssMunicipalExplorerResults(query: string, uf: string): IssMunicipalExplorerResult {

@@ -153,6 +153,9 @@ export type DiffCliOptions = CnpjCliOptions & {
 export type BatchCliOptions = CnpjCliOptions & {
   uf?: string;
   limit?: number;
+  col?: string;
+  delimiter?: string;
+  skipHeader?: boolean;
 };
 
 export type GenerateCliOptions = {
@@ -916,6 +919,9 @@ export function handleBatchCli(
       uf: opts.uf,
       lines,
       limit: opts.limit,
+      col: opts.col,
+      delimiter: opts.delimiter,
+      skipHeader: opts.skipHeader,
     },
     io,
   );

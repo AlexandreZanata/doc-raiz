@@ -67,6 +67,7 @@ export function runIssMunicipalLookup(
   }
 
   io.stdout.push(formatIssMunicipalHuman(result));
+  io.stdout.push(`fonte: ${result.fonte}`);
   io.stdout.push(`warning: ${result.warning}`);
   if (options.verbose) {
     io.stdout.push(`leiUrl: ${result.leiUrl}`);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildIssMunicipalResult } from '../../../src/iss-municipal/result.js';
+import { buildIssMunicipalResult, resolveIssMunicipalFonte } from '../../../src/iss-municipal/result.js';
 import {
   getAllIssMunicipal,
   getIssMunicipalPorIbge,
@@ -34,6 +34,7 @@ describe('ISS municipal — official golden vectors', () => {
     expect(result.aliquotaMax).toBe(vectors.golden.saoPaulo.aliquotaMax);
     expect(result.leiUrl).toContain(vectors.golden.saoPaulo.leiUrlContains);
     expect(result.estimativa).toBe(false);
+    expect(result.fonte).toBe(vectors.golden.saoPaulo.fonte);
     expect(result.warning).toBe(ISS_MUNICIPAL_ESTIMATION_WARNING);
   });
 
@@ -54,6 +55,7 @@ describe('ISS municipal — official golden vectors', () => {
     expect(campinas?.aliquotaMin).toBe(vectors.golden.campinas.aliquotaMin);
     expect(campinas?.aliquotaMax).toBe(vectors.golden.campinas.aliquotaMax);
     expect(campinas?.estimativa).toBe(vectors.golden.campinas.estimativa);
+    expect(campinas?.fonte).toBe(vectors.golden.campinas.fonte);
     expect(campinas?.leiUrl).toContain(vectors.golden.campinas.leiUrlContains);
   });
 
@@ -159,8 +161,21 @@ describe('ISS municipal — embed policy', () => {
     expect(ISS_MUNICIPAL_DATA_VERSION.contagens.municipios).toBe(ISS_MUNICIPAL_TARGET_COUNT);
   });
 
-  it('buildIssMunicipalResult always attaches warning', () => {
-    const row = getAllIssMunicipal()[0];
-    expect(buildIssMunicipalResult(row).warning).toBe(ISS_MUNICIPAL_ESTIMATION_WARNING);
+  it('buildIssMunicipalResult attaches fonte and warning', () => {
+    const oficialRow = getAllIssMunicipal().find((row) => !row.estimativa);
+    const estimativaRow = getAllIssMunicipal().find((row) => row.estimativa);
+    expect(oficialRow).toBeDefined();
+    expect(estimativaRow).toBeDefined();
+    if (oficialRow === undefined || estimativaRow === undefined) {
+      return;
+    }
+    expect(buildIssMunicipalResult(oficialRow).fonte).toBe('oficial');
+    expect(buildIssMunicipalResult(estimativaRow).fonte).toBe('estimativa');
+    expect(buildIssMunicipalResult(oficialRow).warning).toBe(ISS_MUNICIPAL_ESTIMATION_WARNING);
+  });
+
+  it('resolveIssMunicipalFonte mirrors estimativa flag', () => {
+    expect(resolveIssMunicipalFonte(false)).toBe('oficial');
+    expect(resolveIssMunicipalFonte(true)).toBe('estimativa');
   });
 });

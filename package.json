@@ -29,6 +29,7 @@
     "fetch:data:nbs": "tsx scripts/fetch-nbs.ts",
     "fetch:data:cest": "tsx scripts/fetch-cest.ts",
     "fetch:data:cst": "tsx scripts/fetch-cst.ts",
+    "fetch:data:csosn": "tsx scripts/fetch-csosn.ts",
     "fetch:data:lc116": "tsx scripts/fetch-lc116.ts",
     "fetch:data:esocial": "tsx scripts/fetch-esocial.ts",
     "fetch:data:simples-nacional": "tsx scripts/fetch-simples-nacional.ts",

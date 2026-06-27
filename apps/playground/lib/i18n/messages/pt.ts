@@ -127,6 +127,8 @@ export const pt = {
       issMunicipalUfAll: 'Todas as UFs',
       issMunicipalCountLabel: '{count} municípios no embed',
       issMunicipalListPreview: 'Exibindo os primeiros {shown} de {count} municípios',
+      issMunicipalFonteOficial: 'Oficial',
+      issMunicipalFonteEstimativa: 'Estimativa',
       notFound: 'Código não encontrado.',
       capturedAt: 'Dataset capturado em',
       officialSource: 'Fonte oficial',
@@ -172,6 +174,10 @@ export const pt = {
           label: 'CST',
           fields: { codigo: 'Código', descricao: 'Descrição', tax: 'Tributo' },
         },
+        csosn: {
+          label: 'CSOSN',
+          fields: { codigo: 'Código', descricao: 'Descrição' },
+        },
         issMunicipal: {
           label: 'ISS municipal',
           fields: {
@@ -180,6 +186,7 @@ export const pt = {
             uf: 'UF',
             aliquotaMin: 'Alíquota mín. (%)',
             aliquotaMax: 'Alíquota máx. (%)',
+            fonte: 'Fonte',
             warning: 'Aviso',
           },
         },

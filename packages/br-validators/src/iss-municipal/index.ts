@@ -6,7 +6,7 @@ export {
   getIssMunicipalUfsDisponiveis,
   searchIssMunicipal,
 } from './lookup.js';
-export { buildIssMunicipalResult } from './result.js';
+export { buildIssMunicipalResult, resolveIssMunicipalFonte } from './result.js';
 export {
   CNM_LEGISLACAO_URL,
   IBGE_MUNICIPIO_CODES_URL,
@@ -26,5 +26,10 @@ export {
   PLANALTO_LC116_ART8_URL,
   PLANALTO_LC116_URL,
 } from './constants.js';
-export type { IssMunicipalDataVersion, IssMunicipalResult, IssMunicipalRow } from './types.js';
+export type {
+  IssMunicipalDataVersion,
+  IssMunicipalFonte,
+  IssMunicipalResult,
+  IssMunicipalRow,
+} from './types.js';
 export { ISS_MUNICIPAL_DATA_VERSION } from './version.js';

@@ -960,7 +960,11 @@ export function createProgram(): Command {
     .option('--uf <uf>', 'State code (required for inscricao-estadual, rg, titulo-eleitor)')
     .option('--json', 'JSON output')
     .option('-q, --quiet', 'Exit code only')
-    .option('-f, --file <path>', 'Read values from file (one per line)')
+    .option('-f, --file <path>', 'Read values from file (one per line, or CSV with --col)')
+    .option('--col <name>', 'CSV column name or zero-based index (requires --file)')
+    .option('--delimiter <char>', 'CSV delimiter (default: comma)')
+    .option('--skip-header', 'Treat first CSV row as header (default: true)', true)
+    .option('--no-skip-header', 'Parse CSV without header row')
     .option('--limit <n>', 'Max number of values to process', (v: string) => Number(v))
     .action((type: string, opts: BatchCliOptions) => {
       const io = { stdout: [] as string[], stderr: [] as string[] };
