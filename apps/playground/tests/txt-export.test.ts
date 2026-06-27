@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { pickRowFields } from '../lib/reference-data/dataset-adapter';
 import { resolveBancoFromInput } from '../lib/reference-data/bancos-lookup';
 import { getDatasetAdapter } from '../lib/reference-data/dataset-registry';
 import {
@@ -103,13 +104,13 @@ describe('txt-export', () => {
     const banco = resolveBancoFromInput('001');
     expect(banco).toBeDefined();
     const section = formatTxtSection(bancosAdapter as NonNullable<typeof bancosAdapter>, [
-      {
-        codigo: banco?.codigo ?? '',
-        ispb: banco?.ispb ?? '',
-        nome: banco?.nome ?? '',
-        nomeReduzido: banco?.nomeReduzido ?? '',
-        participaCompe: banco?.participaCompe ?? false,
-      },
+      pickRowFields(banco as NonNullable<typeof banco>, [
+        'codigo',
+        'ispb',
+        'nome',
+        'nomeReduzido',
+        'participaCompe',
+      ]),
     ], {
       mode: 'search-results',
       query: '001',
