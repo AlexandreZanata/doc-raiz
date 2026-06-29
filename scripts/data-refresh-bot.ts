@@ -39,6 +39,7 @@ import {
   type SourceHealthState,
 } from './lib/source-health-tracker.js';
 import { todayIsoDate } from './lib/fetch-utils.js';
+import { syncDailyGoldenVectors } from './lib/sync-daily-golden-vectors.js';
 import type { DatasetMetadata } from '../packages/br-validators/src/data-catalog/types.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -296,6 +297,14 @@ async function main(): Promise<void> {
     await mkdir(FETCH_OUTCOME_DIR, { recursive: true });
     for (const script of FETCH_SCRIPTS) {
       await runCommand('pnpm', ['exec', 'tsx', script]);
+    }
+
+    const vectorSync = await syncDailyGoldenVectors({ rootDir: ROOT });
+    if (vectorSync.selicUpdated) {
+      console.log('Synced tests/vectors/selic.official.json with embedded SELIC window.');
+    }
+    if (vectorSync.ptaxUpdated) {
+      console.log('Synced tests/vectors/ptax.official.json with embedded PTAX window.');
     }
   }
 
