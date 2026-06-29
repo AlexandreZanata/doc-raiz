@@ -4,8 +4,8 @@
     "https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente"
   ],
   "consecutiveFailureDays": 1,
-  "firstFailureDate": "2026-06-26",
-  "lastFailureDate": "2026-06-26",
+  "firstFailureDate": "2026-06-29",
+  "lastFailureDate": "2026-06-29",
   "lastSuccessDate": "2026-06-26",
   "severity": "warning",
   "message": "Possible link deprecation — official source unreachable after 5 attempts (2 min interval).",
