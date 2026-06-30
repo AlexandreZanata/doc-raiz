@@ -1,7 +1,7 @@
 # Data freshness — reference datasets
 
 > **Auto-generated** by `scripts/data-refresh-bot.ts` — do not edit manually.
-> Last bot run: 2026-06-30T07:23:19.238Z
+> Last bot run: 2026-06-30T12:30:50.523Z
 
 ## Summary
 
@@ -12,8 +12,8 @@
 | ANAC Public Aerodromos | 2026-06-30 | 533 aeroportos / 87 comIata | 0 | 0 | 0 | — | [ANAC — Lista de aeródromos de uso público](https://www.anac.gov.br/acesso-a-informacao/dados-abertos/areas-de-atuacao/aerodromos/lista-de-aerodromos-publicos/aerodromospublicosv1.csv/@@download/file/aerodromospublicosv1.csv) |
 | TSE ↔ IBGE Municipality Codes | 2026-06-30 | 5571 municipios | 0 | 0 | 0 | — | [TSE — Códigos oficiais de UF e municípios segundo o TSE e o IBGE](https://cdn.tse.jus.br/estatistica/sead/odsele/municipio_tse_ibge/municipio_tse_ibge.zip) |
 | ISO 4217 Currencies + Bacen PTAX | 2026-06-30 | 154 moedas | 0 | 0 | 0 | — | [ISO 4217 (embedded) + Banco Central PTAX Moedas](https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/Moedas) |
-| Bacen PTAX Fechamento | 2026-06-30 | 850 cotacoes / 10 moedas / 85 diasUteis | 10 | 10 | 0 | — | [Banco Central Olinda PTAX API — Fechamento PTAX](https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)) |
-| Bacen SGS — Meta Selic (série 432) | 2026-06-30 | 90 observacoes / 90 dias | 1 | 1 | 0 | — | [Banco Central — Taxa meta Selic definida pelo Copom](https://dadosabertos.bcb.gov.br/dataset/432-taxa-de-juros---meta-selic-definida-pelo-copom) |
+| Bacen PTAX Fechamento | 2026-06-30 | 850 cotacoes / 10 moedas / 85 diasUteis | 0 | 0 | 0 | — | [Banco Central Olinda PTAX API — Fechamento PTAX](https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)) |
+| Bacen SGS — Meta Selic (série 432) | 2026-06-30 | 90 observacoes / 90 dias | 0 | 0 | 0 | — | [Banco Central — Taxa meta Selic definida pelo Copom](https://dadosabertos.bcb.gov.br/dataset/432-taxa-de-juros---meta-selic-definida-pelo-copom) |
 | ISS municipal alíquotas — partial embed (capitals + top PIB) | 2026-06-26 | 500 municipios / 27 capitais / 473 estimativaRows | 400 | 0 | 0 | — | [SIDRA 5938 PIB 2022 + LC 116 Art. 8 band + capital legislation seeds](https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp116.htm) |
 | NF-e Bacen Country Codes | 2026-06-30 | 253 paises | 0 | 0 | 0 | — | [Portal Nacional NF-e — Tabela de Países (Bacen)](http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=PfPDd6dW200=) |
 | ICC Incoterms 2020 | 2026-06-30 | 11 incoterms | 0 | 0 | 0 | — | [International Chamber of Commerce — Incoterms 2020 (static reference)](https://iccwbo.org/resources-for-business/incoterms-rules/) |
