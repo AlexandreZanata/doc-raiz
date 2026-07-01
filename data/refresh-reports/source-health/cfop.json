@@ -3,9 +3,9 @@
   "endpoints": [
     "https://www.confaz.fazenda.gov.br/legislacao/ajustes/sinief/cfop_cvsn_70_vigente"
   ],
-  "consecutiveFailureDays": 2,
+  "consecutiveFailureDays": 3,
   "firstFailureDate": "2026-06-29",
-  "lastFailureDate": "2026-06-30",
+  "lastFailureDate": "2026-07-01",
   "lastSuccessDate": "2026-06-26",
   "severity": "critical",
   "message": "Consultation link deprecated — official source unreachable for 2 or more consecutive days.",
